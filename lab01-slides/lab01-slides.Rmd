@@ -14,7 +14,7 @@ output:
       ratio: "16:9"
     css: ["xaringan-themer.css", "extras.css"]
 ---
-
+class: center
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
@@ -40,22 +40,6 @@ style_duo(primary_color = "#00274c",
 xaringanExtra::use_share_again()
 xaringanExtra::style_share_again(share_buttons = "none", foreground = "rgba(0,0,0,0)")
 ```
-
-
-# Welcome to STATS 250 Lab
-
-- Focus is hands-on experience with topics learned in lecture
-
-- Using R (more on this soon)
-
-- You may attend either synchronously or asynchronously each week.
-  - I will send out a Google Form on Fridays (also available on the lab resources page on Canvas) to indicate your preference.
-  
-- Completed lab reports are due Fridays at 8 AM ET
-
-
----
-class: center
 
 # Who am I? `r emo::ji("man_teacher")`
 
