@@ -1,8 +1,0 @@
-.inverse a {
-  color: #00274c;
-  text-decoration: underline;
-}
-
-.inverse strong {
-  color: #00274c;
-}
