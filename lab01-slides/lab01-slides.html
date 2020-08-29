@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 250 Lab 01</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nick Seewald" />
+    <meta name="date" content="2020-08-31" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extras.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 250 Lab 01
+## Getting Started with R
+### Nick Seewald
+### Say hi in the chat!
+### 08/31/2020
+
+---
+
+
+
+
+
+
+
+<style>.shareagain-bar {
+--shareagain-foreground: rgba(0,0,0,0);
+--shareagain-background: rbg(255, 255, 255);
+--shareagain-twitter: none;
+--shareagain-facebook: none;
+--shareagain-linkedin: none;
+--shareagain-pinterest: none;
+--shareagain-pocket: none;
+--shareagain-reddit: none;
+}</style>
+
+
+# Welcome to STATS 250 Lab
+
+- Focus is hands-on experience with topics learned in lecture
+
+- Using R (more on this soon)
+
+- You may attend either synchronously or asynchronously each week.
+  - I will send out a Google Form on Fridays (also available on the lab resources page on Canvas) to indicate your preference.
+  
+- Completed lab reports are due Fridays at 8 AM ET
+
+
+---
+class: center
+
+# Who am I? 👨‍🏫
+
+.pull-left[&lt;img src="images/stats-logo.png" style="width:75%;"&gt;
+
+&lt;img src="images/grad-students.gif" style="width:75%;"&gt;
+
+&lt;img src="images/duolingo.png" style="width: 60%;"&gt;
+]
+
+.pull-right[
+&lt;img src="images/ND-monogram.png" style="width:40%; align:center;"&gt;
+
+&lt;img src="images/map.jpg" style="width:40%;"&gt;
+]
+
+---
+# Who are you? 👩‍🎓
+
+** While you are taking this class, you are a statistician! **
+
+1. Change your Zoom name to include pronouns    
+  - Right-click (or long press) your name in the Participants list, select "Rename"
+  
+1. Add a photo to your Zoom profile
+  - Go to umich.zoom.us, sign in, and choose "Profile" on the left
+  - This will be used across all your U-M Zoom meetings
+  
+1. In the chat, type your favorite TV show **but don't hit enter it until I say go**.
+
+---
+
+# Course Policy
+
+## Grading
+
+.pull-left[
+&lt;table style="font-size:20pt;"&gt;
+  &lt;tr style="text-align:center;"&gt;
+    &lt;td&gt;&lt;strong&gt;Component&lt;/strong&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;Proportion of grade&lt;/strong&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr style="color:var(--primary);"&gt;
+    &lt;td&gt;Exams&lt;/td&gt;
+    &lt;td&gt;30% (15% &amp;times; 2)&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Quizzes&lt;/td&gt;
+    &lt;td&gt;20% (10% &amp;times; 2)&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr style="color:var(--primary);"&gt; 
+    &lt;td&gt;Homework&lt;/td&gt;
+    &lt;td&gt;20% (12 total, 2 dropped)&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;MWrite&lt;/td&gt;
+    &lt;td&gt;15% (5% + 10%)&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr style="color:var(--primary);"&gt;
+    &lt;td&gt;Lab Work&lt;/td&gt;
+    &lt;td&gt;10% (12 total, 1 dropped)&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Participation&lt;/td&gt;
+    &lt;td&gt;5% (1% eCoach + 1% Survey + 3% Piazza)&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+]
+
+.pull-right[
+- Letter grades are assigned based on a fixed scale, there is no curve. See syllabus.
+- Grades will be traditional A-C then NRC for D-E
+]
+
+---
+
+# Course Policy
+
+## Lab attendance
+- Every week, you have the option of attending either of my synchronous sessions **or** you can complete the lab asynchronously.
+  - **Section 108**: Monday 10:00a - 11:30a Eastern
+  - **Section 106**: Monday 1:00p - 2:30p Eastern
+  - **Section 115**: Asynchronous
+- I'd appreciate you telling me your plans each week before lab each week; I'll be sending out a survey on Fridays for the coming week.
+
+---
+# Course Policiy
+
+## Office Hours
+
+.pull-left[
+- You can attend anybody's office hours you want!
+- Completely remote via Zoom (links on Canvas)
+- I cannot  
+]
+
+---
+# Course Policy
+
+## Flexibility
+.pull-left[
+- This is going to be an unusual semester. 
+- Things like the office hours schedule and the schedule of topics **may change**.
+- Please try to be flexible with us as we adapt to this new learning environment, as we'll be flexible with you.
+]
+
+.pull-right[
+&lt;img src="images/blanche-be-nice.gif" width = 300&gt;
+]
+
+---
+# Lab Rules and Responsibilities
+
+.pull-left[
+## 1. Be Respectful.
+- Respect to me includes being here on time and staying until dismissed
+  - Notify me of conflicts in advance
+- Treat your classmates with dignity and *learn from your differences*
+- Respect yourself: *come here to learn*
+]
+
+--
+
+.pull-right[
+## 2. Actively Collaborate.
+- Lab activities will involve working with your peers: you should participate and learn from each other.
+- The time will pass faster if you're having conversations and working together!
+]
+
+---
+# Health and Well-Being
+
+College is hard (**especially now**). Your health and well-being are more important than this class.
+
+If you're struggling with mental health, there are resources available to you at [wellbeing.studentlife.umich.edu](https://wellbeing.studentlife.umich.edu). 
+
+CAPS: [caps.umich.edu](https://caps.umich.edu) or 734.764.8312
+
+*If you become ill, please report the illness to LSA: https://webapps.lsa.umich.edu/SAA/UGStuAdv/App/Illness/RptIll.aspx*
+
+**Let me know what's going on and I'll do my best to help.**
+
+---
+
+# Diversity, Equity, and Inclusion
+
+It's important to me to cultivate a learning environment in which everyone's identities (race, ethnicity, gender, sexual orientation, religion, etc.) are respected. To this end:
+- If you feel that your performance in the class is being affected by experiences inside **or** outside the classroom, please let me know.
+- DEI is a process: I (and many others) am still learning about different perspectives and identities. If anything is said in class (by anyone, including by me) that made you feel uncomfortable, please let me know.
+
+---
+
+# Is this a math class?
+
+Statistics is a *mathematical science*. This course will involve elements of a typical math course, but also less typical aspects.
+
+- Often, you will be required to apply statistical knowledge *and* everyday knowledge ("common sense") to solve problems.
+- In statistics, there is not always a "correct" answer. You should be prepared to argue (in words) for why your answer is reasonable.
+- Written components of assignments are critical.
+
+.footnote[Adapted from [Martha K. Smith, University of Texas at Austin](https://web.ma.utexas.edu/users/mks/358Ksp06/M358K06syl.htm)]
+
+--
+**TL;DR**
+This is NOT a math class. So if you're "not a math person", don't worry.
+
+---
+class: inverse, center, middle
+
+# Let's get started!
+
+---
+
+# Learning Objectives
+
+.pull-left[
+### Statistical Learning Objectives
+1. Visualize categorical data
+2. Summarize quantitative and categorical data
+]
+.pull-right[
+### R Learning Objectives
+1. Learn the difference between R, R Studio, and R Markdown
+2. Become familiar with the R Studio interface 
+3. Understand key components of an R Markdown document
+4. Become familiar with R functions and arguments
+]
+
+---
+# Getting Started: What is R?
+
+- Statisticians (that means you!) often use computers to analyze data. 
+- **R** is a popular (and powerful) program for manipulating data, doing calculations, and making graphs.
+- R works by writing **`R code`**.
+
+--
+
+### Wait omg is this a coding class???
+
+--
+.pull-left[
+&lt;div style="text-align:center;"&gt;&lt;img src="images/isaac-no.gif" style="width:70%;"&gt;&lt;/div&gt;
+]
+
+Over the course of the semester, you'll learn how to edit and write some basic R code to help you analyze data to answer research questions. **This will always be through the lens of answering statistical questions.**
+
+---
+class: center, middle, inverse
+
+# Time for RStudio Cloud!
+
+## http://bit.ly/250millerfa20rsc
+
+*Log in with Google using your U-M Account* (non-umich accounts will be deleted without warning)
+---
+background-image: url("rstudio_annotated.jpg")
+&lt;!-- background-position: 50% 50% --&gt;
+background-size: contain
+
+---
+# Using R as a Calculator
+
+At its most basic, R is a fancy calculator.
+
+Here's a code chunk in which we do some math:
+````markdown
+```{r calculatorExample}
+5 * 7
+```
+````
+
+Output:
+
+
+```r
+5 * 7
+```
+
+```
+[1] 35
+```
+
+---
+
+# Try it!
+
+In your R Markdown document, edit the code chunk that looks like this (line ~79) to compute 50 divided by 9:
+````md
+```{r tryItCalculator, error = T}
+# Write code here! This text is a comment, so it's not run by R. Replace it with
+# code to compute 50 divided by 9.
+```
+````
+
+--
+Solution:
+
+
+```r
+50 / 9
+```
+
+```
+[1] 5.555556
+```
+
+---
+class: inverse
+
+# Palmer Penguins Data 🐧
+We're going to learn about some basic R functions using a data set on 333 penguins living on 3 islands in the Palmer Archipelago in Antarctica. 
+
+.pull-left[
+Data were made available by [Dr. Kristen Gorman](www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php)
+and the [Palmer Station, Antarctica Long Term Ecological Research area](pal.lternet.edu), a member of the Long Term Ecological Research Network. The data were prepared by [Dr. Allison Horst](github.com/allisonhorst/palmerpenguins)
+]
+
+.pull-right[![Illustration of penguin species. Artwork by @allison_horst.](https://github.com/allisonhorst/palmerpenguins/raw/master/man/figures/lter_penguins.png)
+]
+
+---
+
+# First Steps
+
+### "Read in" data
+
+
+```r
+penguins &lt;- read.csv(url("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv"))
+```
+
+- You'll learn more about this next week
+- For now, the important thing to know is that we've told R we want to use a data set at that URL and we want to call it `penguins`.
+---
+
+# First Steps 
+
+### Peek at the first 6 rows of the data
+
+```r
+head(penguins)
+```
+
+```
+  species    island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g    sex year
+1  Adelie Torgersen           39.1          18.7               181        3750   male 2007
+2  Adelie Torgersen           39.5          17.4               186        3800 female 2007
+3  Adelie Torgersen           40.3          18.0               195        3250 female 2007
+4  Adelie Torgersen           36.7          19.3               193        3450 female 2007
+5  Adelie Torgersen           39.3          20.6               190        3650   male 2007
+6  Adelie Torgersen           38.9          17.8               181        3625 female 2007
+```
+
+---
+
+# Bar Charts in R 📊
+
+Let's make a bar chart of the number of penguins observed in each species:
+
+
+
+
+```r
+*barplot(table(penguins$species),
+     xlab = "Species",
+     ylab = "Frequency",
+     main = "Bar Chart of Number of Penguins of Each Species Observed",
+     col = c("darkorange1", "mediumorchid2", "darkcyan"))
+```
+
+&lt;img src="lab01-slides_files/figure-html/speciesPlot-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Numerical Summaries
+
+We can use R to summarize data numerically. A good way to do this is the `summary()` function.
+
+
+```r
+summary(penguins$flipper_length_mm)
+```
+
+```
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    172     190     197     201     213     231 
+```
+
+---
+class: center, inverse, middle
+
+# Now it's your turn!
+
+![](images/focus.gif)
+
+---
+
+# Group Discussion 👯
+
+You will be **randomly** moved to a breakout room for the rest of the lab (minus ~10 minutes)
+
+.pull-left[
+### Your tasks
+1. Introduce yourself to your collaborators!
+1. **Work together** to complete the "Try It!" and "Discussion" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+]
+
+.pull-right[
+### How to get help
+- I'll be floating around between breakout rooms to check on everyone
+- Use the "Ask for help" button to flag me down
+- Let me know when you're done
+]
+
+---
+
+# Lab Submission 📥
+
+
+---
+class: center, middle
+
+# 🔗 http://bit.ly/250labintros
+
+![](images/oprah-survey.gif)
+ 
+See my answers at http://bit.ly/nicksurveyanswers &lt;br&gt; (please don't hit submit)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
