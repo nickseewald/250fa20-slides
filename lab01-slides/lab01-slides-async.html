@@ -3,13 +3,10 @@
   <head>
     <title>STATS 250 Lab 01</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Nick Seewald" />
-    <meta name="date" content="2020-08-31" />
-    <script src="libs/clipboard/clipboard.min.js"></script>
-    <link href="libs/shareon/shareon.min.css" rel="stylesheet" />
-    <script src="libs/shareon/shareon.min.js"></script>
-    <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
-    <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
+    <meta name="author" content="Nick Seewald nseewald@umich.edu" />
+    <script src="libs/xaringanExtra-webcam/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="extras.css" type="text/css" />
   </head>
@@ -19,9 +16,8 @@ class: center, middle, inverse, title-slide
 
 # STATS 250 Lab 01
 ## Getting Started with R
-### Nick Seewald
-### Say hi in the chat!
-### 08/31/2020
+### Nick Seewald<br />nseewald@umich.edu
+### Week of 08/31/2020
 
 ---
 
@@ -31,16 +27,7 @@ class: center
 
 
 
-<style>.shareagain-bar {
---shareagain-foreground: rgba(0,0,0,0);
---shareagain-background: rbg(255, 255, 255);
---shareagain-twitter: none;
---shareagain-facebook: none;
---shareagain-linkedin: none;
---shareagain-pinterest: none;
---shareagain-pocket: none;
---shareagain-reddit: none;
-}</style>
+
 
 # Who am I? 👨‍🏫
 
@@ -58,18 +45,15 @@ class: center
 ]
 
 ---
+class: center, middle
 # Who are you? 👩‍🎓
 
 ** While you are taking this class, you are a statistician! **
 
-1. Change your Zoom name to include pronouns    
-  - Right-click (or long press) your name in the Participants list, select "Rename"
-  
-1. Add a photo to your Zoom profile
-  - Go to umich.zoom.us, sign in, and choose "Profile" on the left
-  - This will be used across all your U-M Zoom meetings
-  
-1. In the chat, type your favorite TV show **but don't hit enter it until I say go**.
+## 🔗 bit.ly/250labintros
+
+See my answers at [bit.ly/nicksurveyanswers](http://bit.ly/nicksurveyanswers) &lt;br /&gt;
+(please don't hit submit on my answers!)
 
 ---
 
@@ -127,14 +111,39 @@ class: center
 - I'd appreciate you telling me your plans each week before lab each week; I'll be sending out a survey on Fridays for the coming week.
 
 ---
-# Course Policiy
-
-## Office Hours
+# Course Policy
 
 .pull-left[
+## Office Hours
 - You can attend anybody's office hours you want!
+  - Full schedule on Canvas
 - Completely remote via Zoom (links on Canvas)
-- I cannot  
+- I cannot confirm/deny whether your answers are "right"
+]
+.pull-right[
+## My office hours:
+&lt;table style="font-size:20pt;"&gt;
+  &lt;tr style="text-align:center;"&gt;
+    &lt;td&gt;&lt;strong&gt;Day&lt;/strong&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;strong&gt;Time (ET)&lt;/strong&gt;&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr style="color:var(--primary);"&gt;
+    &lt;td&gt;Tuesday&lt;/td&gt;
+    &lt;td&gt;9:00a - 10:00a&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Wednesday&lt;/td&gt;
+    &lt;td&gt;11:00a - 12:00p&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr style="color:var(--primary);"&gt; 
+    &lt;td&gt;Thursday&lt;/td&gt;
+    &lt;td&gt;5:30p - 7:00p&lt;/td&gt;
+  &lt;/tr&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Friday&lt;/td&gt;
+    &lt;td&gt;9:30a - 10:30a&lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
 ]
 
 ---
@@ -148,26 +157,24 @@ class: center
 ]
 
 .pull-right[
-&lt;img src="images/blanche-be-nice.gif" width = 300&gt;
+&lt;div style="text-align:center;"&gt;&lt;img src="images/blanche-be-nice.gif" width = 300&gt;&lt;/div&gt;
 ]
 
 ---
 # Lab Rules and Responsibilities
-
 .pull-left[
 ## 1. Be Respectful.
-- Respect to me includes being here on time and staying until dismissed
-  - Notify me of conflicts in advance
+- Respect to me includes watching the entirety of these videos, communicating in good faith, and filling out attendance mode forms each week.
 - Treat your classmates with dignity and *learn from your differences*
-- Respect yourself: *come here to learn*
+- Respect yourself: *be ready and willing to learn*
 ]
 
 --
-
 .pull-right[
 ## 2. Actively Collaborate.
 - Lab activities will involve working with your peers: you should participate and learn from each other.
-- The time will pass faster if you're having conversations and working together!
+- In async weeks, **use Piazza**
+- Work with friends in other labs (within Dr. Miller's course); your write-ups must be your own.
 ]
 
 ---
@@ -196,7 +203,7 @@ It's important to me to cultivate a learning environment in which everyone's ide
 # Is this a math class?
 
 Statistics is a *mathematical science*. This course will involve elements of a typical math course, but also less typical aspects.
-
+--
 - Often, you will be required to apply statistical knowledge *and* everyday knowledge ("common sense") to solve problems.
 - In statistics, there is not always a "correct" answer. You should be prepared to argue (in words) for why your answer is reasonable.
 - Written components of assignments are critical.
@@ -230,6 +237,16 @@ class: inverse, center, middle
 ]
 
 ---
+# How does lab work? 🤔
+
+Three components each week:
+1. Logistics &amp; Demo
+2. Try It!
+3. Discussion Questions
+
+You'll work through the Try It! and Discussion, and submit an "R Markdown" report. 
+
+---
 # Getting Started: What is R?
 
 - Statisticians (that means you!) often use computers to analyze data. 
@@ -256,11 +273,12 @@ class: center, middle, inverse
 
 *Log in with Google using your U-M Account* (non-umich accounts will be deleted without warning)
 ---
-background-image: url("images/rstudio_annotated.jpg")
+background-image: url("images/rsc-student-view.jpg")
 &lt;!-- background-position: 50% 50% --&gt;
 background-size: contain
-
 ---
+
+
 # Using R as a Calculator
 
 At its most basic, R is a fancy calculator.
@@ -345,13 +363,20 @@ head(penguins)
 ```
 
 ```
-  species    island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g    sex year
-1  Adelie Torgersen           39.1          18.7               181        3750   male 2007
-2  Adelie Torgersen           39.5          17.4               186        3800 female 2007
-3  Adelie Torgersen           40.3          18.0               195        3250 female 2007
-4  Adelie Torgersen           36.7          19.3               193        3450 female 2007
-5  Adelie Torgersen           39.3          20.6               190        3650   male 2007
-6  Adelie Torgersen           38.9          17.8               181        3625 female 2007
+  species    island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+1  Adelie Torgersen           39.1          18.7               181        3750
+2  Adelie Torgersen           39.5          17.4               186        3800
+3  Adelie Torgersen           40.3          18.0               195        3250
+4  Adelie Torgersen           36.7          19.3               193        3450
+5  Adelie Torgersen           39.3          20.6               190        3650
+6  Adelie Torgersen           38.9          17.8               181        3625
+     sex year
+1   male 2007
+2 female 2007
+3 female 2007
+4 female 2007
+5   male 2007
+6 female 2007
 ```
 
 ---
@@ -371,7 +396,7 @@ Let's make a bar chart of the number of penguins observed in each species:
      col = c("darkorange1", "mediumorchid2", "darkcyan"))
 ```
 
-&lt;img src="lab01-slides_files/figure-html/speciesPlot-1.svg" style="display: block; margin: auto;" /&gt;
+&lt;img src="lab01-slides-async_files/figure-html/speciesPlot-1.svg" style="display: block; margin: auto;" /&gt;
 
 ---
 
@@ -398,36 +423,42 @@ class: center, inverse, middle
 
 ---
 
-# Group Discussion 👯
-
-You will be **randomly** moved to a breakout room for the rest of the lab (minus ~10 minutes)
+# Lab Project ⌨️
 
 .pull-left[
 ### Your tasks
-1. Introduce yourself to your collaborators!
-1. **Work together** to complete the "Try It!" and "Discussion" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+- Complete the "Try It!" and "Discussion" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
 ]
 
 .pull-right[
 ### How to get help
-- I'll be floating around between breakout rooms to check on everyone
-- Use the "Ask for help" button to flag me down
-- Let me know when you're done
+- Use the "labs" section of Piazza to ask questions and work with your peers.
+- If you use Piazza, please note that in the "Collaborators" list at the top of the discussion section.
+- If you're really stuck, email me! nseewald@umich.edu
 ]
 
 ---
 
-# Lab Submission 📥
-
+# 📥 Lab Submission: Finding Your Report
+Hit the Knit button one last time, then:
+.pull-left[
+## RStudio Cloud
+1. In the Files pane, check the box next to `lab01report.html`
+2. Click More &gt; Export...
+3. Click Download and save the file on your computer in a folder you'll remember and be able to find later.
+]
+.pull-right[
+## RStudio Desktop (local)
+1. Locate the `lab01report.html` file on your computer. The file will be saved in the location indicated at the top of the files pane. 
+]
 
 ---
-class: center, middle
 
-# 🔗 http://bit.ly/250labintros
+# 📥 Lab Submission: Canvas (Due 9/11 8a ET)
+1. Click the "Assignments" panel on the left side of the page. Scroll to find "Lab 1", and open the assignment. Click "Submit Assignment".
 
-![](images/oprah-survey.gif)
- 
-See my answers at http://bit.ly/nicksurveyanswers &lt;br&gt; (please don't hit submit)
+2. Towards the bottom of the page, you'll be able to choose `lab01report.html` from the folder you saved it in from RStudio Cloud or noted if you're using RStudio Desktop. **You will only be able to upload a .html file -- do not upload any other file type.**
+3. Click "Submit Assignment". You're done!
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>

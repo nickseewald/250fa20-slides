@@ -1,9 +1,8 @@
 ---
 title: "STATS 250 Lab 01"
 subtitle: "Getting Started with R"
-author: "Nick Seewald"
-institute: "Say hi in the chat!"
-date: "08/31/2020"
+author: "Nick Seewald<br />nseewald&#64;umich.edu"
+date: "Week of 08/31/2020"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -36,9 +35,9 @@ style_duo(primary_color = "#00274c",
 )
 ```
 
-```{r share-again, echo=FALSE}
-xaringanExtra::use_share_again()
-xaringanExtra::style_share_again(share_buttons = "none", foreground = "rgba(0,0,0,0)")
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_webcam()
+xaringanExtra::use_fit_screen()
 ```
 
 # Who am I? `r emo::ji("man_teacher")`
@@ -57,18 +56,15 @@ xaringanExtra::style_share_again(share_buttons = "none", foreground = "rgba(0,0,
 ]
 
 ---
+class: center, middle
 # Who are you? `r emo::ji("woman_student")`
 
 ** While you are taking this class, you are a statistician! **
 
-1. Change your Zoom name to include pronouns    
-  - Right-click (or long press) your name in the Participants list, select "Rename"
-  
-1. Add a photo to your Zoom profile
-  - Go to umich.zoom.us, sign in, and choose "Profile" on the left
-  - This will be used across all your U-M Zoom meetings
-  
-1. In the chat, type your favorite TV show **but don't hit enter it until I say go**.
+## `r emo::ji("link")` bit.ly/250labintros
+
+See my answers at [bit.ly/nicksurveyanswers](http://bit.ly/nicksurveyanswers) <br />
+(please don't hit submit on my answers!)
 
 ---
 
@@ -126,14 +122,39 @@ xaringanExtra::style_share_again(share_buttons = "none", foreground = "rgba(0,0,
 - I'd appreciate you telling me your plans each week before lab each week; I'll be sending out a survey on Fridays for the coming week.
 
 ---
-# Course Policiy
-
-## Office Hours
+# Course Policy
 
 .pull-left[
+## Office Hours
 - You can attend anybody's office hours you want!
+  - Full schedule on Canvas
 - Completely remote via Zoom (links on Canvas)
-- I cannot  
+- I cannot confirm/deny whether your answers are "right"
+]
+.pull-right[
+## My office hours:
+<table style="font-size:20pt;">
+  <tr style="text-align:center;">
+    <td><strong>Day</strong></td>
+    <td><strong>Time (ET)</strong></td>
+  </tr>
+  <tr style="color:var(--primary);">
+    <td>Tuesday</td>
+    <td>9:00a - 10:00a</td>
+  </tr>
+  <tr>
+    <td>Wednesday</td>
+    <td>11:00a - 12:00p</td>
+  </tr>
+  <tr style="color:var(--primary);"> 
+    <td>Thursday</td>
+    <td>5:30p - 7:00p</td>
+  </tr>
+  <tr>
+    <td>Friday</td>
+    <td>9:30a - 10:30a</td>
+  </tr>
+</table>
 ]
 
 ---
@@ -147,26 +168,24 @@ xaringanExtra::style_share_again(share_buttons = "none", foreground = "rgba(0,0,
 ]
 
 .pull-right[
-<img src="images/blanche-be-nice.gif" width = 300>
+<div style="text-align:center;"><img src="images/blanche-be-nice.gif" width = 300></div>
 ]
 
 ---
 # Lab Rules and Responsibilities
-
 .pull-left[
 ## 1. Be Respectful.
-- Respect to me includes being here on time and staying until dismissed
-  - Notify me of conflicts in advance
+- Respect to me includes watching the entirety of these videos, communicating in good faith, and filling out attendance mode forms each week.
 - Treat your classmates with dignity and *learn from your differences*
-- Respect yourself: *come here to learn*
+- Respect yourself: *be ready and willing to learn*
 ]
 
 --
-
 .pull-right[
 ## 2. Actively Collaborate.
 - Lab activities will involve working with your peers: you should participate and learn from each other.
-- The time will pass faster if you're having conversations and working together!
+- In async weeks, **use Piazza**
+- Work with friends in other labs (within Dr. Miller's course); your write-ups must be your own.
 ]
 
 ---
@@ -195,7 +214,7 @@ It's important to me to cultivate a learning environment in which everyone's ide
 # Is this a math class?
 
 Statistics is a *mathematical science*. This course will involve elements of a typical math course, but also less typical aspects.
-
+--
 - Often, you will be required to apply statistical knowledge *and* everyday knowledge ("common sense") to solve problems.
 - In statistics, there is not always a "correct" answer. You should be prepared to argue (in words) for why your answer is reasonable.
 - Written components of assignments are critical.
@@ -229,6 +248,16 @@ class: inverse, center, middle
 ]
 
 ---
+# How does lab work? `r emo::ji("thinking_face")`
+
+Three components each week:
+1. Logistics & Demo
+2. Try It!
+3. Discussion Questions
+
+You'll work through the Try It! and Discussion, and submit an "R Markdown" report. 
+
+---
 # Getting Started: What is R?
 
 - Statisticians (that means you!) often use computers to analyze data. 
@@ -255,11 +284,12 @@ class: center, middle, inverse
 
 *Log in with Google using your U-M Account* (non-umich accounts will be deleted without warning)
 ---
-background-image: url("images/rstudio_annotated.jpg")
+background-image: url("images/rsc-student-view.jpg")
 <!-- background-position: 50% 50% -->
 background-size: contain
-
 ---
+
+
 # Using R as a Calculator
 
 At its most basic, R is a fancy calculator.
@@ -368,34 +398,39 @@ class: center, inverse, middle
 
 ---
 
-# Group Discussion `r emo::ji("dancers")`
-
-You will be **randomly** moved to a breakout room for the rest of the lab (minus ~10 minutes)
+# Lab Project `r emo::ji("keyboard")`
 
 .pull-left[
 ### Your tasks
-1. Introduce yourself to your collaborators!
-1. **Work together** to complete the "Try It!" and "Discussion" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+- Complete the "Try It!" and "Discussion" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
 ]
 
 .pull-right[
 ### How to get help
-- I'll be floating around between breakout rooms to check on everyone
-- Use the "Ask for help" button to flag me down
-- Let me know when you're done
+- Use the "labs" section of Piazza to ask questions and work with your peers.
+- If you use Piazza, please note that in the "Collaborators" list at the top of the discussion section.
+- If you're really stuck, email me! nseewald@umich.edu
 ]
 
 ---
 
-# Lab Submission `r emo::ji("inbox_tray")`
-
+# `r emo::ji("inbox_tray")` Lab Submission: Finding Your Report
+Hit the Knit button one last time, then:
+.pull-left[
+## RStudio Cloud
+1. In the Files pane, check the box next to `lab01report.html`
+2. Click More > Export...
+3. Click Download and save the file on your computer in a folder you'll remember and be able to find later.
+]
+.pull-right[
+## RStudio Desktop (local)
+1. Locate the `lab01report.html` file on your computer. The file will be saved in the location indicated at the top of the files pane. 
+]
 
 ---
-class: center, middle
 
-# `r emo::ji("link")` http://bit.ly/250labintros
+# `r emo::ji("inbox_tray")` Lab Submission: Canvas (Due 9/11 8a ET)
+1. Click the "Assignments" panel on the left side of the page. Scroll to find "Lab 1", and open the assignment. Click "Submit Assignment".
 
-![](images/oprah-survey.gif)
- 
-See my answers at http://bit.ly/nicksurveyanswers <br> (please don't hit submit)
-
+2. Towards the bottom of the page, you'll be able to choose `lab01report.html` from the folder you saved it in from RStudio Cloud or noted if you're using RStudio Desktop. **You will only be able to upload a .html file -- do not upload any other file type.**
+3. Click "Submit Assignment". You're done! 
