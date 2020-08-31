@@ -2,6 +2,8 @@
 
 PDF versions of the slides are available on our Lab Resources page on Canvas.
 
+All materials &#169; 2020 Nicholas J. Seewald
+
 ### Lab 1: Getting Started with R
 Lab slides for the week of August 31, 2020
 
