@@ -288,7 +288,15 @@ background-image: url("images/rsc-student-view.jpg")
 <!-- background-position: 50% 50% -->
 background-size: contain
 ---
+class: center, middle
+# RStudio Desktop
 
+Follow instructions to get lab materials at 
+## github.com/STATS250SBI/lab01-fa20
+
+(Link is also on Canvas in the Lab 1 Assignment)
+
+---
 
 # Using R as a Calculator
 
