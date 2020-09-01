@@ -19,5 +19,5 @@ Lab slides for the week of August 31, 2020
 
 #### Slides
 
-- [**Slides for Synchronous Labs**](lab01-slides/lab01-slides-sync.html)
-- [**Slides for Asynchronous Labs**](lab01-slides/lab01-slides-async.html)
+- **Synchronous Labs** [[html]](lab01-slides/lab01-slides-sync.html) [[pdf]](lab01-slides/lab01-slides-sync.pdf)
+- **Asynchronous Labs** [[html]](lab01-slides/lab01-slides-async.html) [[pdf]](lab01-slides/lab01-slides-async.pdf)
