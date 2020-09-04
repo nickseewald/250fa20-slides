@@ -116,7 +116,7 @@ R can do a lot of stuff, and we usually want to "save" results to use later.
 The way we tell R to remember something is to *assign* that thing a name.
 
 ```{r assignment1}
-x <- 6
+x <- 36 / 6
 ```
 
 The arrow is R's *assignment operator*: "`x` *gets* 6". R now remembers that `x` is equal to 6.
