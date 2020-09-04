@@ -1,5 +1,7 @@
 *.dcf
 
+# Ignore sensitive data
+lab02-slides/introSurvey.tsv
 
 # History files
 .Rhistory
