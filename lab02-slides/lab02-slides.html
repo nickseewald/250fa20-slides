@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 250 Lab 02</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nick Seewald nseewald@umich.edu" />
+    <script src="libs/xaringanExtra-webcam/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extras.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 250 Lab 02
+## Basics of Data with R
+### Nick Seewald<br />nseewald@umich.edu
+### Week of 09/4/2020
+
+---
+
+class: center, middle
+
+
+
+
+
+
+
+# Reminders 💡
+
+Your tasks for the week running Friday 9/4 - Friday 9/11 (plus an extra):
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Homework 1 | Friday 9/11 8AM ET | course.work |
+| Lab 1 | Friday 9/11 8AM ET | Canvas |
+| Lab 2 | Friday 9/11 8AM ET | Canvas |
+| Student Survey | Friday 9/18 8AM ET (1st wave) | Qualtrics Email&lt;sup&gt;*&lt;/sup&gt; |
+
+&lt;sup&gt;*&lt;/sup&gt; If you added the class after 8/29, you will be in a later "wave" of the student survey and will get an email soon. Your due date will also be extended appropriately.
+
+---
+# Who are you? 👩‍🎓
+
+
+
+.pull-left[
+#### Favorite TV Shows
+1. The Office
+1. Bojack Horseman
+1. Game of Thrones
+1. Grey's Anatomy
+
+#### Top Majors
+1. Computer Science
+1. BCN
+1. Economics
+1. Neuroscience
+]
+
+.pull-right[
+#### Year at U-M
+&lt;img src="lab02-slides_files/figure-html/yearPlot-1.png" height="380px" style="align:center;" /&gt;
+]
+
+---
+
+# Why are you taking this class?
+
+&lt;div style="text-align:center;"&gt;&lt;img src="img/wordcloud_taking.jpg" height="90%"&gt;&lt;/div&gt;
+
+---
+background-image: url("img/wordcloud_fear.jpg")
+&lt;!-- background-position: 50% 50% --&gt;
+background-size: contain
+
+# What are you afraid of?
+
+---
+# Notes on common fears
+
+.pull-left[
+### Math
+- **This is not a math class.** The focus is not on doing algebra or manipulating formulas. There are numbers, but we're more interested in *conceptual understanding* of statistical ideas.
+- **It's okay if you haven't taken stats before.** 63% of students in class didn't take stats in high school.
+]
+--
+.pull-right[
+### Coding
+- **This is not a coding class.** You'll learn some things about coding, but the focus is **not** on learning to code. Once you get the basics of R, we'll turn more towards statistics.
+- Learning to code is about **trial and error**. Stick with it!
+- I've been using R for a decade and I Google stuff *constantly*.
+]
+
+---
+# Notes on common fears
+
+.pull-left[
+### Staying on Track
+- **Spend at least 20-30 minutes on statistics every day.** Reviewing material in small chunks will help reinforce the concepts (and make exam prep easier!)
+- **Use resources.** eCoach has to-do lists for each week, and the Canvas homepage has one too!
+]
+--
+.pull-right[
+### "I'm bad at stats/math/etc"
+- **FALSE.** Success in this course reflects *effort* not baseline ability.
+- You *will* make mistakes, but *that's how humans learn*.
+- YOU 👏 CAN 👏 DO 👏 IT
+]
+
+---
+# Notes on common fears
+
+.pull-left[
+### Remote learning
+- **Reasonable!** These are challenging times. Try to make the best of it, but we're all going to struggle with it.
+- **Your humanity comes first**
+- Remember that **I am here to help**
+]
+--
+.pull-right[
+### Picky wording
+- **Generally a thing of the past.** 
+- Focus on conveying your ideas as precisely as you can
+
+### "I'm going to fail the class"
+- Reframe "I have to get X grade" to "I *want* to get X grade"
+]
+
+---
+
+# This Week's Learning Objectives
+
+.pull-left[
+### Statistical Learning Objectives
+1. Understand the structure of data (observations and variables)
+2. Think about the scope of a data set: what questions can and cannot be answered with a particular data set?
+]
+.pull-right[
+### R Learning Objectives
+1. Learn how to "assign" information to "objects" in R
+2. See how R "reads in" a data set from a file
+3. Be able to identify the names of variables contained in a data set
+4. Make a frequency table for one or two variables
+]
+
+---
+# R Markdown Tips 👨‍💻
+
+- Please don't modify the pre-written chunks of code!
+
+- When copying and pasting code, only take the code
+
+- Don't delete any blank lines
+
+- Always have a blank line after a chunk
+
+---
+class: center, middle, inverse
+
+# RStudio Cloud
+
+## https://rstudio.cloud
+
+*Log in with Google using your U-M Account*
+
+Search for the project called lab02-FA20 and click START
+
+**If you haven't created an account yet, do so at https://bit.ly/250millerfa20rsc**
+
+---
+class: center, middle
+# RStudio Desktop
+
+### Download materials from the Lab 2 Assignment on Canvas
+
+Unzip the folder, then open lab02-FA20.Rproj to open up RStudio.
+
+---
+class: inverse, center, middle
+
+# Let's get started!
+
+---
+
+# Assignment
+
+R can do a lot of stuff, and we usually want to "save" results to use later.
+
+The way we tell R to remember something is to *assign* that thing a name.
+
+
+```r
+x &lt;- 6
+```
+
+The arrow is R's *assignment operator*: "`x` *gets* 6". R now remembers that `x` is equal to 6.
+
+```r
+x
+```
+
+```
+[1] 6
+```
+
+---
+class: inverse
+
+# Important note: R is "case-sensitive"
+
+R treats lower-case and upper-case letters as *different things*. Check it out:
+
+
+```r
+# lower-case x; this is 6
+x
+```
+
+```
+[1] 6
+```
+
+
+```r
+# upper-case X; this doesn't exist
+X
+```
+
+```
+Error in eval(expr, envir, enclos): object 'X' not found
+```
+
+---
+class: inverse
+
+# Palmer Penguins Data 🐧
+We're going to learn about some basic R functions using a data set on 333 penguins living on 3 islands in the Palmer Archipelago in Antarctica. 
+
+.pull-left[
+Data were made available by [Dr. Kristen Gorman](www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php)
+and the [Palmer Station, Antarctica Long Term Ecological Research area](pal.lternet.edu), a member of the Long Term Ecological Research Network. The data were prepared by [Dr. Allison Horst](github.com/allisonhorst/palmerpenguins)
+]
+
+.pull-right[![Illustration of penguin species. Artwork by @allison_horst.](https://github.com/allisonhorst/palmerpenguins/raw/master/man/figures/lter_penguins.png)
+]
+
+---
+
+# Reading in a CSV file
+
+Remember this code?
+
+
+```r
+penguins &lt;- read.csv(url("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv"))
+```
+
+Notice the assignment operator? "`penguins` *gets* `read.csv` *of* [blah blah blah]"
+
+--
+
+`read.csv` *reads* in a .csv file (**c**omma **s**eparated **v**alues) and creates a `data.frame`
+
+
+```
+"species","island","bill_length_mm","bill_depth_mm","flipper_length_mm","body_mass_g","sex","year"
+"Adelie","Torgersen",39.1,18.7,181,3750,"male",2007
+"Adelie","Torgersen",39.5,17.4,186,3800,"female",2007
+"Adelie","Torgersen",40.3,18,195,3250,"female",2007
+"Adelie","Torgersen",36.7,19.3,193,3450,"female",2007
+"Adelie","Torgersen",39.3,20.6,190,3650,"male",2007
+"Adelie","Torgersen",38.9,17.8,181,3625,"female",2007
+```
+
+---
+
+# Recall: Use `head()` to peek at the data
+
+
+```r
+head(penguins)
+```
+
+```
+  species    island bill_length_mm bill_depth_mm flipper_length_mm
+1  Adelie Torgersen           39.1          18.7               181
+2  Adelie Torgersen           39.5          17.4               186
+3  Adelie Torgersen           40.3          18.0               195
+4  Adelie Torgersen           36.7          19.3               193
+5  Adelie Torgersen           39.3          20.6               190
+6  Adelie Torgersen           38.9          17.8               181
+  body_mass_g    sex year
+1        3750   male 2007
+2        3800 female 2007
+3        3250 female 2007
+4        3450 female 2007
+5        3650   male 2007
+6        3625 female 2007
+```
+
+---
+# Names in a dataset
+
+When working with data in R, it's important to know *exactly what things are called*. 
+
+What if we just wanted to know the names of the variables that are contained in `penguins`?
+
+
+```r
+names(penguins)
+```
+
+```
+[1] "species"           "island"            "bill_length_mm"   
+[4] "bill_depth_mm"     "flipper_length_mm" "body_mass_g"      
+[7] "sex"               "year"             
+```
+
+---
+# Naming things in R
+When giving things names in R, you can only use a combination of letters, numbers, periods, and underscores, and the names have to start with a letter or a period. People tend to use underscores or periods instead of spaces.
+
+.pull-left[
+
+```r
+tik tok &lt;- 12
+```
+
+```
+Error: &lt;text&gt;:1:5: unexpected symbol
+1: tik tok
+        ^
+```
+
+
+```r
+4eva &lt;- 4 * 2 
+```
+
+```
+Error: &lt;text&gt;:1:1: unexpected input
+1: 4ev
+    ^
+```
+]
+
+.pull-right[
+
+```r
+_hi_mom &lt;- 5^2
+```
+
+```
+Error: &lt;text&gt;:1:1: unexpected input
+1: _
+    ^
+```
+
+
+```r
+tiktok &lt;- 12
+forever &lt;- 4 * 2
+dear_mother &lt;- 5^2
+```
+]
+
+---
+# Exploring Data
+
+To see a data frame's *structure*, use the function `str()` (pronounced "stir"):
+
+```r
+str(penguins)
+```
+
+```
+'data.frame':	333 obs. of  8 variables:
+ $ species          : chr  "Adelie" "Adelie" "Adelie" "Adelie" ...
+ $ island           : chr  "Torgersen" "Torgersen" "Torgersen" "Torgersen" ...
+ $ bill_length_mm   : num  39.1 39.5 40.3 36.7 39.3 38.9 39.2 41.1 38.6 34.6 ...
+ $ bill_depth_mm    : num  18.7 17.4 18 19.3 20.6 17.8 19.6 17.6 21.2 21.1 ...
+ $ flipper_length_mm: int  181 186 195 193 190 181 195 182 191 198 ...
+ $ body_mass_g      : int  3750 3800 3250 3450 3650 3625 4675 3200 3800 4400 ...
+ $ sex              : chr  "male" "female" "female" "female" ...
+ $ year             : int  2007 2007 2007 2007 2007 2007 2007 2007 2007 2007 ...
+```
+
+---
+# Exploring Data
+
+If you really only want the "dimension" of the data frame (i.e., how many rows and how many columns), you can use the `dim()` function:
+
+```r
+dim(penguins)
+```
+
+```
+[1] 333   8
+```
+
+The results are given in the order "rows, columns" because data is **R**eally **C**ool (rows, columns).
+
+---
+
+# Recall: Bar Charts in R 📊
+
+In order to make this plot, we had to give `barplot()` a "frequency table" of the variable `species`.
+
+
+
+
+```r
+*barplot(table(penguins$species),
+     xlab = "Species",
+     ylab = "Frequency",
+     main = "Bar Chart of Number of Penguins of Each Species Observed",
+     col = c("darkorange1", "mediumorchid2", "darkcyan"))
+```
+
+&lt;img src="lab02-slides_files/figure-html/speciesPlot-1.svg" style="display: block; margin: auto;" /&gt;
+
+---
+
+# Frequency Tables
+
+A *frequency table* is a way to count the number of observations (rows) in the data that correspond to each value of a categorical variable.
+
+To make a frequency table, use the `table()` function
+
+```r
+table(penguins$species)
+```
+
+```
+
+   Adelie Chinstrap    Gentoo 
+      146        68       119 
+```
+
+---
+
+# 🤑 🤑 🤑
+
+The dollar sign (`$`) is how we tell R where to look for a particular variable.
+
+
+```r
+table(penguins$species)
+```
+
+Inside `table()`, we need to tell R to look for the variable `species` inside the data.frame called `penguins`. If we don't include `penguins$`, watch what happens:
+
+
+```r
+species
+```
+
+```
+Error in eval(expr, envir, enclos): object 'species' not found
+```
+
+---
+# Two-Way Frequency Tables
+
+We can make "two-way" frequency tables (sometimes called "contingency tables") to summarize counts for two categorical variables:
+
+```r
+table(penguins$species, penguins$island)
+```
+
+```
+           
+            Biscoe Dream Torgersen
+  Adelie        44    55        47
+  Chinstrap      0    68         0
+  Gentoo       119     0         0
+```
+
+Remember that data is **r**eally **c**ool, so the first variable you give to `table()` is in the **r**ows of the table, and the second is in the **c**olumns.
+
+Notice that we separated the two variables inside of `table()` with a comma.
+---
+class: center, inverse, middle
+
+# Now it's your turn!
+
+![](https://media1.tenor.com/images/7989dc2b625537d27d8da2b45bd42771/tenor.gif?itemid=4724041)
+
+---
+
+# Lab Project ⌨️
+
+.pull-left[
+### Your tasks
+- Complete the "Try It!" and "Discussion" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+]
+
+.pull-right[
+### How to get help
+- Use the "labs" section of Piazza to ask questions and work with your peers.
+- If you use Piazza, please note that in the "Collaborators" list at the top of the discussion section.
+- If you're really stuck, email your lab instructor!
+]
+
+---
+
+# 📥 Lab Submission: Finding Your Report
+Hit the Knit button one last time, then:
+.pull-left[
+## RStudio Cloud
+1. In the Files pane, check the box next to `lab02report.html`
+2. Click More &gt; Export...
+3. Click Download and save the file on your computer in a folder you'll remember and be able to find later.
+]
+.pull-right[
+## RStudio Desktop (local)
+1. Locate the `lab02report.html` file on your computer. The file will be saved in the location indicated at the top of the files pane. 
+]
+
+---
+
+# 📥 Lab Submission: Canvas (Due 9/11 8a ET)
+1. Click the "Assignments" panel on the left side of the page. Scroll to find "Lab 2", and open the assignment. Click "Submit Assignment".
+
+2. Towards the bottom of the page, you'll be able to choose `lab02report.html` from the folder you saved it in from RStudio Cloud or noted if you're using RStudio Desktop. **You will only be able to upload a .html file -- do not upload any other file type.**
+3. Click "Submit Assignment". You're done!
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,442 @@
+---
+title: "STATS 250 Lab 02"
+subtitle: "Basics of Data with R"
+author: "Nick Seewald<br />nseewald&#64;umich.edu"
+date: "Week of 09/4/2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+    css: ["xaringan-themer.css", "extras.css"]
+---
+class: center, middle
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, eval = TRUE, comment = NA)
+```
+
+```{r xaringan-themer, include = FALSE, warning = FALSE}
+library(xaringanthemer)
+# style_mono_light(base_color = "#00274c",
+#                  header_font_google = google_font("DM Serif Display"),
+#                  text_font_google = google_font("PT Sans", "400", "400i")
+# )
+style_duo(primary_color = "#00274c",
+          secondary_color = "#ffcb05",
+          header_font_google = google_font("DM Serif Display"),
+          text_font_google = google_font("PT Sans", "400", "400i", "600"),
+          code_font_google = google_font("Roboto Mono", "400"),
+          text_font_size = "22pt"
+)
+```
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_webcam()
+xaringanExtra::use_fit_screen()
+```
+
+# Reminders `r emo::ji("bulb")`
+
+Your tasks for the week running Friday 9/4 - Friday 9/11 (plus an extra):
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Homework 1 | Friday 9/11 8AM ET | course.work |
+| Lab 1 | Friday 9/11 8AM ET | Canvas |
+| Lab 2 | Friday 9/11 8AM ET | Canvas |
+| Student Survey | Friday 9/18 8AM ET (1st wave) | Qualtrics Email<sup>*</sup> |
+
+<sup>*</sup> If you added the class after 8/29, you will be in a later "wave" of the student survey and will get an email soon. Your due date will also be extended appropriately.
+
+---
+# Who are you? `r emo::ji("woman_student")`
+
+```{r importSurvey, echo = F, include = F}
+survey <- read.delim("introSurvey.tsv")
+names(survey) <- c("timestamp", "email", "name", "section", "from", "currLoc", 
+                   "year", "major", "show", "taking", "fear", "learn", "etc")
+survey$show <- gsub(" ", "", tolower(survey$show))
+
+head(sort(table(survey$show), decreasing = T))
+head(sort(table(survey$major), decreasing = T))
+```
+
+.pull-left[
+#### Favorite TV Shows
+1. The Office
+1. Bojack Horseman
+1. Game of Thrones
+1. Grey's Anatomy
+
+#### Top Majors
+1. Computer Science
+1. BCN
+1. Economics
+1. Neuroscience
+]
+
+.pull-right[
+#### Year at U-M
+```{r yearPlot, echo = F, out.height="380px", fig.width = 9, out.extra='style="align:center;"'}
+library(viridisLite)
+survey$year <- factor(survey$year, levels = c("Freshman", "Sophomore", "Junior", "Senior"))
+barplot(table(survey$year, useNA = "no"), cex.names = 1.7, cex.axis = 2,
+        col = inferno(4, begin = .2))
+```
+]
+
+---
+
+# Why are you taking this class?
+
+<div style="text-align:center;"><img src="img/wordcloud_taking.jpg" height="90%"></div>
+
+---
+background-image: url("img/wordcloud_fear.jpg")
+<!-- background-position: 50% 50% -->
+background-size: contain
+
+# What are you afraid of?
+
+---
+# Notes on common fears
+
+.pull-left[
+### Math
+- **This is not a math class.** The focus is not on doing algebra or manipulating formulas. There are numbers, but we're more interested in *conceptual understanding* of statistical ideas.
+- **It's okay if you haven't taken stats before.** 63% of students in class didn't take stats in high school.
+]
+--
+.pull-right[
+### Coding
+- **This is not a coding class.** You'll learn some things about coding, but the focus is **not** on learning to code. Once you get the basics of R, we'll turn more towards statistics.
+- Learning to code is about **trial and error**. Stick with it!
+- I've been using R for a decade and I Google stuff *constantly*.
+]
+
+---
+# Notes on common fears
+
+.pull-left[
+### Staying on Track
+- **Spend at least 20-30 minutes on statistics every day.** Reviewing material in small chunks will help reinforce the concepts (and make exam prep easier!)
+- **Use resources.** eCoach has to-do lists for each week, and the Canvas homepage has one too!
+]
+--
+.pull-right[
+### "I'm bad at stats/math/etc"
+- **FALSE.** Success in this course reflects *effort* not baseline ability.
+- You *will* make mistakes, but *that's how humans learn*.
+- YOU `r emo::ji("clap")` CAN `r emo::ji("clap")` DO `r emo::ji("clap")` IT
+]
+
+---
+# Notes on common fears
+
+.pull-left[
+### Remote learning
+- **Reasonable!** These are challenging times. Try to make the best of it, but we're all going to struggle with it.
+- **Your humanity comes first**
+- Remember that **I am here to help**
+]
+--
+.pull-right[
+### Picky wording
+- **Generally a thing of the past.** 
+- Focus on conveying your ideas as precisely as you can
+
+### "I'm going to fail the class"
+- Reframe "I have to get X grade" to "I *want* to get X grade"
+]
+
+---
+
+# This Week's Learning Objectives
+
+.pull-left[
+### Statistical Learning Objectives
+1. Understand the structure of data (observations and variables)
+2. Think about the scope of a data set: what questions can and cannot be answered with a particular data set?
+]
+.pull-right[
+### R Learning Objectives
+1. Learn how to "assign" information to "objects" in R
+2. See how R "reads in" a data set from a file
+3. Be able to identify the names of variables contained in a data set
+4. Make a frequency table for one or two variables
+]
+
+---
+# R Markdown Tips `r emo::ji("technologist")`
+
+- Please don't modify the pre-written chunks of code!
+
+- When copying and pasting code, only take the code
+
+- Don't delete any blank lines
+
+- Always have a blank line after a chunk
+
+---
+class: center, middle, inverse
+
+# RStudio Cloud
+
+## https://rstudio.cloud
+
+*Log in with Google using your U-M Account*
+
+Search for the project called lab02-FA20 and click START
+
+**If you haven't created an account yet, do so at https://bit.ly/250millerfa20rsc**
+
+---
+class: center, middle
+# RStudio Desktop
+
+### Download materials from the Lab 2 Assignment on Canvas
+
+Unzip the folder, then open lab02-FA20.Rproj to open up RStudio.
+
+---
+class: inverse, center, middle
+
+# Let's get started!
+
+---
+
+# Assignment
+
+R can do a lot of stuff, and we usually want to "save" results to use later.
+
+The way we tell R to remember something is to *assign* that thing a name.
+
+```{r assignment1}
+x <- 6
+```
+
+The arrow is R's *assignment operator*: "`x` *gets* 6". R now remembers that `x` is equal to 6.
+```{r use-x}
+x
+```
+
+---
+class: inverse
+
+# Important note: R is "case-sensitive"
+
+R treats lower-case and upper-case letters as *different things*. Check it out:
+
+```{r x}
+# lower-case x; this is 6
+x
+```
+
+```{r X, error = T}
+# upper-case X; this doesn't exist
+X
+```
+
+---
+class: inverse
+
+# Palmer Penguins Data `r emo::ji("penguin")`
+We're going to learn about some basic R functions using a data set on 333 penguins living on 3 islands in the Palmer Archipelago in Antarctica. 
+
+.pull-left[
+Data were made available by [Dr. Kristen Gorman](www.uaf.edu/cfos/people/faculty/detail/kristen-gorman.php)
+and the [Palmer Station, Antarctica Long Term Ecological Research area](pal.lternet.edu), a member of the Long Term Ecological Research Network. The data were prepared by [Dr. Allison Horst](github.com/allisonhorst/palmerpenguins)
+]
+
+.pull-right[![Illustration of penguin species. Artwork by @allison_horst.](https://github.com/allisonhorst/palmerpenguins/raw/master/man/figures/lter_penguins.png)
+]
+
+---
+
+# Reading in a CSV file
+
+Remember this code?
+
+```{r readData}
+penguins <- read.csv(url("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv"))
+```
+
+Notice the assignment operator? "`penguins` *gets* `read.csv` *of* [blah blah blah]"
+
+--
+
+`read.csv` *reads* in a .csv file (**c**omma **s**eparated **v**alues) and creates a `data.frame`
+
+```{r whatsaCSV, echo = F}
+write.csv(head(penguins), row.names = F)
+```
+
+---
+
+# Recall: Use `head()` to peek at the data
+
+```{r headPenguins}
+head(penguins)
+```
+
+---
+# Names in a dataset
+
+When working with data in R, it's important to know *exactly what things are called*. 
+
+What if we just wanted to know the names of the variables that are contained in `penguins`?
+
+```{r names}
+names(penguins)
+```
+
+---
+# Naming things in R
+When giving things names in R, you can only use a combination of letters, numbers, periods, and underscores, and the names have to start with a letter or a period. People tend to use underscores or periods instead of spaces.
+
+.pull-left[
+```{r badName1, error = T}
+tik tok <- 12
+```
+
+```{r badName2, error = T}
+4eva <- 4 * 2 
+```
+]
+
+.pull-right[
+```{r badName3, error = T}
+_hi_mom <- 5^2
+```
+
+```{r goodNames}
+tiktok <- 12
+forever <- 4 * 2
+dear_mother <- 5^2
+```
+]
+
+---
+# Exploring Data
+
+To see a data frame's *structure*, use the function `str()` (pronounced "stir"):
+```{r str}
+str(penguins)
+```
+
+---
+# Exploring Data
+
+If you really only want the "dimension" of the data frame (i.e., how many rows and how many columns), you can use the `dim()` function:
+```{r dim}
+dim(penguins)
+```
+
+The results are given in the order "rows, columns" because data is **R**eally **C**ool (rows, columns).
+
+---
+
+# Recall: Bar Charts in R `r emo::ji("bar_chart")`
+
+In order to make this plot, we had to give `barplot()` a "frequency table" of the variable `species`.
+
+```{r plotOptions, echo = F, include = T}
+par(mar = c(4, 4, 1, .1))
+```
+
+```{r speciesPlot, fig.align='center', fig.height=3, dev = 'svg', results='hide'}
+barplot(table(penguins$species), #<<
+     xlab = "Species",
+     ylab = "Frequency",
+     main = "Bar Chart of Number of Penguins of Each Species Observed",
+     col = c("darkorange1", "mediumorchid2", "darkcyan"))
+```
+
+---
+
+# Frequency Tables
+
+A *frequency table* is a way to count the number of observations (rows) in the data that correspond to each value of a categorical variable.
+
+To make a frequency table, use the `table()` function
+```{r table}
+table(penguins$species)
+```
+
+---
+
+# `r emo::ji("money_mouth_face")` `r emo::ji("money_mouth_face")` `r emo::ji("money_mouth_face")`
+
+The dollar sign (`$`) is how we tell R where to look for a particular variable.
+
+```{r table2, results = "hide"}
+table(penguins$species)
+```
+
+Inside `table()`, we need to tell R to look for the variable `species` inside the data.frame called `penguins`. If we don't include `penguins$`, watch what happens:
+
+```{r noDollarSign, error = T}
+species
+```
+
+---
+# Two-Way Frequency Tables
+
+We can make "two-way" frequency tables (sometimes called "contingency tables") to summarize counts for two categorical variables:
+```{r twoWayTable}
+table(penguins$species, penguins$island)
+```
+
+Remember that data is **r**eally **c**ool, so the first variable you give to `table()` is in the **r**ows of the table, and the second is in the **c**olumns.
+
+Notice that we separated the two variables inside of `table()` with a comma.
+---
+class: center, inverse, middle
+
+# Now it's your turn!
+
+![](https://media1.tenor.com/images/7989dc2b625537d27d8da2b45bd42771/tenor.gif?itemid=4724041)
+
+---
+
+# Lab Project `r emo::ji("keyboard")`
+
+.pull-left[
+### Your tasks
+- Complete the "Try It!" and "Discussion" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+]
+
+.pull-right[
+### How to get help
+- Use the "labs" section of Piazza to ask questions and work with your peers.
+- If you use Piazza, please note that in the "Collaborators" list at the top of the discussion section.
+- If you're really stuck, email your lab instructor!
+]
+
+---
+
+# `r emo::ji("inbox_tray")` Lab Submission: Finding Your Report
+Hit the Knit button one last time, then:
+.pull-left[
+## RStudio Cloud
+1. In the Files pane, check the box next to `lab02report.html`
+2. Click More > Export...
+3. Click Download and save the file on your computer in a folder you'll remember and be able to find later.
+]
+.pull-right[
+## RStudio Desktop (local)
+1. Locate the `lab02report.html` file on your computer. The file will be saved in the location indicated at the top of the files pane. 
+]
+
+---
+
+# `r emo::ji("inbox_tray")` Lab Submission: Canvas (Due 9/11 8a ET)
+1. Click the "Assignments" panel on the left side of the page. Scroll to find "Lab 2", and open the assignment. Click "Submit Assignment".
+
+2. Towards the bottom of the page, you'll be able to choose `lab02report.html` from the folder you saved it in from RStudio Cloud or noted if you're using RStudio Desktop. **You will only be able to upload a .html file -- do not upload any other file type.**
+3. Click "Submit Assignment". You're done! 
