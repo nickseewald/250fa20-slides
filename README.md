@@ -7,7 +7,12 @@ All materials &#169; 2020 Nicholas J. Seewald
 ### Introduction Video
 Welcome to STATS 250 Lab! Please watch [this video](https://youtu.be/g1RVODI-ggA) for details on lab policy and logistics.
 
-### Lab 1: Getting Started with R
+### Quick Links
+Jump to a specific lab by clicking the appropriate link:
+[[Lab 1: Getting Started with R]](#lab1)
+[[Lab 2: Basics of Data with R]](#lab2)
+
+### <a name="lab1"></a>Lab 1: Getting Started with R
 Lab materials for the week of August 31, 2020
 
 #### Statistical Learning Goals
@@ -25,7 +30,7 @@ Lab materials for the week of August 31, 2020
 - **Synchronous Labs** [[html]](lab01-slides/lab01-slides-sync.html) [[pdf]](lab01-slides/lab01-slides-sync.pdf)
 - **Asynchronous Labs** [[html]](lab01-slides/lab01-slides-async.html) [[pdf]](lab01-slides/lab01-slides-async.pdf) [[video]](https://youtu.be/XdnKInpLSxk)
 
-### Lab 2: Basics of Data with R
+### <a name="lab2"></a>Lab 2: Basics of Data with R
 Lab materials for the week running Friday 9/4 - Friday 9/11. *All labs are asynchronous due to Labor Day.*
 
 #### Statistical Learning Objectives
