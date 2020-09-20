@@ -1,0 +1,295 @@
+---
+title: "STATS 250 Lab 04"
+subtitle: "Probability and Scatterplots"
+author: "Nick Seewald<br />nseewald&#64;umich.edu"
+date: "Week of 09/21/2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+    css: ["xaringan-themer.css", "extras.css"]
+---
+class: center, middle
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, eval = TRUE, comment = NA)
+```
+
+```{r xaringan-themer, include = FALSE, warning = FALSE}
+library(xaringanthemer)
+# style_mono_light(base_color = "#00274c",
+#                  header_font_google = google_font("DM Serif Display"),
+#                  text_font_google = google_font("PT Sans", "400", "400i")
+# )
+style_duo(primary_color = "#00274c",
+          secondary_color = "#ffcb05",
+          header_font_google = google_font("DM Serif Display"),
+          text_font_google = google_font("PT Sans", "400", "400i", "600"),
+          code_font_google = google_font("Roboto Mono", "400"),
+          text_font_size = "22pt"
+)
+```
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_webcam()
+xaringanExtra::use_fit_screen()
+```
+
+# Reminders `r emo::ji("bulb")`
+
+Your tasks for the week running Friday 9/18 - Friday 9/25 (plus an extra):
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Quiz 1 | Monday 9/21 11:59PM ET | Canvas |
+| MWrite 1 Initial Draft | Wednesday 9/23 5PM ET | Canvas
+| Homework 3 | Friday 9/25 8AM ET | course.work |
+| Lab 4 | Friday 9/25 8AM ET | Canvas |
+
+*No office hours or Piazza today because of the quiz!*
+
+---
+# Lab 2 Comments
+
+- Really great work on lab 2!
+
+- R orders levels of categorical variables *alphabetically*
+
+- It's a good idea to have descriptive axis labels for plots. People might not know what "ConditionTreeHealth" means!
+
+- In Dive Deeper 2, the data were collected by the City of Ann Arbor. Only trees on city-owned land are included!
+- In Dive Deeper 4, it turns out that the map only contains information about trees on city-owned land. Since the City of Ann Arbor does not own the Arboretum, the data could not be used to answer that research question.
+
+---
+# Homework 2 Comments `r emo::ji("pencil")`
+
+- A causal *statement* is any sentence that is about causation.
+  - "There is not evidence to say that eating chia seeds causes weight loss" **is** a causal statement
+  - "Chia seeds do not cause weight loss" **is** a causal statement
+  - Causal *statements* do not require causal *relationships*
+
+- Generalizability to a population is a result of sampling: how are data collected?
+  - Sample size isn't really a big deal
+  - Good (random) sampling = generalizable; bad sampling = not generalizable
+
+---
+# Homework 2 Comments `r emo::ji("pencil")`
+
+- Review your homework! Even questions you got full credit on.
+- You should have comments on every question you lost points on.
+- Remember we don't grade every question for correctness.
+
+---
+class: center, middle
+
+# Weekly Advice
+We're focusing a lot on random sampling this week.
+
+###Your mileage may vary!
+Your results *will* be different from mine and from your collaborators'.
+
+---
+# Integer Sequences in R
+- A **vector** is a way to hold a collection of things in R. Think of it as a pill organizer.
+- This week, we're going to create a vector that holds a sequence of consecutive integers.
+
+```{r integerSeq}
+1:6
+```
+
+- Read the colon `:` as "through", so `1:6` is "1 through 6"
+
+---
+# Sampling in R `r emo::ji("dice")`
+
+- Think of `1:6` as representing a six-sided die.
+- We can "roll" the die by taking a `sample()` from the vector `1:6`
+
+```{r sample}
+sample(1:6, size = 1)
+```
+
+- Run the `sampleDieRoll` chunk (line ~63) and type what you got in the chat!
+
+---
+# Sampling With vs. Without Replacement
+
+- Consider randomly selecting 6 values from the set {1, 2, 3, 4, 5, 6}. 
+  - Say our first pick is 3.
+  - What do we do with 3? Do we take 3 out of the set (don't *replace* it), or do we put it back in (*replace* it)?
+  
+--
+
+```{r withoutReplace}
+sample(1:6, size = 6, replace = F)
+```
+
+--
+
+```{r withReplace}
+sample(1:6, size = 6, replace = T)
+```
+
+--
+
+- Which of these strategies represents die-rolling in real life?
+
+---
+# Law of Large Numbers
+
+As you collect more data, sample averages will get close to population averages ("*expected values*").
+
+.pull-left[
+Roll dice
+```{r dieRollsEx1, results = 'hold', echo = F}
+(die1 <- sample(1:6, size = 1, replace = T))
+(die2 <- sample(1:6, size = 2, replace = T))
+(die3 <- sample(1:6, size = 3, replace = T))
+(die4 <- sample(1:6, size = 4, replace = T))
+(die5 <- sample(1:6, size = 5, replace = T))
+```
+]
+.pull-right[
+Average of rolls
+```{r dieRollsEx1Mean, results = 'hold', echo = F}
+mean(die1)
+mean(die2)
+mean(die3)
+mean(die4)
+mean(die5)
+```
+]
+--
+The mean seems like it's trying to do something, but it's too variable to really see what's happening.
+
+---
+# Law of Large Numbers
+
+```{r lln, echo = F, fig.align = 'center', fig.width = 14}
+sixSidedDieRoll <- function(n) {
+  mean(sample(1:6, size = n, replace = T))
+}
+par(mar = c(5, 6, 4, 2) + .01)
+plot(sapply(1:300, sixSidedDieRoll), 
+     xlab = "Number of Six-Sided Dice",
+     ylab = "Average", pch = 20,
+     cex.lab = 2, cex.axis = 2, cex = 2)
+abline(h = 3.5)
+```
+
+---
+# Expected Value
+
+We can compute the value that the sample averages will converge to!
+
+$$ \sum_{i=1}^n x_i \cdot p_i $$
+
+- $\Sigma$ means "summation" (addition)
+- $x_i$ is the value (in our case, 1, 2, 3, 4, 5, or 6)
+- $p_i$ is the *probability* of observing the value 
+
+For the six-sided die, the expected value is
+--
+$$ 1 \cdot \left(\frac{1}{6}\right) + 2 \cdot \left(\frac{1}{6}\right) + 3 \cdot \left(\frac{1}{6}\right) + 4 \cdot \left(\frac{1}{6}\right) + 5 \cdot \left(\frac{1}{6}\right) + 6 \cdot \left(\frac{1}{6}\right) = 3.5$$
+
+---
+class:inverse
+## Penguins!
+
+```{r penguinsRead, echo = T}
+penguins <- read.csv(url("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv"))
+```
+
+.pull-left[
+```{r penguins, collapse = T}
+str(penguins)
+```
+]
+
+.pull-right[![Illustration of penguin species. Artwork by @allison_horst.](https://github.com/allisonhorst/palmerpenguins/raw/master/man/figures/lter_penguins.png)
+]
+
+---
+# Scatterplots
+A **scatterplot** is a way to display the relationship between quantitative explanatory (x) and response (y) variables.
+
+The data are paired (x, y) and then each pair is plotted on a grid.
+
+We can use scatterplots to look for **associations** between these quantitative variables.
+
+---
+# Scatterplots (line ~142)
+.pull-left[
+```{r scatterplotCode, fig.keep = 'none'}
+plot(penguins$bill_length_mm,
+     penguins$body_mass_g,
+     main = "Scatterplot of Bill Length versus Body Mass of Penguins",
+     xlab = "Bill Length in mm",
+     ylab = "Body Mass in g")
+```
+
+- positive association
+- reasonably linear
+- moderately strong
+- no apparent unusual points
+]
+.pull-right[
+```{r scatterplot, echo = F, fig.height = 6}
+par(mar = c(4, 5, 4, 2) + .1)
+plot(penguins$bill_length_mm, penguins$body_mass_g,
+     main = "Scatterplot of Bill Length versus Body Mass of Penguins",
+     xlab = "Bill Length in mm",
+     ylab = "Body Mass in g", 
+     cex.lab = 1.5, cex.axis = 1.5, cex = 1.5, cex.main = 1.3)
+```
+]
+
+---
+# Correlation
+- The **correlation** between two quantitative variables quantifies the strength of the *linear* association.
+- Denote correlation by $r$
+- As $\lvert r \rvert$ gets close to 1, the linear relationship becomes stronger
+
+```{r corExample, echo = F, fig.height = 4, fig.width = 14, fig.align = 'center'}
+library(MASS)
+par(mfrow = c(1, 4), mar = c(1,1,1,1))
+plot(mvrnorm(100, mu = c(0, 0), Sigma = matrix(c(1, -1, -1, 1), nrow = 2), empirical = T), xaxt = 'n', yaxt = 'n', ylab = "", xlab = "")
+legend("topright", legend = "r = -1", cex = 2)
+plot(mvrnorm(100, mu = c(0, 0), Sigma = matrix(c(1, -.6, -.6, 1), nrow = 2), empirical = T), xaxt = 'n', yaxt = 'n', ylab = "", xlab = "")
+legend("topright", legend = "r = -.6", cex = 2)
+plot(mvrnorm(100, mu = c(0, 0), Sigma = matrix(c(1, .3, .3, 1), nrow = 2), empirical = T), xaxt = 'n', yaxt = 'n', ylab = "", xlab = "")
+legend("topleft", legend = "r = 0.3", cex = 2)
+plot(mvrnorm(100, mu = c(0, 0), Sigma = matrix(c(1, 1, 1, 1), nrow = 2), empirical = T), xaxt = 'n', yaxt = 'n', ylab = "", xlab = "")
+legend("topleft", legend = "r = 1", cex = 2)
+```
+
+---
+class:inverse
+# Lab Project `r emo::ji("keyboard")`
+
+You will be **randomly** moved to a breakout room for the rest of the lab (minus ~10 minutes)
+
+.pull-left[
+### Your tasks
+1. Introduce yourself to your collaborators!
+1. **Work together** to complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+]
+
+.pull-right[
+### How to get help
+- I'll be floating around between breakout rooms to check on everyone
+- Use the "Ask for help" button to flag me down
+- Let me know when you're done
+]
+
+---
+class: center, middle
+# "Exit Ticket"
+Please take 1-2 minutes to complete the survey at
+
+###bit.ly/njs_ticket4
