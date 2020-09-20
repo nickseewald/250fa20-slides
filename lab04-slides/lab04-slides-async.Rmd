@@ -131,7 +131,7 @@ sample(1:6, size = 6, replace = T)
 - Which of these strategies represents die-rolling in real life?
 
 ---
-# Law of Large Numbers
+# Law of Large Numbers `r emo::ji("infinity")`
 
 As you collect more data, sample averages will get close to population averages ("*expected values*").
 
@@ -155,11 +155,13 @@ mean(die4)
 mean(die5)
 ```
 ]
+
 --
+
 The mean seems like it's trying to do something, but it's too variable to really see what's happening.
 
 ---
-# Law of Large Numbers
+# Law of Large Numbers `r emo::ji("infinity")`
 
 ```{r lln, echo = F, fig.align = 'center', fig.width = 14}
 sixSidedDieRoll <- function(n) {
@@ -260,6 +262,14 @@ legend("topleft", legend = "r = 1", cex = 2)
 ```
 
 ---
+# Correlation (line ~155)
+We can find the correlation between two quantitative variables in R using the `cor()` function.
+
+```{r correlationExample}
+cor(penguins$bill_length_mm, penguins$body_mass_g)
+```
+
+
 ---
 
 # Lab Project `r emo::ji("keyboard")`
@@ -273,7 +283,7 @@ legend("topleft", legend = "r = 1", cex = 2)
 ### How to get help
 - Use the "labs" section of Piazza to ask questions and work with your peers.
 - If you use Piazza, please note that in the "Collaborators" list at the top of the discussion section.
-- If you're really stuck, email me! nseewald@umich.edu
+- If you're really stuck, email your lab instructor!
 ]
 
 ---
@@ -282,20 +292,20 @@ legend("topleft", legend = "r = 1", cex = 2)
 Hit the Knit button one last time, then:
 .pull-left[
 ## RStudio Cloud
-1. In the Files pane, check the box next to `lab01report.html`
+1. In the Files pane, check the box next to `lab04report.html`
 2. Click More > Export...
 3. Click Download and save the file on your computer in a folder you'll remember and be able to find later.
 ]
 .pull-right[
 ## RStudio Desktop (local)
-1. Locate the `lab01report.html` file on your computer. The file will be saved in the location indicated at the top of the files pane. 
+1. Locate the `lab04report.html` file on your computer. The file will be saved in the location indicated at the top of the files pane. 
 ]
 
 ---
 
-# `r emo::ji("inbox_tray")` Lab Submission: Canvas (Due 9/11 8a ET)
-1. Click the "Assignments" panel on the left side of the page. Scroll to find "Lab 1", and open the assignment. Click "Submit Assignment".
+# `r emo::ji("inbox_tray")` Lab Submission: Canvas (Due 9/25 8a ET)
+1. Click the "Assignments" panel on the left side of the page. Scroll to find "Lab 4", and open the assignment. Click "Submit Assignment".
 
-2. Towards the bottom of the page, you'll be able to choose `lab01report.html` from the folder you saved it in from RStudio Cloud or noted if you're using RStudio Desktop. **You will only be able to upload a .html file -- do not upload any other file type.**
+2. Towards the bottom of the page, you'll be able to choose `lab04report.html` from the folder you saved it in from RStudio Cloud or noted if you're using RStudio Desktop. **You will only be able to upload a .html file -- do not upload any other file type.**
 3. Click "Submit Assignment". You're done! 
 

@@ -101,7 +101,7 @@ sample(1:6, size = 1)
 ```
 
 ```
-[1] 4
+[1] 1
 ```
 
 - Run the `sampleDieRoll` chunk (line ~63) and type what you got in the chat!
@@ -121,7 +121,7 @@ sample(1:6, size = 6, replace = F)
 ```
 
 ```
-[1] 1 6 4 5 2 3
+[1] 3 5 2 4 1 6
 ```
 
 --
@@ -132,7 +132,7 @@ sample(1:6, size = 6, replace = T)
 ```
 
 ```
-[1] 4 6 6 3 6 5
+[1] 4 2 5 2 5 3
 ```
 
 --
@@ -140,7 +140,7 @@ sample(1:6, size = 6, replace = T)
 - Which of these strategies represents die-rolling in real life?
 
 ---
-# Law of Large Numbers
+# Law of Large Numbers ♾️
 
 As you collect more data, sample averages will get close to population averages ("*expected values*").
 
@@ -149,10 +149,10 @@ Roll dice
 
 ```
 [1] 5
-[1] 6 6
-[1] 1 5 4
-[1] 4 2 1 1
-[1] 5 6 6 6 1
+[1] 3 5
+[1] 6 6 3
+[1] 2 1 1 5
+[1] 2 3 3 3 6
 ```
 ]
 .pull-right[
@@ -160,17 +160,19 @@ Average of rolls
 
 ```
 [1] 5
-[1] 6
-[1] 3.333333
-[1] 2
-[1] 4.8
+[1] 4
+[1] 5
+[1] 2.25
+[1] 3.4
 ```
 ]
+
 --
+
 The mean seems like it's trying to do something, but it's too variable to really see what's happening.
 
 ---
-# Law of Large Numbers
+# Law of Large Numbers ♾️
 
 &lt;img src="lab04-slides-async_files/figure-html/lln-1.png" style="display: block; margin: auto;" /&gt;
 
@@ -255,6 +257,19 @@ plot(penguins$bill_length_mm,
 &lt;img src="lab04-slides-async_files/figure-html/corExample-1.png" style="display: block; margin: auto;" /&gt;
 
 ---
+# Correlation (line ~155)
+We can find the correlation between two quantitative variables in R using the `cor()` function.
+
+
+```r
+cor(penguins$bill_length_mm, penguins$body_mass_g)
+```
+
+```
+[1] 0.5894511
+```
+
+
 ---
 
 # Lab Project ⌨️
@@ -268,7 +283,7 @@ plot(penguins$bill_length_mm,
 ### How to get help
 - Use the "labs" section of Piazza to ask questions and work with your peers.
 - If you use Piazza, please note that in the "Collaborators" list at the top of the discussion section.
-- If you're really stuck, email me! nseewald@umich.edu
+- If you're really stuck, email your lab instructor!
 ]
 
 ---
@@ -277,21 +292,21 @@ plot(penguins$bill_length_mm,
 Hit the Knit button one last time, then:
 .pull-left[
 ## RStudio Cloud
-1. In the Files pane, check the box next to `lab01report.html`
+1. In the Files pane, check the box next to `lab04report.html`
 2. Click More &gt; Export...
 3. Click Download and save the file on your computer in a folder you'll remember and be able to find later.
 ]
 .pull-right[
 ## RStudio Desktop (local)
-1. Locate the `lab01report.html` file on your computer. The file will be saved in the location indicated at the top of the files pane. 
+1. Locate the `lab04report.html` file on your computer. The file will be saved in the location indicated at the top of the files pane. 
 ]
 
 ---
 
-# 📥 Lab Submission: Canvas (Due 9/11 8a ET)
-1. Click the "Assignments" panel on the left side of the page. Scroll to find "Lab 1", and open the assignment. Click "Submit Assignment".
+# 📥 Lab Submission: Canvas (Due 9/25 8a ET)
+1. Click the "Assignments" panel on the left side of the page. Scroll to find "Lab 4", and open the assignment. Click "Submit Assignment".
 
-2. Towards the bottom of the page, you'll be able to choose `lab01report.html` from the folder you saved it in from RStudio Cloud or noted if you're using RStudio Desktop. **You will only be able to upload a .html file -- do not upload any other file type.**
+2. Towards the bottom of the page, you'll be able to choose `lab04report.html` from the folder you saved it in from RStudio Cloud or noted if you're using RStudio Desktop. **You will only be able to upload a .html file -- do not upload any other file type.**
 3. Click "Submit Assignment". You're done!
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
