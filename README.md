@@ -8,7 +8,7 @@ All materials &#169; 2020 Nicholas J. Seewald
 Welcome to STATS 250 Lab! Please watch [this video](https://youtu.be/g1RVODI-ggA) for details on lab policy and logistics.
 
 ### Quick Links
-Jump to a specific lab by clicking the appropriate link:
+Jump to a specific lab by clicking the appropriate link: <br />
 [[Lab 1: Getting Started with R]](#lab1)
 [[Lab 2: Basics of Data with R]](#lab2)
 [[Lab 4: Probability and Scatterplots]](#lab4)
@@ -54,7 +54,7 @@ Lab materials for the week running Friday 9/4 - Friday 9/11. *All labs are async
 
 <hr />
 
-### <a name="lab3"</a> Lab 3: No materials available due to GEO strike
+### <a name="lab3"></a> Lab 3: No materials available due to GEO strike
 
 <hr />
 
