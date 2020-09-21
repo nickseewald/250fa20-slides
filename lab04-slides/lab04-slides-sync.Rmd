@@ -269,6 +269,14 @@ legend("topleft", legend = "r = 1", cex = 2)
 ```
 
 ---
+# Correlation (line ~155)
+We can find the correlation between two quantitative variables in R using the `cor()` function.
+
+```{r correlationExample}
+cor(penguins$bill_length_mm, penguins$body_mass_g)
+```
+
+---
 class:inverse
 # Lab Project `r emo::ji("keyboard")`
 
