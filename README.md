@@ -8,9 +8,10 @@ All materials &#169; 2020 Nicholas J. Seewald
 Welcome to STATS 250 Lab! Please watch [this video](https://youtu.be/g1RVODI-ggA) for details on lab policy and logistics.
 
 ### Quick Links
-Jump to a specific lab by clicking the appropriate link:
+Jump to a specific lab by clicking the appropriate link: <br />
 [[Lab 1: Getting Started with R]](#lab1)
 [[Lab 2: Basics of Data with R]](#lab2)
+[[Lab 4: Probability and Scatterplots]](#lab4)
 
 <hr />
 
@@ -50,3 +51,29 @@ Lab materials for the week running Friday 9/4 - Friday 9/11. *All labs are async
 #### Slides
 
 - **Asynchronous Labs** [[html]](lab02-slides/lab02-slides-general.html) [[pdf]](lab02-slides/lab02-slides-general.pdf) [[video]](https://youtu.be/-RumWaZtLI0)
+
+<hr />
+
+### <a name="lab3"></a> Lab 3: No materials available due to GEO strike
+
+<hr />
+
+### <a name="lab4"></a>Lab 4: Probability and Scatterplots
+Lab materials for the week running Friday 9/18 - Friday 9/25.
+
+#### Statistical Learning Objectives
+1. Sampling with replacement versus sampling without replacement
+1. The Law of Large Numbers and expected values
+1. Scatterplots with linear associations
+1. The correlation coefficient
+
+#### R Learning Objectives
+1. Creating a sequence of integers between two values.
+1. Learning how to randomly sample from a set, with replacement or without replacement.
+1. Creating a plot of (x,y) quantitative values.
+1. Finding the correlation coefficient between two quantitative variables.
+
+#### Slides
+
+- **Asynchronous Labs** [[html]](lab04-slides/lab04-slides-async.html) [[pdf]](lab04-slides/lab04-slides-async.pdf)
+- **Synchronous Labs** [[html]](lab04-slides/lab04-slides-sync.html) [[pdf]](lab04-slides/lab04-slides-sync.pdf)
