@@ -11,6 +11,7 @@ Welcome to STATS 250 Lab! Please watch [this video](https://youtu.be/g1RVODI-ggA
 Jump to a specific lab by clicking the appropriate link:
 [[Lab 1: Getting Started with R]](#lab1)
 [[Lab 2: Basics of Data with R]](#lab2)
+[[Lab 4: Probability and Scatterplots]](#lab4)
 
 <hr />
 
@@ -50,6 +51,12 @@ Lab materials for the week running Friday 9/4 - Friday 9/11. *All labs are async
 #### Slides
 
 - **Asynchronous Labs** [[html]](lab02-slides/lab02-slides-general.html) [[pdf]](lab02-slides/lab02-slides-general.pdf) [[video]](https://youtu.be/-RumWaZtLI0)
+
+<hr />
+
+### <a name="lab3"</a> Lab 3: No materials available due to GEO strike
+
+<hr />
 
 ### <a name="lab4"></a>Lab 4: Probability and Scatterplots
 Lab materials for the week running Friday 9/18 - Friday 9/25.
