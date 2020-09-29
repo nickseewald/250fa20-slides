@@ -296,8 +296,11 @@ You will be **randomly** moved to a breakout room for the rest of the lab (minus
 ]
 
 ---
+class: center, middle, inverse
+# What questions do you have? Any issues?
+---
 class: center, middle
 # "Exit Ticket"
 Please take 1-2 minutes to complete the survey at
 
-###bit.ly/njs_ticket4
+### [bit.ly/njs_ticket4](https://bit.ly/njs_ticket4)

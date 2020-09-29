@@ -1,0 +1,322 @@
+---
+title: "STATS 250 Lab 05"
+subtitle: "Scatterplots and Linear Regression"
+author: "Nick Seewald<br />nseewald&#64;umich.edu"
+date: "Week of 09/28/2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+    css: ["xaringan-themer.css", "extras.css"]
+---
+class: center, middle
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, eval = TRUE, comment = NA, fig.height = 6)
+```
+
+```{r xaringan-themer, include = FALSE, warning = FALSE}
+library(xaringanthemer)
+# style_mono_light(base_color = "#00274c",
+#                  header_font_google = google_font("DM Serif Display"),
+#                  text_font_google = google_font("PT Sans", "400", "400i")
+# )
+style_duo(primary_color = "#00274c",
+          secondary_color = "#ffcb05",
+          header_font_google = google_font("DM Serif Display"),
+          text_font_google = google_font("PT Sans", "400", "400i", "600"),
+          code_font_google = google_font("Roboto Mono", "400"),
+          text_font_size = "22pt"
+)
+```
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_webcam()
+xaringanExtra::use_fit_screen()
+```
+
+# Reminders `r emo::ji("bulb")`
+
+Your tasks for the week running Friday 9/25 - Friday 10/2:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Homework 4 | Friday 10/2 8AM ET | course.work |
+| Lab 5 | Friday 10/2 8AM ET | Canvas |
+
+*Stop by office hours! You can attend anyone's -- not just mine!*
+
+---
+# Lab 3 Comments
+
+(Sorry I'm still a bit behind on grading)
+
+- Please be careful to answer all parts of every question!
+- When deciding number of breaks for a histogram, try to avoid empty bins.
+- Skew direction is which side the tail is on
+  - Skew right implies mean > median; skew left implies mean < median 
+- In Dive Deeper 2, I think we should keep the outlier: there's no reason to believe that William and Mary is fundamentally different from other public schools.
+  - **"Accuracy" or numerical convenience is not a good reason to eliminate a data point.**
+
+---
+# Homework 3 Summary
+
+- **SHOW WORK.** No work = no points `r emo::ji('sad')`
+
+- **Independent events:** $P(A \text{ and } B) = P(A)P(B)$ *if and only if A, B are independent*.
+Same thing with $P(A\mid B) = P(A)$. 
+  - This must hold *exactly*: 0.786 $\neq$ 0.75
+
+- Events can be mutually exclusive, independent, or neither, but *not both*. 
+  - Use numerical support; don't rely on logic.
+
+---
+class: middle
+
+# Weekly Advice
+- R "draws" graphs like ink on paper. Make a graph (e.g., `plot()`), then use other functions to draw on top of the graph. 
+  - Because R draws in "ink", there's no eraser! You need to start over by running `plot()` again.
+- **The way to get a graphic you like is by trying stuff and adjusting.**
+- Use R's built-in help for "graphical parameters"! In the console, type `?par`.
+
+<img src="https://media1.tenor.com/images/35b9a8d480d756f6d31d2d59d56abb4a/tenor.gif?itemid=5139192" style="width:30%;"></img>
+
+---
+# Vectors in R (line 59)
+- A **vector** is a way to hold a collection of things in R. Think of it as a pill organizer.
+- We can make vectors using the `c()` function. `c` here stands for **c**ombine. 
+
+```{r vectorExample}
+x <- c(1, 72.15, -4)
+x
+```
+
+---
+# `stringsAsFactors` (line 70)
+```{r penguins}
+penguins <- read.csv("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv",
+                     stringsAsFactors = T) #<<
+```
+
+- We've got an extra argument to `read.csv()` called `stringsAsFactors`.
+- Tells `read.csv()` that it should treat data that looks like text as a categorical variable.
+- In STATS 250, text-like data will almost always be a categorical variable, so we'll be setting `stringsAsFactors = TRUE` often.
+
+---
+# Scatterplots Revisited (line 82)
+
+.pull-left[
+```{r massDepthPlot, fig.show="hide"}
+plot(bill_depth_mm ~ body_mass_g, 
+     data = penguins,
+     main = "Scatterplot of Penguin Body Mass vs. Bill Depth",
+     xlab = "Bill Depth (mm)",
+     ylab = "Body Mass (g)")
+```
+
+Notice:
+
+1. "Formula syntax": We specified `y ~ x` in the `plot()` code.
+1. Pretty obvious clustering here! **What could be the reason for this?**
+
+]
+.pull-right[
+![](`r knitr::fig_chunk("massDepthPlot", "png")`)
+]
+
+---
+# Scatterplots: Color-Coding Points (line 97)
+
+.pull-left[
+```{r speciesColor, fig.show = "hide"}
+plot(bill_depth_mm ~ body_mass_g, 
+     data = penguins,
+     main = "Scatterplot of Penguin Body Mass vs. Bill Depth",
+     xlab = "Bill Depth (mm)",
+     ylab = "Body Mass (g)",
+     col = c("midnightblue", "brown1", "mediumseagreen")[penguins$species]) #<<
+```
+
+- Set `col` argument to a vector of colors
+- Use `[]` to select color based on categorical variable
+- Use color **with restraint**
+]
+.pull-right[
+![](`r knitr::fig_chunk("speciesColor", "png")`)
+]
+
+---
+# Color Should Have Meaning
+
+.pull-left[
+```{r tooMuchColor, echo = F}
+plot(bill_depth_mm ~ body_mass_g, 
+     data = penguins,
+     main = "Scatterplot of Penguin Body Mass vs. Bill Depth",
+     xlab = "Bill Depth (mm)",
+     ylab = "Body Mass (g)",
+     col = rainbow(10),
+     pch = 20)
+```
+]
+
+.pull-right[
+This looks fun, but what does the color *mean*?
+
+Color should convey information, and enhance readability.
+
+![](https://media1.tenor.com/images/3807b6b2014638b35e047839fce2959b/tenor.gif?itemid=4897922)
+]
+
+
+---
+# Adding Legends to Plots (line 118)
+
+.pull-left[
+```{r legend, fig.show="hide"}
+# Make the plot again
+plot(bill_depth_mm ~ body_mass_g, 
+     data = penguins,
+     main = "Scatterplot of Penguin Body Mass vs. Bill Depth",
+     xlab = "Bill Depth (mm)",
+     ylab = "Body Mass (g)",
+     col = c("midnightblue", "brown1", "mediumseagreen")[penguins$species])
+
+# Add a legend
+legend("topright", 
+       legend = levels(penguins$species),
+       col = c("midnightblue", "brown1", "mediumseagreen"),
+       pch = 1, #<<
+       title = "Species")
+```
+]
+.pull-right[
+![](`r knitr::fig_chunk("legend", "png")`)
+]
+
+---
+# Plotting Character (`pch`, line 143)
+.pull-left[
+```{r pchExample, fig.show = "hide"}
+# Make the plot again
+plot(bill_depth_mm ~ body_mass_g, 
+     data = penguins,
+     main = "Scatterplot of Penguin Body Mass vs. Bill Depth",
+     xlab = "Bill Depth (mm)",
+     ylab = "Body Mass (g)",
+     col = c("midnightblue", "brown1", "mediumseagreen")[penguins$species],
+     pch = c(0, 1, 2)[penguins$species]) #<<
+
+# Add a legend
+legend("topright", 
+       legend = levels(penguins$species),
+       col = c("midnightblue", "brown1", "mediumseagreen"),
+       pch = c(0, 1, 2), #<<
+       title = "Species")
+```
+]
+.pull-right[
+![](`r knitr::fig_chunk("pchExample", "png")`)
+]
+---
+class: center,middle
+# Question Break
+![](https://media.tenor.com/images/7669fb21a3443e63ae29ba270b70e2a9/tenor.gif)
+
+---
+# Correlation (line 165)
+.pull-left[
+Last week's scatterplot:
+```{r lengthMassPlot, fig.show="hide"}
+plot(body_mass_g ~ bill_length_mm,
+     data = penguins,
+     main = "Scatterplot of Penguin Body Mass versus Bill Length",
+     xlab = "Bill Length (mm)",
+     ylab = "Body Mass in (g)")
+```
+
+```{r lengthMassCor}
+cor(penguins$bill_length_mm, penguins$body_mass_g)
+```
+]
+
+.pull-right[
+![](`r knitr::fig_chunk("lengthMassPlot", "png")`)
+]
+
+---
+# Correlation Matrices (line 183)
+
+First, subset the data to just look at quantitative variables, then feed that subset to `cor()` to compute a *correlation matrix*
+
+```{r correlationMatrix}
+numericPenguins <- subset(penguins, select = c("bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g"))
+cor(numericPenguins)
+```
+
+Each "entry" in the correlation matrix is the correlation between the variables labeling that entry's row and column.
+
+---
+# Linear Regression (line 197)
+
+<!-- To run linear regression use `lm()` and formula syntax (`y ~ x`) -->
+
+```{r lm1}
+reg1 <- lm(body_mass_g ~ bill_length_mm, data = penguins)
+summary(reg1)
+```
+
+---
+# ANOVA Tables (line 214)
+Give your regression model (ours is `reg1`) to the `anova()` function:
+
+```{r anova}
+anova(reg1)
+```
+
+$$R^2 = \frac{\text{SSM}}{\text{SST}}$$
+---
+class:inverse
+# Lab Project `r emo::ji("keyboard")`
+
+You will be **randomly** moved to a breakout room for the rest of the lab (minus ~10 minutes)
+
+.pull-left[
+### Your tasks
+1. Introduce yourself to your collaborators!
+1. **Work together** to complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+]
+
+.pull-right[
+### How to get help
+- I'll be floating around between breakout rooms to check on everyone
+- Use the "Ask for help" button to flag me down
+- Let me know when you're done
+]
+
+---
+class: center, middle, inverse
+# What questions do you have? Any issues?
+---
+class: center, middle
+# "Exit Ticket"
+Please take 1-2 minutes to complete the survey at
+
+### [bit.ly/250ticket5](http://bit.ly/250ticket5)
+
+---
+# Reminders `r emo::ji("bulb")`
+
+Your tasks for the week running Friday 9/25 - Friday 10/2:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Homework 4 | Friday 10/2 8AM ET | course.work |
+| Lab 5 | Friday 10/2 8AM ET | Canvas |
+
+*Stop by office hours! You can attend anyone's -- not just mine!*
