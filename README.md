@@ -81,7 +81,7 @@ Lab materials for the week running Friday 9/18 - Friday 9/25.
 
 <hr />
 
-### <a name="lab4"></a>Lab 5: Plotting and Linear Regression
+### <a name="lab5"></a>Lab 5: Plotting and Linear Regression
 Lab materials for the week running Friday 9/25 - Friday 10/2.
 
 ### Statistical Learning Objectives
