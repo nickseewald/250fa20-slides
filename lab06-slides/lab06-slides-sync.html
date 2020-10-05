@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 250 Lab 06</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nick Seewald nseewald@umich.edu" />
+    <script src="libs/xaringanExtra-webcam/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extras.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 250 Lab 06
+## Simulation
+### Nick Seewald<br />nseewald@umich.edu
+### Week of 10/05/2020
+
+---
+
+
+
+
+
+
+
+
+class: center middle
+
+# Reminders 💡
+
+Your tasks for the week running Friday 10/2 - Friday 10/9:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| M-Write 1 Final Revision | Wednesday 10/7| Canvas |
+| Homework 5 | Friday 10/9 8AM ET | course.work |
+| Lab 5 | Friday 10/9 8AM ET | Canvas |
+
+Stop by office hours! You can attend anyone's -- not just mine!
+
+M-Write office hours schedule on Canvas (see MWrite Info on home page)
+
+---
+# Homework 4 Comments
+
+- Statistics is not a branch of math. It is a *mathematical science*.
+  - In statistics, it's important that we tie our conclusions back to data.
+--
+
+- **context context context context context**
+--
+
+- *ALWAYS* put your answer back into the context of the problem. 
+  - What does `\(R^2\)` mean in *this* situation?
+  - Why is regression useful to address *this* question?
+  
+&lt;div style="text-align:center;"&gt;&lt;img src="https://media.tenor.com/images/1ab88a521fc0da50d609e14eda65c2aa/tenor.gif" width=500 &gt;&lt;/img&gt;&lt;/div&gt;
+---
+# Learning Objectives
+
+.pull-left[
+### Statistical Learning Objectives
+1. Explore sample-to-sample variation
+1. Investigate probability using long-run proportions
+]
+.pull-right[
+### R Learning Objectives
+1. Learn about reproducible randomness by "setting seeds"
+1. Functions within functions: `table(sample())`
+1. Line plots in R
+]
+
+---
+# Weekly Advice
+
+- Randomness is **random**: your mileage may vary when you run code inside chunks.
+- Check your HTML file before submitting it! You'll notice formatting issues you can easily fix (often by adding blank lines to your Rmd file).
+
+--
+.pull-left[
+Please try to follow along with this video. **It will help.**
+]
+.pull-right[
+&lt;br&gt;
+&lt;div style="text-align:center;"&gt;&lt;img src="https://media1.tenor.com/images/b79c5979e1617eb62ac810eb6d5f6cda/tenor.gif?itemid=16115882" height=300&gt;&lt;/img&gt;&lt;/div&gt;
+]
+
+---
+
+# Vectors (again)
+
+A *character* vector is a vector where the elements are "strings" of text.
+
+
+```r
+x &lt;- c("hi", "this is", "a character vector.", "Are you impressed?")
+x
+```
+
+```
+[1] "hi"                  "this is"             "a character vector."
+[4] "Are you impressed?" 
+```
+
+Again, note the use of the `c()` function.
+
+--
+
+&lt;div style="text-align:center;"&gt;&lt;img src="https://media.tenor.com/images/bafdff17d50e713ddee90192206ec318/tenor.gif" height=200&gt;&lt;/img&gt;&lt;/div&gt;
+
+---
+# `rep()`
+
+What's easier to code? 
+
+
+```r
+pets &lt;- c("cat", "cat", "cat", "cat")
+pets
+```
+
+```
+[1] "cat" "cat" "cat" "cat"
+```
+--
+
+```r
+cats &lt;- rep("cat", 4)
+cats
+```
+
+```
+[1] "cat" "cat" "cat" "cat"
+```
+
+--
+
+`rep(`what you want to repeat`, `number of times to repeat it`)`
+
+---
+# `rep()`
+
+What's easier to code?
+
+
+```r
+pets &lt;- c("cat", "cat", "cat", "cat", "dog", "dog", "dog", "dog", "dog")
+pets
+```
+
+```
+[1] "cat" "cat" "cat" "cat" "dog" "dog" "dog" "dog" "dog"
+```
+
+
+```r
+pets2 &lt;- c(rep("cat", 4), rep("dog", 5))
+pets2
+```
+
+```
+[1] "cat" "cat" "cat" "cat" "dog" "dog" "dog" "dog" "dog"
+```
+
+---
+# Functions in Functions
+Arguments to functions can be functions! This is called **nesting**.
+
+.pull-left[
+
+```r
+table(
+  c(
+    rep("heads", 5000),
+    rep("tails", 5000)
+  )
+)
+```
+
+```
+
+heads tails 
+ 5000  5000 
+```
+]
+.pull-right[
+.center[
+![](https://media.tenor.com/images/ae1204bbe4d4cd3e3929990c8c4ed103/tenor.gif)
+]
+]
+
+--
+
+**WATCH OUT FOR PARENTHESES**
+
+---
+# Remember `sample()`?
+We used `sample()` to simulate rolling a die using the vector `1:6`.
+
+We can also give `sample()` a character vector to sample from!
+
+
+```r
+coin &lt;- c('heads', 'tails')
+sample(coin, size = 30, replace = TRUE)
+```
+
+```
+ [1] "tails" "heads" "tails" "heads" "heads" "tails" "tails" "heads" "heads"
+[10] "heads" "heads" "tails" "tails" "heads" "tails" "heads" "tails" "heads"
+[19] "tails" "tails" "heads" "tails" "tails" "heads" "heads" "heads" "tails"
+[28] "tails" "tails" "heads"
+```
+
+---
+# The `prob` argument to `sample()`
+
+We can simulate a *biased* coin using the `prob` argument.
+
+- `prob` takes a vector of "probability weights", one per element of the vector to sample from
+- `prob` applies the weights *in order*
+
+
+```r
+coin &lt;- c('heads', 'tails')
+sample(coin, size = 30, replace = TRUE, prob = c(0.3, 0.7))
+```
+
+```
+ [1] "tails" "tails" "tails" "tails" "heads" "heads" "tails" "tails" "heads"
+[10] "heads" "tails" "heads" "tails" "heads" "tails" "heads" "heads" "heads"
+[19] "tails" "tails" "heads" "tails" "tails" "tails" "heads" "tails" "heads"
+[28] "heads" "heads" "tails"
+```
+
+---
+# Pseudo-random numbers
+
+.pull-left[
+- Humans are very bad at generating random numbers.
+- Computers only **seem** better.
+- Computers produce *pseudo-random* numbers: if you know the "seed", you know the entire sequence of "random" numbers.
+]
+.pull-right[
+![](random-numbers.png)
+]
+
+---
+# `set.seed()`
+
+- We can tell R to use a particular "seed" with `set.seed()`. 
+- Setting the seed makes your randomness **reproducible**: you will now get the same answers (in your knitted document) as your peers, provided you use the same code.
+
+
+```r
+set.seed(8362)
+sample(1:5000, size = 3)
+```
+
+```
+[1]  258 1834 2371
+```
+
+---
+# Line Graphs 📈
+
+.pull-left[
+Remember this?
+
+
+```r
+sixSidedDieRoll &lt;- function(n) {
+  mean(sample(1:6, size = n, replace = T))
+}
+plot(sapply(1:300, sixSidedDieRoll), 
+     main = "Law of Large Numbers Example",
+     xlab = "Number of Six-Sided Dice",
+     ylab = "Average")
+```
+]
+.pull-right[
+![](lab06-slides-sync_files/figure-html/plotOfMeanOfEx1-1.png)
+]
+
+---
+# Line Graphs 📈
+
+.pull-left[
+We can make a line graph with the `type` argument to `plot()`:
+
+```r
+plot(sapply(1:300, sixSidedDieRoll), 
+     main = "Law of Large Numbers Example",
+     xlab = "Number of Six-Sided Dice",
+     ylab = "Average",
+*    type = "l")
+```
+
+Use `type = l` for a `l`ine graph (that's a **lowercase L**)
+]
+.pull-right[
+![](lab06-slides-sync_files/figure-html/lineGraphL-1.png)
+]
+
+---
+# Line Graphs 📈
+
+.pull-left[
+
+```r
+plot(sapply(1:300, sixSidedDieRoll), 
+     main = "Law of Large Numbers Example",
+     xlab = "Number of Six-Sided Dice",
+     ylab = "Average",
+*    type = "o",
+     pch = 20)
+```
+
+Use `type = o` to draw lines between points (and `pch` is back!)
+]
+.pull-right[
+![](lab06-slides-sync_files/figure-html/lineGraphO-1.png)
+]
+
+---
+
+# Line Graphs 📈
+
+.pull-left[
+
+```r
+plot(sapply(1:300, sixSidedDieRoll), 
+     main = "Law of Large Numbers Example",
+     xlab = "Number of Six-Sided Dice",
+     ylab = "Average",
+     type = "o",
+     pch = 20,
+*    lty = "dotted",
+*    lwd = 2)
+```
+
+- Use `lty` to specify `l`ine `ty`pe: (0=blank, 1=solid (default), 2=dashed, 3=dotted, 4=dotdash, 5=longdash, 6=twodash)
+- Use `lwd` to specify `l`ine `w`i`d`th (default is 1)
+]
+.pull-right[
+![](lab06-slides-sync_files/figure-html/lineGraphCustom-1.png)
+]
+
+
+---
+class:inverse
+# Lab Project ⌨️
+
+You will be **randomly** moved to a breakout room with 2-3 others for the rest of the lab (minus ~10 minutes)
+
+.pull-left[
+### Your tasks
+1. Introduce yourself to your collaborators!
+1. **Work together** to complete the "Try It!" and "Dive Deeper" sections.
+1. **DO NOT LEAVE PEOPLE BEHIND.** You're all in this together.
+]
+
+.pull-right[
+### How to get help
+- I'll be floating around between breakout rooms to check on everyone
+- Use the "Ask for help" button to flag me down
+- Let me know when you're done
+]
+
+---
+class: center, middle, inverse
+# What questions do you have? Any issues?
+
+---
+class: center, middle
+# "Exit Ticket"
+Please take 1-2 minutes to complete the survey at
+
+### [https://bit.ly/250ticket6](https://bit.ly/250ticket6)
+
+---
+class: center middle
+
+# Reminders 💡
+
+Your tasks for the week running Friday 10/2 - Friday 10/9:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| M-Write 1 Final Revision | Wednesday 10/7| Canvas |
+| Homework 5 | Friday 10/9 8AM ET | course.work |
+| Lab 5 | Friday 10/9 8AM ET | Canvas |
+
+Stop by office hours! You can attend anyone's -- not just mine!
+
+M-Write office hours schedule on Canvas (see MWrite Info on home page)
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
