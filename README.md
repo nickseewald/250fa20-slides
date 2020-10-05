@@ -12,6 +12,7 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[Lab 1: Getting Started with R]](#lab1)
 [[Lab 2: Basics of Data with R]](#lab2)
 [[Lab 4: Probability and Scatterplots]](#lab4)
+[[Lab 5: Plotting and Linear Regression]](#lab5)
 
 <hr />
 
@@ -77,3 +78,22 @@ Lab materials for the week running Friday 9/18 - Friday 9/25.
 
 - **Asynchronous Labs** [[html]](lab04-slides/lab04-slides-async.html) [[pdf]](lab04-slides/lab04-slides-async.pdf)
 - **Synchronous Labs** [[html]](lab04-slides/lab04-slides-sync.html) [[pdf]](lab04-slides/lab04-slides-sync.pdf)
+
+<hr />
+
+### <a name="lab5"></a>Lab 5: Plotting and Linear Regression
+Lab materials for the week running Friday 9/25 - Friday 10/2.
+
+### Statistical Learning Objectives
+1. Interpret a correlation matrix
+1. Interpret a fitted linear regression model
+1. Check the fit of the linear regression model using $R^2$
+1. Explore the dangers of extrapolation
+
+### R Learning Objectives
+1. Dive deeper into R plotting
+1. Create a correlation matrix
+1. Use R to fit a linear regression model
+
+#### Slides
+- **Synchronous Labs** [[html]](lab05-slides/lab05-slides-sync.html) [[pdf]](lab05-slides/lab05-slides-sync.pdf)
