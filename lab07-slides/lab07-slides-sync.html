@@ -36,14 +36,17 @@ Your tasks for the week running Friday 10/9 - Friday 10/16:
 
 | Task | Due Date | Submission |
 |:-----|:---------|:-----------|
-| **MIDTERM EXAM** | Thursday 10/15 | **GRADESCOPE** |
-| Lab 7 | Friday 10/16 8AM ET | Canvas |
+| **MIDTERM EXAM** | Thursday 10/15, any 2-hr window| **GRADESCOPE** |
+| Lab 7 | Sunday 10/18 11:59PM ET | Canvas |
 
 Modified office hours schedule this week due to midterm
 
 ---
 # Homework 5 Comments
-
+We'll address many of these in the next few slides, but:
+1. Hypotheses are about *parameters* and involve specific *numeric values*.
+1. The *p-value* is different from `\(p\)` (population proportion) is different from `\(\hat{p}\)` (sample proportion).
+1. Be specific when you talk about "extreme" values (also note these are not outliers)
 
 ---
 # Learning Objectives
@@ -119,6 +122,7 @@ Two perspectives:
 
 --
 ## Poll: What are the null and alternative hypotheses?
+
 --
 - `\(H_0: \ p_{\mathrm{treatment}} = p_{\mathrm{control}}\)`
 - `\(H_A: \ p_{\mathrm{treatment}} &gt; p_{\mathrm{control}}\)`
@@ -269,9 +273,9 @@ rt &lt;- rowTable(shuffle1) # we wrote this function for you
 Watch this:
 
 ```r
-rep(sample(1:20, size = 5), 3)
+*rep(sample(1:20, size = 5), 3)
  [1] 11 18 20  8  4 11 18 20  8  4 11 18 20  8  4
-replicate(3, sample(1:20, size = 5))
+*replicate(3, sample(1:20, size = 5))
      [,1] [,2] [,3]
 [1,]   17   18    7
 [2,]   19    5    3
@@ -334,11 +338,13 @@ The p-value is the proportion of simulated results *as extreme or more extreme* 
 What does "extreme" mean? 
 
 --
-
+.pull-left[
 **Extreme** means *provides more evidence for the alternative hypothesis*. What will that mean here? (Zoom poll)
+]
 --
-
+.pull-right[
 &lt;img src="lab07-slides-sync_files/figure-html/histShaded-1.png" style="display: block; margin: auto;" /&gt;
+]
 ---
 # Simulation Results: Approximate p-value
 
@@ -359,6 +365,7 @@ So the estimated p-value is 1/1000 = 0.001 = 0.1%.
 ### Poll
 - Is our observed data rare?
 - Is our null hypothesis reasonable?
+- Does the reminder about using money later reduce spending now? 
 
 ---
 class: inverse
@@ -378,6 +385,9 @@ class: inverse
 ]
 
 ---
+
+
+
 class: center middle
 
 &lt;img src="https://media.tenor.com/images/2ae8de10391445da74ab02f5ab4f4ab7/tenor.gif" height=500 /&gt;

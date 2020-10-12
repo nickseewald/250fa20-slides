@@ -18,7 +18,7 @@ output:
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE, eval = TRUE, comment = NA, fig.height = 5, fig.width = 9)
 source("sample_two_groups.R")
-par(mar = c(5, 5, 4, 2) + 0.1)
+par(mar = c(5, 5.5, 4, 2) + 0.1)
 ```
 
 ```{r xaringan-themer, include = FALSE, warning = FALSE}
@@ -49,14 +49,17 @@ Your tasks for the week running Friday 10/9 - Friday 10/16:
 
 | Task | Due Date | Submission |
 |:-----|:---------|:-----------|
-| **MIDTERM EXAM** | Thursday 10/15 | **GRADESCOPE** |
-| Lab 7 | Friday 10/16 8AM ET | Canvas |
+| **MIDTERM EXAM** | Thursday 10/15, any 2-hr window| **GRADESCOPE** |
+| Lab 7 | Sunday 10/18 11:59PM ET | Canvas |
 
 Modified office hours schedule this week due to midterm
 
 ---
 # Homework 5 Comments
-
+We'll address many of these in the next few slides, but:
+1. Hypotheses are about *parameters* and involve specific *numeric values*.
+1. The *p-value* is different from $p$ (population proportion) is different from $\hat{p}$ (sample proportion).
+1. Be specific when you talk about "extreme" values (also note these are not outliers)
 
 ---
 # Learning Objectives
@@ -132,6 +135,7 @@ Two perspectives:
 
 --
 ## Poll: What are the null and alternative hypotheses?
+
 --
 - $H_0: \ p_{\mathrm{treatment}} = p_{\mathrm{control}}$
 - $H_A: \ p_{\mathrm{treatment}} > p_{\mathrm{control}}$
@@ -246,8 +250,8 @@ rt[2, 2] - rt[1, 2] #<<
   
 Watch this:
 ```{r repReplicate, error = T, collapse = T}
-rep(sample(1:20, size = 5), 3)
-replicate(3, sample(1:20, size = 5))
+rep(sample(1:20, size = 5), 3) #<<
+replicate(3, sample(1:20, size = 5)) #<<
 ```
 
 ---
@@ -299,17 +303,19 @@ The p-value is the proportion of simulated results *as extreme or more extreme* 
 What does "extreme" mean? 
 
 --
-
+.pull-left[
 **Extreme** means *provides more evidence for the alternative hypothesis*. What will that mean here? (Zoom poll)
+]
 --
-
-```{r histShaded, echo = F, fig.height = 4, fig.align = 'center'}
+.pull-right[
+```{r histShaded, echo = F, fig.height = 5, fig.width = 7, fig.align = 'center'}
 hist(pHatDiffs, main = "Histogram of simulated results",
      xlab = "Simulated difference in proportions (tx - ctrl)",
      cex.lab = 1.5) #just for slides
 abline(v = 0.2, lwd = 4)
 rect(0.2, -50, .5, 300, density = -1, col = rgb(1.0, 0, 0, alpha = 0.1))
 ```
+]
 ---
 # Simulation Results: Approximate p-value
 
@@ -325,6 +331,7 @@ So the estimated p-value is 1/1000 = 0.001 = 0.1%.
 ### Poll
 - Is our observed data rare?
 - Is our null hypothesis reasonable?
+- Does the reminder about using money later reduce spending now? 
 
 ---
 class: inverse
@@ -344,6 +351,9 @@ class: inverse
 ]
 
 ---
+
+
+
 class: center middle
 
 <img src="https://media.tenor.com/images/2ae8de10391445da74ab02f5ab4f4ab7/tenor.gif" height=500 />
