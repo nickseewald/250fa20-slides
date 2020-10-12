@@ -9,11 +9,12 @@ Welcome to STATS 250 Lab! Please watch [this video](https://youtu.be/g1RVODI-ggA
 
 ### Quick Links
 Jump to a specific lab by clicking the appropriate link: <br />
-[[Lab 1: Getting Started with R]](#lab1)
-[[Lab 2: Basics of Data with R]](#lab2)
-[[Lab 4: Probability and Scatterplots]](#lab4)
-[[Lab 5: Plotting and Linear Regression]](#lab5)
-[[Lab 6: Simulation Basics]](#lab6)
+[[**Lab 1:** Getting Started with R]](#lab1)
+[[**Lab 2:** Basics of Data with R]](#lab2)
+[[**Lab 4:** Probability and Scatterplots]](#lab4)
+[[**Lab 5:** Plotting and Linear Regression]](#lab5)
+[[**Lab 6:** Simulation Basics]](#lab6)
+[[**Lab 7:** Simulation-Based Hypothesis Testing]](#lab7)
 
 <hr />
 
@@ -117,3 +118,17 @@ Lab materials for the week running Friday 10/2 - Friday 10/9
 - **Asynchronous Labs** [[html]](lab06-slides/lab06-slides-async.html) [[pdf]](lab06-slides/lab06-slides-async.pdf)
 - **Synchronous Labs** [[html]](lab06-slides/lab06-slides-sync.html) [[pdf]](lab06-slides/lab06-slides-sync.pdf)
 
+<hr />
+
+### <a name="lab7"></a>Lab 7: Simulation-Based Hypothesis Testing
+Lab materials for the week running Friday 10/9 - Friday 10/16
+
+#### Statistical Learning Objectives
+1.$ Get experience with randomization under an independence model
+1. Explore hypothesis testing and p-values
+
+#### R Learning Objectives
+1. Learn how to perform simulations under an independence model
+
+#### Slides
+- **Synchronous Labs** [[html]](lab07-slides/lab07-slides-sync.html) [[pdf]](lab07-slides/lab07-slides-sync.pdf)
