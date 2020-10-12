@@ -1,0 +1,342 @@
+---
+title: "STATS 250 Lab 07"
+subtitle: "Simulation-Based Hypothesis Testing"
+author: "Nick Seewald<br />nseewald&#64;umich.edu"
+date: "Week of 10/12/2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+    css: ["xaringan-themer.css", "extras.css"]
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, eval = TRUE, comment = NA, fig.height = 5, fig.width = 9)
+source("sample_two_groups.R")
+par(mar = c(5, 5, 4, 2) + 0.1)
+```
+
+```{r xaringan-themer, include = FALSE, warning = FALSE}
+library(xaringanthemer)
+# style_mono_light(base_color = "#00274c",
+#                  header_font_google = google_font("DM Serif Display"),
+#                  text_font_google = google_font("PT Sans", "400", "400i")
+# )
+style_duo(primary_color = "#00274c",
+          secondary_color = "#ffcb05",
+          header_font_google = google_font("DM Serif Display"),
+          text_font_google = google_font("PT Sans", "400", "400i", "600"),
+          code_font_google = google_font("Roboto Mono", "400"),
+          text_font_size = "22pt"
+)
+```
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_webcam()
+xaringanExtra::use_fit_screen()
+```
+
+class: center middle
+
+# Reminders `r emo::ji("bulb")`
+
+Your tasks for the week running Friday 10/9 - Friday 10/16:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| **MIDTERM EXAM** | Thursday 10/15 | **GRADESCOPE** |
+| Lab 7 | Friday 10/16 8AM ET | Canvas |
+
+Modified office hours schedule this week due to midterm
+
+---
+# Homework 5 Comments
+
+
+---
+# Learning Objectives
+
+.pull-left[
+### Statistical Learning Objectives
+1. Get experience with randomization under an independence model
+1. Explore hypothesis testing and p-values
+]
+.pull-right[
+### R Learning Objectives
+1. Learn how to perform simulations under an independence model
+]
+
+---
+class: center, middle
+# Weekly Advice
+
+<img src="https://media.tenor.com/images/e557088da36600e638c77fd6d742a8f0/tenor.gif" width=500></img>
+
+"Negative self-talk will only limit you."
+
+---
+# Setup
+
+Follow along! Page 66 of *ISRS*
+
+--
+
+How rational and consistent is the behavior of the typical American college student? Let's explore whether college student consumers always consider an obvious fact: money not spent now can be spent later.
+
+--
+
+**QUESTION**: Does reminding students about this fact cause them to be thriftier?
+
+<div style="text-align:center;"><img src="https://media.tenor.com/images/65e9b5a1bce25e53d29b4b3685b97a83/tenor.gif" /></div>
+
+---
+# Study
+
+150 students recruited, each given the following statement:
+
+> Imagine that you have been saving some extra money on the side to make some purchases, and on your most recent visit to the video store you come across a special sale on a new video. This video is one with your favorite actor or actress, and is of your favorite genre. This particular video that you are considering is one you have been thinking about buying for a long time. It is available for a special sale price of $14.99. What would you do in this situation?
+
+--
+
+<p style="font-size:14pt">(lol remember buying movies?)</p>
+
+---
+# Study
+
+150 students split into two groups and given two options:
+
+.pull-left[
+### Control
+- (A) Buy this entertaining video
+- (B) Not buy this entertaining video
+]
+
+.pull-right[
+### Treatment
+- (A) Buy this entertaining video
+- (B) Not buy this entertaining video. Keep the $14.99 for other purchases.
+]
+
+*Notice the reminder in the treatment group!*
+---
+# Hypothesis Statements `r emo::ji("thinking")`
+
+Two perspectives:
+1. **Skeptic:** The reminder isn't going to work
+1. **Believer:** The reminder will work: students in the treatment group will not buy the DVD more often than students in the control.
+
+--
+## What are the null and alternative hypotheses?
+
+--
+- $H_0: \ p_{\mathrm{treatment}} = p_{\mathrm{control}}$
+- $H_A: \ p_{\mathrm{treatment}} > p_{\mathrm{control}}$
+
+where $p_{\mathrm{group}}$ is the proportion of students who *do NOT buy* the DVD in that group.
+
+???
+Really need to emphasize the directionality of the hypothesis is motivated by the question. AND that p is proportion of not-buy!
+
+---
+# Study Data (line ~68)
+Read in the data from the study stored in `dvd.csv`. How do we do this?
+
+--
+
+```{r readDVD}
+dvd <- read.csv("dvd.csv", stringsAsFactors = TRUE)
+```
+
+--
+
+Let's see what the data look like
+
+```{r exploreDVD}
+head(dvd)
+```
+
+---
+# Tabulating the Data
+
+Let's make a two-way frequency table to better see the study results. How do we do this?
+
+--
+
+```{r tableDVD}
+addmargins(
+  table(dvd$group, dvd$decision)
+)
+```
+
+---
+# Tabulating the Data
+We want to know how many students in each group didn't buy the DVD. Let's make a table of *row proportions*. Fill in the table in the lab file.
+
+--
+
+|           | buy DVD | not buy DVD | Total |
+|:----------|:-------:|:-----------:|:-----:|
+| control   |  0.747  |    0.253    | 1.000 |
+| treatment |  0.547  |    0.453    | 1.000 |
+| Total     |  0.647  |    0.353    | 1.000 |
+
+---
+# Tabulating the Data
+
+|           | buy DVD | not buy DVD | Total |
+|:----------|:-------:|:-----------:|:-----:|
+| control   |  0.747  |    0.253    | 1.000 |
+| treatment |  0.547  |    0.453    | 1.000 |
+| Total     |  0.647  |    0.353    | 1.000 |
+
+What's the **observed** difference in proportions of students who didn't buy the DVD, $\hat{p}_{\mathrm{trmt}} - \hat{p}_{\mathrm{ctrl}}$?
+
+--
+$$0.453 - 0.253 = 0.200$$
+
+--
+**Is this difference "statistically significant?"**
+
+---
+# Simulation
+
+### Big Idea
+- Assume treatment status is independent of buying decision (i.e., that $H_0$ is true). 
+- Simulate this study many times
+- See if our observed difference in proportions is "weird". 
+- If "weird", this is evidence against the null hypothesis.
+
+### In Practice
+- Randomly shuffle buying decisions among treatment & control groups
+- `sample_two_groups()`
+
+---
+# Simulation: A Single Replicate
+
+```{r setSeed}
+set.seed(106) # we just picked this number, it's not special.
+```
+
+```{r sampleExample, error =T}
+shuffle1 <- sample_two_groups(dvd)
+table(shuffle1)
+```
+
+```{r phat-difference, error = T}
+rt <- rowTable(shuffle1) # we wrote this function for you
+
+rt[2, 2] - rt[1, 2] #<<
+```
+
+---
+# The `replicate()` function
+
+- Sounds similar to `rep()` but **quite different**
+  - `rep()` is copy/paste
+  - `replicate()` re-runs code
+  
+Watch this:
+```{r repReplicate, error = T, collapse = T}
+rep(sample(1:20, size = 5), 3)
+replicate(3, sample(1:20, size = 5))
+```
+
+---
+# The `replicate()` function
+
+.pull-left[
+### `rep()`
+<img src="https://media.tenor.com/images/a6c56514d4a9fe52c6d050336b337dd2/tenor.gif" width=400/>
+]
+--
+.pull-right[
+### `replicate()`
+<img src="https://media.tenor.com/images/b258eb5eb732409b15f271deb6e1bfff/tenor.gif" width=400/>
+]
+---
+# Simulation
+This code runs 2 simulations. Modify it to run 1000.
+
+```{r dvdSims, error = T}
+pHatDiffs <- replicate(2, {
+  shuffle <- sample_two_groups(dvd)
+  shuffle_table <- rowTable(shuffle)
+  shuffle_table[2, 2] - shuffle_table[1, 2] # p-hat_treatment minus p-hat_control
+})
+```
+
+--
+```{r dvdSims1000, error = T}
+pHatDiffs <- replicate(1000, { #<<
+  shuffle <- sample_two_groups(dvd)
+  shuffle_table <- rowTable(shuffle)
+  shuffle_table[2, 2] - shuffle_table[1, 2] # p-hat_treatment minus p-hat_control
+})
+```
+
+---
+# Simulation Results
+
+```{r hist, fig.align = "center"}
+hist(pHatDiffs, main = "Histogram of simulated results",
+     xlab = "Simulated difference in proportions (tx - ctrl)",
+     cex.lab = 1.5) #just for slides
+abline(v = 0.2, lwd = 4) #<<
+```
+
+---
+# Simulation Results: Approximate p-value
+The p-value is the proportion of simulated results *as extreme or more extreme* than our observed result.
+What does "extreme" mean?
+
+--
+
+**Extreme** means *provides more evidence for the alternative hypothesis*. What will that mean here?
+--
+
+```{r histShaded, echo = F, fig.height = 4, fig.align = 'center'}
+hist(pHatDiffs, main = "Histogram of simulated results",
+     xlab = "Simulated difference in proportions (tx - ctrl)",
+     cex.lab = 1.5) #just for slides
+abline(v = 0.2, lwd = 4)
+rect(0.2, -50, .5, 300, density = -1, col = rgb(1.0, 0, 0, alpha = 0.1))
+```
+---
+# Simulation Results: Approximate p-value
+
+Let's count the number of simulations that led to a difference in proportions of 20% or greater:
+
+```{r sumSims}
+sum(pHatDiffs >= 0.2)
+```
+
+--
+So the estimated p-value is 1/1000 = 0.001 = 0.1%.
+
+- Is our observed data rare?
+- Is our null hypothesis reasonable?
+
+---
+# Lab Project `r emo::ji("keyboard")`
+
+.pull-left[
+### Your tasks
+- Complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+]
+
+.pull-right[
+### How to get help
+- Use the "labs" section of Piazza to ask questions and work with your peers.
+- If you use Piazza, please note that in the "Collaborators" list at the top of the discussion section.
+- If you're really stuck, email your lab instructor!
+]
+
+---
+class: center middle
+
+<img src="https://media.tenor.com/images/2ae8de10391445da74ab02f5ab4f4ab7/tenor.gif" height=500 />

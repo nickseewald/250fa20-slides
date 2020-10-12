@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 250 Lab 07</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nick Seewald nseewald@umich.edu" />
+    <script src="libs/xaringanExtra-webcam/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extras.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 250 Lab 07
+## Simulation-Based Hypothesis Testing
+### Nick Seewald<br />nseewald@umich.edu
+### Week of 10/12/2020
+
+---
+
+
+
+
+
+
+
+
+class: center middle
+
+# Reminders 💡
+
+Your tasks for the week running Friday 10/9 - Friday 10/16:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| **MIDTERM EXAM** | Thursday 10/15 | **GRADESCOPE** |
+| Lab 7 | Friday 10/16 8AM ET | Canvas |
+
+Modified office hours schedule this week due to midterm
+
+---
+# Homework 5 Comments
+
+
+---
+# Learning Objectives
+
+.pull-left[
+### Statistical Learning Objectives
+1. Get experience with randomization under an independence model
+1. Explore hypothesis testing and p-values
+]
+.pull-right[
+### R Learning Objectives
+1. Learn how to perform simulations under an independence model
+]
+
+---
+class: center, middle
+# Weekly Advice
+
+&lt;img src="https://media.tenor.com/images/e557088da36600e638c77fd6d742a8f0/tenor.gif" width=500&gt;&lt;/img&gt;
+
+"Negative self-talk will only limit you."
+
+---
+# Setup
+
+Follow along! Page 66 of *ISRS*
+
+--
+
+How rational and consistent is the behavior of the typical American college student? Let's explore whether college student consumers always consider an obvious fact: money not spent now can be spent later.
+
+--
+
+**QUESTION**: Does reminding students about this fact cause them to be thriftier?
+
+&lt;div style="text-align:center;"&gt;&lt;img src="https://media.tenor.com/images/65e9b5a1bce25e53d29b4b3685b97a83/tenor.gif" /&gt;&lt;/div&gt;
+
+---
+# Study
+
+150 students recruited, each given the following statement:
+
+&gt; Imagine that you have been saving some extra money on the side to make some purchases, and on your most recent visit to the video store you come across a special sale on a new video. This video is one with your favorite actor or actress, and is of your favorite genre. This particular video that you are considering is one you have been thinking about buying for a long time. It is available for a special sale price of $14.99. What would you do in this situation?
+
+--
+
+&lt;p style="font-size:14pt"&gt;(lol remember buying movies?)&lt;/p&gt;
+
+---
+# Study
+
+150 students split into two groups and given two options:
+
+.pull-left[
+### Control
+- (A) Buy this entertaining video
+- (B) Not buy this entertaining video
+]
+
+.pull-right[
+### Treatment
+- (A) Buy this entertaining video
+- (B) Not buy this entertaining video. Keep the $14.99 for other purchases.
+]
+
+*Notice the reminder in the treatment group!*
+---
+# Hypothesis Statements 🤔
+
+Two perspectives:
+1. **Skeptic:** The reminder isn't going to work
+1. **Believer:** The reminder will work: students in the treatment group will not buy the DVD more often than students in the control.
+
+--
+## What are the null and alternative hypotheses?
+
+--
+- `\(H_0: \ p_{\mathrm{treatment}} = p_{\mathrm{control}}\)`
+- `\(H_A: \ p_{\mathrm{treatment}} &gt; p_{\mathrm{control}}\)`
+
+where `\(p_{\mathrm{group}}\)` is the proportion of students who *do NOT buy* the DVD in that group.
+
+???
+Really need to emphasize the directionality of the hypothesis is motivated by the question. AND that p is proportion of not-buy!
+
+---
+# Study Data (line ~68)
+Read in the data from the study stored in `dvd.csv`. How do we do this?
+
+--
+
+
+```r
+dvd &lt;- read.csv("dvd.csv", stringsAsFactors = TRUE)
+```
+
+--
+
+Let's see what the data look like
+
+
+```r
+head(dvd)
+```
+
+```
+    group decision
+1 control  buy DVD
+2 control  buy DVD
+3 control  buy DVD
+4 control  buy DVD
+5 control  buy DVD
+6 control  buy DVD
+```
+
+---
+# Tabulating the Data
+
+Let's make a two-way frequency table to better see the study results. How do we do this?
+
+--
+
+
+```r
+addmargins(
+  table(dvd$group, dvd$decision)
+)
+```
+
+```
+           
+            buy DVD not buy DVD Sum
+  control        56          19  75
+  treatment      41          34  75
+  Sum            97          53 150
+```
+
+---
+# Tabulating the Data
+We want to know how many students in each group didn't buy the DVD. Let's make a table of *row proportions*. Fill in the table in the lab file.
+
+--
+
+|           | buy DVD | not buy DVD | Total |
+|:----------|:-------:|:-----------:|:-----:|
+| control   |  0.747  |    0.253    | 1.000 |
+| treatment |  0.547  |    0.453    | 1.000 |
+| Total     |  0.647  |    0.353    | 1.000 |
+
+---
+# Tabulating the Data
+
+|           | buy DVD | not buy DVD | Total |
+|:----------|:-------:|:-----------:|:-----:|
+| control   |  0.747  |    0.253    | 1.000 |
+| treatment |  0.547  |    0.453    | 1.000 |
+| Total     |  0.647  |    0.353    | 1.000 |
+
+What's the **observed** difference in proportions of students who didn't buy the DVD, `\(\hat{p}_{\mathrm{trmt}} - \hat{p}_{\mathrm{ctrl}}\)`?
+
+--
+`$$0.453 - 0.253 = 0.200$$`
+
+--
+**Is this difference "statistically significant?"**
+
+---
+# Simulation
+
+### Big Idea
+- Assume treatment status is independent of buying decision (i.e., that `\(H_0\)` is true). 
+- Simulate this study many times
+- See if our observed difference in proportions is "weird". 
+- If "weird", this is evidence against the null hypothesis.
+
+### In Practice
+- Randomly shuffle buying decisions among treatment &amp; control groups
+- `sample_two_groups()`
+
+---
+# Simulation: A Single Replicate
+
+
+```r
+set.seed(106) # we just picked this number, it's not special.
+```
+
+
+```r
+shuffle1 &lt;- sample_two_groups(dvd)
+table(shuffle1)
+```
+
+```
+           decision
+group       buy DVD not buy DVD
+  control        55          20
+  treatment      42          33
+```
+
+
+```r
+rt &lt;- rowTable(shuffle1) # we wrote this function for you
+
+*rt[2, 2] - rt[1, 2]
+```
+
+```
+[1] 0.1733333
+```
+
+---
+# The `replicate()` function
+
+- Sounds similar to `rep()` but **quite different**
+  - `rep()` is copy/paste
+  - `replicate()` re-runs code
+  
+Watch this:
+
+```r
+rep(sample(1:20, size = 5), 3)
+ [1] 11 18 20  8  4 11 18 20  8  4 11 18 20  8  4
+replicate(3, sample(1:20, size = 5))
+     [,1] [,2] [,3]
+[1,]   17   18    7
+[2,]   19    5    3
+[3,]    2    6   20
+[4,]   12    9   17
+[5,]   13   20   16
+```
+
+---
+# The `replicate()` function
+
+.pull-left[
+### `rep()`
+&lt;img src="https://media.tenor.com/images/a6c56514d4a9fe52c6d050336b337dd2/tenor.gif" width=400/&gt;
+]
+--
+.pull-right[
+### `replicate()`
+&lt;img src="https://media.tenor.com/images/b258eb5eb732409b15f271deb6e1bfff/tenor.gif" width=400/&gt;
+]
+---
+# Simulation
+This code runs 2 simulations. Modify it to run 1000.
+
+
+```r
+pHatDiffs &lt;- replicate(2, {
+  shuffle &lt;- sample_two_groups(dvd)
+  shuffle_table &lt;- rowTable(shuffle)
+  shuffle_table[2, 2] - shuffle_table[1, 2] # p-hat_treatment minus p-hat_control
+})
+```
+
+--
+
+```r
+*pHatDiffs &lt;- replicate(1000, {
+  shuffle &lt;- sample_two_groups(dvd)
+  shuffle_table &lt;- rowTable(shuffle)
+  shuffle_table[2, 2] - shuffle_table[1, 2] # p-hat_treatment minus p-hat_control
+})
+```
+
+---
+# Simulation Results
+
+
+```r
+hist(pHatDiffs, main = "Histogram of simulated results",
+     xlab = "Simulated difference in proportions (tx - ctrl)",
+     cex.lab = 1.5) #just for slides
+*abline(v = 0.2, lwd = 4)
+```
+
+&lt;img src="lab07-slides-async_files/figure-html/hist-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Simulation Results: Approximate p-value
+The p-value is the proportion of simulated results *as extreme or more extreme* than our observed result.
+What does "extreme" mean?
+
+--
+
+**Extreme** means *provides more evidence for the alternative hypothesis*. What will that mean here?
+--
+
+&lt;img src="lab07-slides-async_files/figure-html/histShaded-1.png" style="display: block; margin: auto;" /&gt;
+---
+# Simulation Results: Approximate p-value
+
+Let's count the number of simulations that led to a difference in proportions of 20% or greater:
+
+
+```r
+sum(pHatDiffs &gt;= 0.2)
+```
+
+```
+[1] 1
+```
+
+--
+So the estimated p-value is 1/1000 = 0.001 = 0.1%.
+
+- Is our observed data rare?
+- Is our null hypothesis reasonable?
+
+---
+# Lab Project ⌨️
+
+.pull-left[
+### Your tasks
+- Complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+]
+
+.pull-right[
+### How to get help
+- Use the "labs" section of Piazza to ask questions and work with your peers.
+- If you use Piazza, please note that in the "Collaborators" list at the top of the discussion section.
+- If you're really stuck, email your lab instructor!
+]
+
+---
+class: center middle
+
+&lt;img src="https://media.tenor.com/images/2ae8de10391445da74ab02f5ab4f4ab7/tenor.gif" height=500 /&gt;
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
