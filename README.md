@@ -16,6 +16,8 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[*Lab 6:* Simulation Basics]](#lab6)
 [[*Lab 7:* Simulation-Based Hypothesis Testing]](#lab7)
 
+[[Video Playlist]](https://www.youtube.com/playlist?list=PLMmBaYqloeD3ltusC-RXmslcpo1pTUWe_)
+
 <hr />
 
 ## <a name="lab1"></a>Lab 1: Getting Started with R
@@ -115,8 +117,8 @@ Lab materials for the week running Friday 10/2 - Friday 10/9
 1. Line graphs in R
 
 ### Slides
-- **Asynchronous Labs** [[html]](lab06-slides/lab06-slides-async.html) [[pdf]](lab06-slides/lab06-slides-async.pdf)
-- **Synchronous Labs** [[html]](lab06-slides/lab06-slides-sync.html) [[pdf]](lab06-slides/lab06-slides-sync.pdf)
+- **Asynchronous Labs** [[html]](lab06-slides/lab06-slides-async.html) [[pdf]](lab06-slides/lab06-slides-async.pdf) [[video]](https://youtu.be/dCGxOX_WTLE)
+- **Synchronous Labs** [[html]](lab06-slides/lab06-slides-sync.html) [[pdf]](lab06-slides/lab06-slides-sync.pdf) 
 
 <hr />
 
