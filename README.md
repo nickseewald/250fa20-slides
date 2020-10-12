@@ -16,7 +16,7 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[*Lab 6:* Simulation Basics]](#lab6)
 [[*Lab 7:* Simulation-Based Hypothesis Testing]](#lab7)
 
-[[Video Playlist]](https://www.youtube.com/playlist?list=PLMmBaYqloeD3ltusC-RXmslcpo1pTUWe_)
+**Lab videos are available on Youtube!** [[Video Playlist]](https://www.youtube.com/playlist?list=PLMmBaYqloeD3ltusC-RXmslcpo1pTUWe_)
 
 <hr />
 
