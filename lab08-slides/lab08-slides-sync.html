@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 250 Lab 08</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nick Seewald nseewald@umich.edu" />
+    <script src="libs/xaringanExtra-webcam/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extras.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 250 Lab 08
+## Sampling Distributions of Proportions
+### Nick Seewald<br />nseewald@umich.edu
+### Week of 10/19/2020
+
+---
+
+
+
+
+
+
+
+
+class: center middle
+
+# Reminders 💡
+
+Your tasks for the week running Friday 10/19 - Friday 10/23:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Lab 8 | Friday 10/23 8:00AM ET | Canvas |
+| *No homework this week* | -- | course.work |
+
+Office hours are back to normal this week (with a few small tweaks)
+
+Midterm regrade requests through Gradescope due **Tuesday 10/27 8a
+
+---
+class: center
+
+# Midterm Recap
+
+&lt;img src="../../midtermDist.png" width=80% /&gt;
+
+--
+
+If the midterm didn't go as expected *that's OKAY*. There's plenty of semester left.
+
+---
+
+# What's the plan?
+
+Today we're going to learn about "sampling distributions" and something called the **Central Limit Theorem** (CLT).
+
+--
+
+The central limit theorem is sort of magical. We'll talk about it in more detail in lecture!
+
+&lt;div style="text-align:center;"&gt;&lt;img src=https://media.tenor.com/images/2450a453b34f80581db8ba53a650cf73/tenor.gif /&gt;&lt;/div&gt;
+
+---
+# Sampling Distributions
+
+A **sampling distribution** refers to the possible values for a *statistic* (e.g., `\(\hat{p}\)`) and how often those values occur.
+
+We've sort of seen sampling distributions already. Can you think of how?
+
+--
+
+The histograms we've made of `\(\hat{p}_{\mathrm{sim}}\)` are sampling distributions of `\(\hat{p}\)` (under the null hypothesis model)!
+
+---
+class: inverse
+
+# Penguins!
+
+
+```r
+penguins &lt;- read.csv("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv",
+                     stringsAsFactors = TRUE)
+```
+
+&lt;div style="text-align:center;"&gt;&lt;img src="https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/man/figures/lter_penguins.png" width=700 /&gt;&lt;/div&gt;
+
+---
+class: inverse
+# Penguins!
+
+Let's remind ourselves of what variables are in this data:
+
+
+```r
+# Use your favorite function or two to explore the data
+```
+
+--
+
+
+```r
+# Use your favorite function or two to explore the data
+names(penguins)
+```
+
+```
+[1] "species"           "island"            "bill_length_mm"   
+[4] "bill_depth_mm"     "flipper_length_mm" "body_mass_g"      
+[7] "sex"               "year"             
+```
+
+--
+
+&gt; IMPORTANT NOTE: For the purposes of this example, we're going to assume that the penguins in the data represent the *population* of all penguins in the Palmer Archipelago. This is obviously not true: there are more than 333 penguins living on these islands. *This is just to illustrate ideas*.
+
+---
+# "Population" proportions
+
+Assuming our data is on the full population of penguins in the archipelago, how could we find the population proportion of Gentoo penguins?
+
+--
+
+
+```r
+proportions(table(penguins$species))
+```
+
+```
+
+   Adelie Chinstrap    Gentoo 
+0.4384384 0.2042042 0.3573574 
+```
+
+--
+
+`$$p = 0.357$$`
+where `\(p\)` is the population proportion of Gentoo penguins in the Palmer Archipelago
+
+---
+
+# `set.seed()`
+
+Start by setting the seed:
+
+
+```r
+set.seed(7923)
+```
+
+Things to remember when setting the seed:
+
+- Guaranteed to get the same results from the same code in the *knitted* document
+- Determines the *sequence* of random numbers: things can get knocked off sequence
+- Use "Run All Chunks Above" to get back on sequence and to get the same numbers as in the knitted document
+
+---
+# Taking a sample
+Take a sample of size 20 from the "population" of all penguins:
+
+
+```r
+sample1 &lt;- penguins[sample(1:333, size = 20), ]
+```
+
+--
+
+
+```
+      species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
+271 Chinstrap  Dream           45.2          17.8               198        3950
+252    Gentoo Biscoe           43.3          14.0               208        4575
+       sex year
+271 female 2007
+252 female 2009
+```
+
+--
+
+
+```r
+proportions(table(sample1$species))
+```
+
+```
+
+   Adelie Chinstrap    Gentoo 
+     0.50      0.15      0.35 
+```
+
+---
+# Taking *another* sample
+
+
+```r
+sample2 &lt;- penguins[sample(1:333, size = 20), ] # reusing the same code as above
+proportions(table(sample2$species))
+```
+
+```
+
+   Adelie Chinstrap    Gentoo 
+     0.65      0.20      0.15 
+```
+
+We get different results! This is expected, it's *sample-to-sample variability*.
+
+--
+
+&lt;div style="text-align:center;"&gt;&lt;img src="https://media.tenor.com/images/06c9e89b2c9a326c66129ed438f23d62/tenor.gif" width=400 /&gt;&lt;/div&gt;
+
+---
+# 1000 more samples
+.pull-left[
+
+```r
+samplesOfSize20 &lt;- replicate(1000, {
+  s &lt;- penguins[sample(1:333, size = 20), ]
+  proportions(table(s$species))["Gentoo"]
+})
+```
+
+
+```r
+hist(samplesOfSize20,
+     main = "Sampling distribution of p-hat, n = 20",
+     xlab = "p-hat values",
+     col = "darkturquoise",
+     xlim = c(0, 1),
+     cex.lab = 1.5,
+     cex.main = 1.5,
+     cex.axis = 1.5)
+abline(v = proportions(table(penguins$species))["Gentoo"],
+       lwd = 5, lty = "dashed", col = "darkblue")
+```
+]
+.pull-right[
+![](lab08-slides-sync_files/figure-html/samples20hist-1.png)
+]
+
+---
+class: center, middle, inverse
+# Describe this distribution
+
+### https://pollev.com/nickseewald611
+
+![](lab08-slides-sync_files/figure-html/samples20hist-1.png)
+
+---
+# Larger samples: `\(n = 40\)`
+
+.pull-left[
+
+```r
+samplesOfSize40 &lt;- replicate(1000, {
+  s &lt;- penguins[sample(1:333, size = 40), ]
+  proportions(table(s$species))["Gentoo"]
+})
+```
+
+
+```r
+hist(samplesOfSize40,
+     main = "Sampling distribution of p-hat, n = 40",
+     xlab = "p-hat values",
+     col = "darkturquoise",
+     xlim = c(0, 1),
+     cex.lab = 1.5,
+     cex.main = 1.5,
+     cex.axis = 1.5)
+abline(v = proportions(table(penguins$species))["Gentoo"],
+       lwd = 5, lty = "dashed", col = "darkblue")
+```
+]
+.pull-right[
+![](lab08-slides-sync_files/figure-html/samples40hist-1.png)
+]
+
+---
+class: center, middle, inverse
+# How do these distributions compare?
+
+https://pollev.com/nickseewald611
+
+.pull-left[
+![](lab08-slides-sync_files/figure-html/samples20hist-1.png)
+]
+.pull-right[
+![](lab08-slides-sync_files/figure-html/samples40hist-1.png)
+]
+
+---
+# Even larger samples: `\(n = 100\)`
+
+.pull-left[
+
+```r
+samplesOfSize100 &lt;- replicate(1000, {
+  s &lt;- penguins[sample(1:333, size = 100), ]
+  proportions(table(s$species))["Gentoo"]
+})
+```
+
+
+```r
+hist(samplesOfSize100,
+     main = "Sampling distribution of p-hat, n = 100",
+     xlab = "p-hat values",
+     col = "darkturquoise",
+     xlim = c(0, 1),
+     cex.lab = 1.5,
+     cex.main = 1.5,
+     cex.axis = 1.5)
+abline(v = proportions(table(penguins$species))["Gentoo"],
+       lwd = 5, lty = "dashed", col = "darkblue")
+```
+]
+.pull-right[
+![](lab08-slides-sync_files/figure-html/samples100hist-1.png)
+]
+
+---
+class:center
+
+# Comparing Results
+https://pollev.com/nickseewald611
+![](lab08-slides-sync_files/figure-html/histogramStack-1.png)&lt;!-- --&gt;
+
+
+---
+# More Detail
+
+.pull-left[
+&lt;div style="text-align:center;"&gt;&lt;img src="histgif/clt-proportions.gif" /&gt;&lt;/div&gt;
+]
+.pull-right[
+As the size of our samples increases, the sampling distribution of `\(\hat{p}\)` becomes...
+
+
+1. more obviously centered around `\(p\)`
+1. narrower
+1. more bell-shaped
+]
+
+---
+# Central Limit Theorem
+
+&gt; If we look at a proportion (or difference in proportions) and the scenario satisfies certain conditions, then the sample proportion (or difference in proportions) will appear to follow a bell-shaped curve called the *normal distribution*.
+
+--
+
+##Conditions:
+
+1. **Observations in the sample are independent.** Guaranteed by random sampling or random allocation to treatment/control.
+1. **The sample is large enough.** "Large enough" means `\(n\times p \geq 10\)` *and* `\(n\times (1-p) \geq 10\)` ($p$ the *population* proportion).
+
+---
+class: inverse
+# Lab Project ⌨️
+
+.pull-left[
+### Your tasks
+- Complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+- Introduce yourself to your collaborators
+- **Do not leave people behind.**
+]
+
+.pull-right[
+### How to get help
+- Ask your collaborators -- share your screen!
+- Use the "Ask for Help" button to flag me down.
+]
+
+---
+
+class: center middle
+
+# Reminders 💡
+
+### http://bit.ly/250ticket8
+
+Your tasks for the week running Friday 10/19 - Friday 10/23:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Lab 8 | Friday 10/23 8:00AM ET | Canvas |
+| *No homework this week* | -- | course.work |
+
+Office hours are back to normal this week (with a few small tweaks)
+
+Midterm regrade requests through Gradescope due **Tuesday 10/27 8a
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

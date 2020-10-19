@@ -15,6 +15,7 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[*Lab 5:* Plotting and Linear Regression]](#lab5)
 [[*Lab 6:* Simulation Basics]](#lab6)
 [[*Lab 7:* Simulation-Based Hypothesis Testing]](#lab7)
+[[*Lab 8:* Sampling Distributions of Proportions]](#lab8)
 
 <hr />
 
@@ -132,3 +133,14 @@ Lab materials for the week running Friday 10/9 - Friday 10/16
 
 ### Slides
 - **Synchronous Labs** [[html]](lab07-slides/lab07-slides-sync.html) [[pdf]](lab07-slides/lab07-slides-sync.pdf)
+
+<hr />
+
+## <a name="lab7"></a>Lab 8: Simulation-Based Hypothesis Testing
+Lab materials for the week running Friday 10/16 - Friday 10/23
+
+### Statistical Learning Objectives
+1. Discover the central limit theorem for proportions
+
+### Slides
+- **Synchronous Labs** [[html]](lab08-slides/lab08-slides-sync.html) [[pdf]](lab08-slides/lab08-slides-sync.pdf)
