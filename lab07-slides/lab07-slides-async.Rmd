@@ -49,14 +49,18 @@ Your tasks for the week running Friday 10/9 - Friday 10/16:
 
 | Task | Due Date | Submission |
 |:-----|:---------|:-----------|
-| **MIDTERM EXAM** | Thursday 10/15 | **GRADESCOPE** |
-| Lab 7 | Friday 10/16 8AM ET | Canvas |
+| **MIDTERM EXAM** | Thursday 10/15, any 2-hr window| **GRADESCOPE** |
+| Lab 7 | Sunday 10/18 11:59PM ET | Canvas |
 
 Modified office hours schedule this week due to midterm
 
 ---
 # Homework 5 Comments
-
+We'll address many of these in the next few slides, but:
+1. Hypotheses are about *parameters*, involve specific *numeric values*, and must include *context*.
+1. The *p-value* is different from $p$ (population proportion) is different from $\hat{p}$ (sample proportion).
+1. Be specific when you talk about "extreme" values (also note these are not outliers): include the observed value *and* the direction.
+1. A p-value of 0.02 is small.
 
 ---
 # Learning Objectives
