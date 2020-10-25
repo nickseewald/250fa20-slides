@@ -1,7 +1,5 @@
 # Slides for Nick's STATS 250 Labs - Fall 2020
 
-<script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
-
 PDF versions of the slides are available on our Lab Resources page on Canvas.
 
 All materials &#169; 2020 Nicholas J. Seewald
