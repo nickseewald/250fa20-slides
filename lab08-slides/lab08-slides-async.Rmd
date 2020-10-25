@@ -12,7 +12,6 @@ output:
       countIncrementalSlides: false
       ratio: "16:9"
     css: ["xaringan-themer.css", "extras.css"]
-    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 ---
 
 ```{r setup, include=FALSE}
@@ -46,7 +45,7 @@ class: center middle
 
 # Reminders `r emo::ji("bulb")`
 
-Your tasks for the week running Friday 10/19 - Friday 10/23:
+Your tasks for the week running Friday 10/16 - Friday 10/23:
 
 | Task | Due Date | Submission |
 |:-----|:---------|:-----------|
@@ -55,7 +54,7 @@ Your tasks for the week running Friday 10/19 - Friday 10/23:
 
 Office hours are back to normal this week (with a few small tweaks)
 
-Midterm regrade requests through Gradescope due **Tuesday 10/27 8a
+Midterm regrade requests through Gradescope due **Tuesday 10/27 8am ET**
 
 ---
 class: center
@@ -219,14 +218,6 @@ abline(v = proportions(table(penguins$species))["Gentoo"],
 ]
 
 ---
-class: center, middle, inverse
-# Describe this distribution
-
-### https://pollev.com/nickseewald611
-
-![](`r knitr::fig_chunk("samples20hist", "png")`)
-
----
 # Larger samples: $n = 40$
 
 .pull-left[
@@ -257,8 +248,6 @@ abline(v = proportions(table(penguins$species))["Gentoo"],
 ---
 class: center, middle, inverse
 # How do these distributions compare?
-
-https://pollev.com/nickseewald611
 
 .pull-left[
 ![](`r knitr::fig_chunk("samples20hist", "png")`)
@@ -299,7 +288,7 @@ abline(v = proportions(table(penguins$species))["Gentoo"],
 class:center
 
 # Comparing Results
-https://pollev.com/nickseewald611
+
 ```{r histogramStack, fig.height = 6.5, fig.width = 12, echo = F}
 # Don't worry about this code! Just for illustration
 oldpar <- par()
@@ -375,9 +364,8 @@ class: center middle
 
 # Reminders `r emo::ji("bulb")`
 
-### http://bit.ly/250ticket8
 
-Your tasks for the week running Friday 10/19 - Friday 10/23:
+Your tasks for the week running Friday 10/16 - Friday 10/23:
 
 | Task | Due Date | Submission |
 |:-----|:---------|:-----------|
