@@ -92,7 +92,7 @@ Lab materials for the week running Friday 9/25 - Friday 10/2.
 ### Statistical Learning Objectives
 1. Interpret a correlation matrix
 1. Interpret a fitted linear regression model
-1. Check the fit of the linear regression model using $R^2$
+1. Check the fit of the linear regression model using $$R^2$$
 1. Explore the dangers of extrapolation
 
 ### R Learning Objectives
