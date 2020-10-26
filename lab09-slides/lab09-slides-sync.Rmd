@@ -11,8 +11,10 @@ output:
       highlightLines: true
       countIncrementalSlides: false
       ratio: "16:9"
+    includes:
+      in_header:
+        - "mathjax.html"
     css: ["xaringan-themer.css", "extras.css"]
-    mathjax: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
 ---
 
 ```{r setup, include=FALSE}
@@ -44,6 +46,7 @@ xaringanExtra::use_webcam()
 xaringanExtra::use_fit_screen()
 xaringanExtra::use_editable()
 xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
 ```
 
 class: center middle
@@ -175,9 +178,12 @@ class: inverse
 - When we're done, we'll count the number of (f) **blue** chips and divide by (g) **150**.
 
 .can-edit[
-BLUE CHIPS:
+LIVE DEMO:
 
-YELLOW CHIPS:
+- Blue Chips:
+- Yellow Chips:
+
+Sample proportion: 
 ]
 
 --
@@ -187,9 +193,64 @@ To find a *sample proportion* we divide by the *sample* size!
 ---
 # Try It 5
 
-Copy/paste numbers from Try It 4 into code:
+.panelset[
+.panel[.panel-name[Provided Code]
+```{r TryIt5Given, eval = F}
+# the chip vector represents your bag of poker chips
+bagOfChips <- c(rep("blue", ___(c)___), rep("yellow", ___(d)___))
 
+# now repeat the procedure from Try It 4 1000 times.
+pHatSims <- replicate(1000, {
+  # Draw (e) chips from the bag of chips (with replacement)
+  x <- sample(bagOfChips, size = ___(e)___, replace = TRUE)
+  
+  # Compute the proportion of sampled chips that are the color you chose in (f).
+  # You should either choose "blue" or "yellow", and your answer needs to be
+  # inside those quotes! So the code should either be sum(x == "blue") or 
+  # sum(x == "yellow").
+  sum(x == "___(f)___") / ___(g)___
+})
+```
+]
 
+.panel[.panel-name[Filled-In Code]
+```{r TryIt5Filled}
+# the chip vector represents your bag of poker chips
+bagOfChips <- c(rep("blue", 50), rep("yellow",50)) #<<
+
+# now repeat the procedure from Try It 4 1000 times.
+pHatSims <- replicate(1000, {
+  # Draw (e) chips from the bag of chips (with replacement)
+  x <- sample(bagOfChips, size = 150, replace = TRUE) #<<
+  
+  # Compute the proportion of sampled chips that are the color you chose in (f).
+  # You should either choose "blue" or "yellow", and your answer needs to be
+  # inside those quotes! So the code should either be sum(x == "blue") or 
+  # sum(x == "yellow").
+  sum(x == "blue") / 150 #<<
+})
+```
+]
+]
+
+---
+# Try It 5
+
+That code ran the simulation. Now we've got to find a p-value. **What's a p-value?**
+
+--
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+A .b[p-value] is the proportion of simulated results that are as extreme or more extreme than the observed result.
+]
+
+--
+
+.center[
+![](https://media1.tenor.com/images/fe5b68b427036ab850b9d3074aa2a5d4/tenor.gif?itemid=12917792)
+]
+---
+# Try It 
 
 ---
 class: inverse

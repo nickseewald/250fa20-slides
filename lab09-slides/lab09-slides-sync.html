@@ -7,13 +7,40 @@
     <script src="libs/xaringanExtra-webcam/webcam.js"></script>
     <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
     <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
-    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x68498024ef9423bb19b3b2c2e9e67ef","expires":14}</script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"xa737f2521fa40098b0b1efb0d817781","expires":14}</script>
     <script src="libs/himalaya/himalaya.js"></script>
     <script src="libs/js-cookie/js.cookie.js"></script>
     <link href="libs/editable/editable.css" rel="stylesheet" />
     <script src="libs/editable/editable.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script data-cfasync="false" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <script data-cfasync="false"> 
+    (function() {
+      var i, text, code, codes = document.getElementsByTagName('code');
+      for (i = 0; i < codes.length;) {
+        code = codes[i];
+        if (code.parentNode.tagName !== 'PRE' &&
+            code.childElementCount === 0) {
+          text = code.textContent;
+          if (/^\$[^$]/.test(text) && /[^$]\$$/.test(text)) {
+            text = text.replace(/^\$/, '\\(').replace(/\$$/, '\\)');
+            code.textContent = text;
+          }
+          if (/^\\\((.|\s)+\\\)$/.test(text) ||
+              /^\\\[(.|\s)+\\\]$/.test(text) ||
+              /^\$(.|\s)+\$$/.test(text) ||
+              /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+            code.outerHTML = code.innerHTML;  // remove <code></code>
+            continue;
+          }
+        }
+        i++;
+      }
+    })();
+    </script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="extras.css" type="text/css" />
   </head>
@@ -189,9 +216,12 @@ class: inverse
 - When we're done, we'll count the number of (f) **blue** chips and divide by (g) **150**.
 
 .can-edit[
-BLUE CHIPS:
+LIVE DEMO:
 
-YELLOW CHIPS:
+- Blue Chips:
+- Yellow Chips:
+
+Sample proportion: 
 ]
 
 --
@@ -201,9 +231,66 @@ To find a *sample proportion* we divide by the *sample* size!
 ---
 # Try It 5
 
-Copy/paste numbers from Try It 4 into code:
+.panelset[
+.panel[.panel-name[Provided Code]
 
+```r
+# the chip vector represents your bag of poker chips
+bagOfChips &lt;- c(rep("blue", ___(c)___), rep("yellow", ___(d)___))
 
+# now repeat the procedure from Try It 4 1000 times.
+pHatSims &lt;- replicate(1000, {
+  # Draw (e) chips from the bag of chips (with replacement)
+  x &lt;- sample(bagOfChips, size = ___(e)___, replace = TRUE)
+  
+  # Compute the proportion of sampled chips that are the color you chose in (f).
+  # You should either choose "blue" or "yellow", and your answer needs to be
+  # inside those quotes! So the code should either be sum(x == "blue") or 
+  # sum(x == "yellow").
+  sum(x == "___(f)___") / ___(g)___
+})
+```
+]
+
+.panel[.panel-name[Filled-In Code]
+
+```r
+# the chip vector represents your bag of poker chips
+*bagOfChips &lt;- c(rep("blue", 50), rep("yellow",50))
+
+# now repeat the procedure from Try It 4 1000 times.
+pHatSims &lt;- replicate(1000, {
+  # Draw (e) chips from the bag of chips (with replacement)
+* x &lt;- sample(bagOfChips, size = 150, replace = TRUE)
+  
+  # Compute the proportion of sampled chips that are the color you chose in (f).
+  # You should either choose "blue" or "yellow", and your answer needs to be
+  # inside those quotes! So the code should either be sum(x == "blue") or 
+  # sum(x == "yellow").
+* sum(x == "blue") / 150
+})
+```
+]
+]
+
+---
+# Try It 5
+
+That code ran the simulation. Now we've got to find a p-value. **What's a p-value?**
+
+--
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+A .b[p-value] is the proportion of simulated results that are as extreme or more extreme than the observed result.
+]
+
+--
+
+.center[
+![](https://media1.tenor.com/images/fe5b68b427036ab850b9d3074aa2a5d4/tenor.gif?itemid=12917792)
+]
+---
+# Try It 
 
 ---
 class: inverse
@@ -356,7 +443,7 @@ slideshow._releaseMath(document);
 (function () {
   var script = document.createElement('script');
   script.type = 'text/javascript';
-  script.src  = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
   if (location.protocol !== 'file:' && /^https?:/.test(script.src))
     script.src  = script.src.replace(/^https?:/, '');
   document.getElementsByTagName('head')[0].appendChild(script);
