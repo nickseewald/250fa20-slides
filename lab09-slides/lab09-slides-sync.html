@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 250 Lab 08</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nick Seewald nseewald@umich.edu" />
+    <script src="libs/xaringanExtra-webcam/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x68498024ef9423bb19b3b2c2e9e67ef","expires":14}</script>
+    <script src="libs/himalaya/himalaya.js"></script>
+    <script src="libs/js-cookie/js.cookie.js"></script>
+    <link href="libs/editable/editable.css" rel="stylesheet" />
+    <script src="libs/editable/editable.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extras.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 250 Lab 08
+## Normal Distribution
+### Nick Seewald<br />nseewald@umich.edu
+### Week of 10/19/2020
+
+---
+
+
+
+
+
+
+
+
+class: center middle
+
+# Reminders 💡
+
+Your tasks for the week running Friday 10/23 - Friday 10/30:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Lab 9 | Friday 10/30 8:00AM ET | Canvas |
+| Homework 6 | Friday 10/30 8:00AM ET | course.work |
+
+Midterm regrade requests through Gradescope due **Tuesday 10/27 8am ET**
+
+M-Write Prompt 2 opens Wednesday 10/28 at 5pm ET
+
+---
+class: inverse, center, middle
+
+# Let's Go Over Lab 8.
+
+---
+
+# Try It 1
+
+Before the survey, the instructional team members thought that a majority of Stats 250 students would prefer to suddenly become a CEO (over suddenly becoming a Senator). Recall that in the survey, students only had two choices: CEO or Senator. Write the appropriate hypotheses below to test for whether a majority of Stats 250 students would prefer to suddenly become a CEO.
+
+--
+.pull-left[
+### What do we want to learn?
+- Do more 250 students prefer suddenly becoming a CEO over suddenly becoming a Senator?
+]
+
+.pull-right[
+### What kind of events are these?
+- Recall that in the survey, students only had two choices: CEO or Senator. These are **complementary**.
+]
+
+---
+# Try It 1
+
+&gt; ...test for whether a *majority* of Stats 250 students would prefer to suddenly become a CEO.
+
+- Is the proportion of 250 students who prefer to suddenly become a CEO greater than 0.5?
+
+### Hypotheses
+Let `\(p\)` be the proportion of all 250 students who would prefer to become a CEO.
+- `\(H_0\)`:  `\(p = 0.5\)`
+- `\(H_a\)`:  `\(p &gt; 0.5\)`
+
+---
+# Try It 2
+
+&gt; The data can be found in `student_survey.csv`. Read in the data and call it `student_survey`.
+
+
+```r
+student_survey &lt;- read.csv("student_survey.csv", stringsAsFactors = TRUE)
+head(student_survey)
+```
+
+```
+  job                               ceoSenator
+1  No Suddenly become a CEO of a major company
+2  No Suddenly become a CEO of a major company
+3  No Suddenly become a CEO of a major company
+4 Yes            Suddenly be elected a senator
+5  No Suddenly become a CEO of a major company
+6 Yes Suddenly become a CEO of a major company
+```
+
+---
+# Try It 3
+
+&gt; This data set contains every student who took the survey in Stats 250. This is quite a large number, so we will instead grab a random sample of students from the data. Take a sample of the size of your choice using code. Make sure you give it a name! Why did you pick that size for your sample?
+
+
+```r
+*survSample &lt;- student_survey[sample(1:1449, size = 150, replace = F), ]
+table(survSample$ceoSenator)
+proportions(table(survSample$ceoSenator))
+```
+
+```
+
+           Suddenly be elected a senator 
+                                      28 
+Suddenly become a CEO of a major company 
+                                     119 
+
+           Suddenly be elected a senator 
+                               0.1904762 
+Suddenly become a CEO of a major company 
+                               0.8095238 
+```
+
+---
+# Try It 4
+
+&gt; We will use a total of 100 poker chips to simulate the null hypothesis model. Fill in the blanks: In order to conduct the simulation, a researcher decided that a blue poker chip represents ______(a)______ and a yellow poker chip represents ______(b)______. There will be _____(c)_____ blue poker chips and _____(d)_____ yellow poker chips. To perform the simulation, we will mix the blue and yellow poker chips, select one from the bag, and record the color before replacing the chip in the bag. The researcher will pick ______(e)______ times to complete this single simulation. Then he will count how many ______(f)______ poker chips he has and divided by ______(g)______ to find the simulated proportion.
+
+---
+# Try It 4
+
+What do I assume to be true when I run my simulations?
+
+--
+
+.center[
+THE NULL HYPOTHESIS `\(H_0\)`!!!
+]
+
+What does that mean for us?
+
+Assume `\(p = 0.5\)`.
+
+---
+# Try It 4
+
+## Simulation Setup
+  - (a) Blue chip: student prefers to suddenly become CEO
+  - (b) Yellow chip: student prefers to suddenly become Senator
+
+Assume `\(H_0\)` is true! With 100 poker chips, that means
+  - (c) 50 blue
+  - (d) 50 yellow
+
+---
+class: inverse
+
+# Excursion: Simulation
+
+- Let `\(p\)` be the proportion of all 250 students who would prefer to become a CEO.
+
+- If `\(p=0.5\)`, then every 250 student should have a 50% probability of preferring CEO.
+
+- Each draw of our simulation represents selecting a student and asking them if they'd rather suddenly become a CEO or a Senator.
+
+- For each draw, `\(P(\mathrm{blue chip}) = 0.5\)`.
+
+- To ensure this probability, we sample *with replacement*.
+
+- If we sample with replacement, we can draw as many times as we need to
+
+---
+
+# Try It 4
+
+100 poker chips; 50 blue, 50 yellow.
+
+- We will draw (e) **150** times to complete a single simulation.
+
+- When we're done, we'll count the number of (f) **blue** chips and divide by (g) **150**.
+
+.can-edit[
+BLUE CHIPS:
+
+YELLOW CHIPS:
+]
+
+--
+
+To find a *sample proportion* we divide by the *sample* size!
+
+---
+# Try It 5
+
+Copy/paste numbers from Try It 4 into code:
+
+
+
+---
+class: inverse
+# Lab Project ⌨️
+
+.pull-left[
+### Your tasks
+- Complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+- Introduce yourself to your collaborators
+- **Do not leave people behind.**
+]
+
+.pull-right[
+### How to get help
+- Ask your collaborators -- share your screen!
+- Use the "Ask for Help" button to flag me down.
+]
+
+---
+
+class: center middle
+
+# Reminders 💡
+
+### http://bit.ly/250ticket8
+
+Your tasks for the week running Friday 10/19 - Friday 10/23:
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Lab 8 | Friday 10/23 8:00AM ET | Canvas |
+| *No homework this week* | -- | course.work |
+
+Office hours are back to normal this week (with a few small tweaks)
+
+Midterm regrade requests through Gradescope due **Tuesday 10/27 8a
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

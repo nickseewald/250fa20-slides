@@ -1,6 +1,6 @@
 ---
 title: "STATS 250 Lab 08"
-subtitle: "Sampling Distributions of Proportions"
+subtitle: "Normal Distribution"
 author: "Nick Seewald<br />nseewald&#64;umich.edu"
 date: "Week of 10/19/2020"
 output:
@@ -18,8 +18,10 @@ output:
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = FALSE)
 knitr::opts_chunk$set(echo = TRUE, include = TRUE, eval = TRUE, comment = NA, fig.height = 5, fig.width = 9)
+source("plotNorm.R")
 source("sample_two_groups.R")
 par(mar = c(5, 5.5, 4, 2) + 0.1)
+set.seed(1875)
 ```
 
 ```{r xaringan-themer, include = FALSE, warning = FALSE}
@@ -40,317 +42,154 @@ style_duo(primary_color = "#00274c",
 ```{r xaringanExtra, echo=FALSE}
 xaringanExtra::use_webcam()
 xaringanExtra::use_fit_screen()
+xaringanExtra::use_editable()
+xaringanExtra::use_panelset()
 ```
 
 class: center middle
 
 # Reminders `r emo::ji("bulb")`
 
-Your tasks for the week running Friday 10/19 - Friday 10/23:
+Your tasks for the week running Friday 10/23 - Friday 10/30:
 
 | Task | Due Date | Submission |
 |:-----|:---------|:-----------|
-| Lab 8 | Friday 10/23 8:00AM ET | Canvas |
-| *No homework this week* | -- | course.work |
+| Lab 9 | Friday 10/30 8:00AM ET | Canvas |
+| Homework 6 | Friday 10/30 8:00AM ET | course.work |
 
-Office hours are back to normal this week (with a few small tweaks)
+Midterm regrade requests through Gradescope due **Tuesday 10/27 8am ET**
 
-Midterm regrade requests through Gradescope due **Tuesday 10/27 8a
+M-Write Prompt 2 opens Wednesday 10/28 at 5pm ET
 
 ---
-class: center
+class: inverse, center, middle
 
-# Midterm Recap
-
-<img src="../../midtermDist.png" width=80% />
-
---
-
-If the midterm didn't go as expected *that's OKAY*. There's plenty of semester left.
+# Let's Go Over Lab 8.
 
 ---
 
-# What's the plan?
+# Try It 1
 
-Today we're going to learn about "sampling distributions" and something called the **Central Limit Theorem** (CLT).
+Before the survey, the instructional team members thought that a majority of Stats 250 students would prefer to suddenly become a CEO (over suddenly becoming a Senator). Recall that in the survey, students only had two choices: CEO or Senator. Write the appropriate hypotheses below to test for whether a majority of Stats 250 students would prefer to suddenly become a CEO.
 
 --
+.pull-left[
+### What do we want to learn?
+- Do more 250 students prefer suddenly becoming a CEO over suddenly becoming a Senator?
+]
 
-The central limit theorem is sort of magical. We'll talk about it in more detail in lecture!
-
-<div style="text-align:center;"><img src=https://media.tenor.com/images/2450a453b34f80581db8ba53a650cf73/tenor.gif /></div>
+.pull-right[
+### What kind of events are these?
+- Recall that in the survey, students only had two choices: CEO or Senator. These are **complementary**.
+]
 
 ---
-# Sampling Distributions
+# Try It 1
 
-A **sampling distribution** refers to the possible values for a *statistic* (e.g., $\hat{p}$) and how often those values occur.
+> ...test for whether a *majority* of Stats 250 students would prefer to suddenly become a CEO.
 
-We've sort of seen sampling distributions already. Can you think of how?
+- Is the proportion of 250 students who prefer to suddenly become a CEO greater than 0.5?
+
+### Hypotheses
+Let $p$ be the proportion of all 250 students who would prefer to become a CEO.
+- $H_0$:  $p = 0.5$
+- $H_a$:  $p > 0.5$
+
+---
+# Try It 2
+
+> The data can be found in `student_survey.csv`. Read in the data and call it `student_survey`.
+
+```{r readInData}
+student_survey <- read.csv("student_survey.csv", stringsAsFactors = TRUE)
+head(student_survey)
+```
+
+---
+# Try It 3
+
+> This data set contains every student who took the survey in Stats 250. This is quite a large number, so we will instead grab a random sample of students from the data. Take a sample of the size of your choice using code. Make sure you give it a name! Why did you pick that size for your sample?
+
+```{r sampleData, results = 'hold'}
+survSample <- student_survey[sample(1:1449, size = 150, replace = F), ] #<<
+table(survSample$ceoSenator)
+proportions(table(survSample$ceoSenator))
+```
+
+---
+# Try It 4
+
+> We will use a total of 100 poker chips to simulate the null hypothesis model. Fill in the blanks: In order to conduct the simulation, a researcher decided that a blue poker chip represents ______(a)______ and a yellow poker chip represents ______(b)______. There will be _____(c)_____ blue poker chips and _____(d)_____ yellow poker chips. To perform the simulation, we will mix the blue and yellow poker chips, select one from the bag, and record the color before replacing the chip in the bag. The researcher will pick ______(e)______ times to complete this single simulation. Then he will count how many ______(f)______ poker chips he has and divided by ______(g)______ to find the simulated proportion.
+
+---
+# Try It 4
+
+What do I assume to be true when I run my simulations?
 
 --
 
-The histograms we've made of $\hat{p}_{\mathrm{sim}}$ are sampling distributions of $\hat{p}$ (under the null hypothesis model)!
+.center[
+THE NULL HYPOTHESIS $H_0$!!!
+]
+
+What does that mean for us?
+
+Assume $p = 0.5$.
+
+---
+# Try It 4
+
+## Simulation Setup
+  - (a) Blue chip: student prefers to suddenly become CEO
+  - (b) Yellow chip: student prefers to suddenly become Senator
+
+Assume $H_0$ is true! With 100 poker chips, that means
+  - (c) 50 blue
+  - (d) 50 yellow
 
 ---
 class: inverse
 
-# Penguins!
+# Excursion: Simulation
 
-```{r penguins}
-penguins <- read.csv("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv",
-                     stringsAsFactors = TRUE)
-```
+- Let $p$ be the proportion of all 250 students who would prefer to become a CEO.
 
-<div style="text-align:center;"><img src="https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/man/figures/lter_penguins.png" width=700 /></div>
+- If $p=0.5$, then every 250 student should have a 50% probability of preferring CEO.
+
+- Each draw of our simulation represents selecting a student and asking them if they'd rather suddenly become a CEO or a Senator.
+
+- For each draw, $P(\mathrm{blue chip}) = 0.5$.
+
+- To ensure this probability, we sample *with replacement*.
+
+- If we sample with replacement, we can draw as many times as we need to
 
 ---
-class: inverse
-# Penguins!
 
-Let's remind ourselves of what variables are in this data:
+# Try It 4
 
-```{r penguinsExplore, error = T}
-# Use your favorite function or two to explore the data
+100 poker chips; 50 blue, 50 yellow.
 
-```
+- We will draw (e) **150** times to complete a single simulation.
+
+- When we're done, we'll count the number of (f) **blue** chips and divide by (g) **150**.
+
+.can-edit[
+BLUE CHIPS:
+
+YELLOW CHIPS:
+]
 
 --
 
-```{r penguinsExplore2, error = T}
-# Use your favorite function or two to explore the data
-names(penguins)
-```
-
---
-
-> IMPORTANT NOTE: For the purposes of this example, we're going to assume that the penguins in the data represent the *population* of all penguins in the Palmer Archipelago. This is obviously not true: there are more than 333 penguins living on these islands. *This is just to illustrate ideas*.
+To find a *sample proportion* we divide by the *sample* size!
 
 ---
-# "Population" proportions
+# Try It 5
 
-Assuming our data is on the full population of penguins in the archipelago, how could we find the population proportion of Gentoo penguins?
-
---
-
-```{r speciesProportions}
-proportions(table(penguins$species))
-```
-
---
-
-$$p = 0.357$$
-where $p$ is the population proportion of Gentoo penguins in the Palmer Archipelago
-
----
-
-# `set.seed()`
-
-Start by setting the seed:
-
-```{r setSeed}
-set.seed(7923)
-```
-
-Things to remember when setting the seed:
-
-- Guaranteed to get the same results from the same code in the *knitted* document
-- Determines the *sequence* of random numbers: things can get knocked off sequence
-- Use "Run All Chunks Above" to get back on sequence and to get the same numbers as in the knitted document
-
----
-# Taking a sample
-Take a sample of size 20 from the "population" of all penguins:
-
-```{r penguinSample1}
-sample1 <- penguins[sample(1:333, size = 20), ]
-```
-
---
-
-```{r penguinSampleHead, echo = F}
-head(sample1, 2)
-```
-
---
-
-```{r sample1GentooProp}
-proportions(table(sample1$species))
-```
-
----
-# Taking *another* sample
-
-```{r penguinSample2}
-sample2 <- penguins[sample(1:333, size = 20), ] # reusing the same code as above
-proportions(table(sample2$species))
-```
-
-We get different results! This is expected, it's *sample-to-sample variability*.
-
---
-
-<div style="text-align:center;"><img src="https://media.tenor.com/images/06c9e89b2c9a326c66129ed438f23d62/tenor.gif" width=400 /></div>
-
----
-# 1000 more samples
-.pull-left[
-```{r penguinSamples20}
-samplesOfSize20 <- replicate(1000, {
-  s <- penguins[sample(1:333, size = 20), ]
-  proportions(table(s$species))["Gentoo"]
-})
-```
-
-```{r samples20hist, fig.show = "hide", fig.width = 6, fig.height = 6}
-hist(samplesOfSize20,
-     main = "Sampling distribution of p-hat, n = 20",
-     xlab = "p-hat values",
-     col = "darkturquoise",
-     xlim = c(0, 1),
-     cex.lab = 1.5,
-     cex.main = 1.5,
-     cex.axis = 1.5)
-abline(v = proportions(table(penguins$species))["Gentoo"],
-       lwd = 5, lty = "dashed", col = "darkblue")
-```
-]
-.pull-right[
-![](`r knitr::fig_chunk("samples20hist", "png")`)
-]
-
----
-class: center, middle, inverse
-# Describe this distribution
-
-### https://pollev.com/nickseewald611
-
-![](`r knitr::fig_chunk("samples20hist", "png")`)
-
----
-# Larger samples: $n = 40$
-
-.pull-left[
-```{r penguinSamples40}
-samplesOfSize40 <- replicate(1000, {
-  s <- penguins[sample(1:333, size = 40), ]
-  proportions(table(s$species))["Gentoo"]
-})
-```
-
-```{r samples40hist, fig.show = "hide", fig.width = 6, fig.height = 6}
-hist(samplesOfSize40,
-     main = "Sampling distribution of p-hat, n = 40",
-     xlab = "p-hat values",
-     col = "darkturquoise",
-     xlim = c(0, 1),
-     cex.lab = 1.5,
-     cex.main = 1.5,
-     cex.axis = 1.5)
-abline(v = proportions(table(penguins$species))["Gentoo"],
-       lwd = 5, lty = "dashed", col = "darkblue")
-```
-]
-.pull-right[
-![](`r knitr::fig_chunk("samples40hist", "png")`)
-]
-
----
-class: center, middle, inverse
-# How do these distributions compare?
-
-https://pollev.com/nickseewald611
-
-.pull-left[
-![](`r knitr::fig_chunk("samples20hist", "png")`)
-]
-.pull-right[
-![](`r knitr::fig_chunk("samples40hist", "png")`)
-]
-
----
-# Even larger samples: $n = 100$
-
-.pull-left[
-```{r penguinSamples100}
-samplesOfSize100 <- replicate(1000, {
-  s <- penguins[sample(1:333, size = 100), ]
-  proportions(table(s$species))["Gentoo"]
-})
-```
-
-```{r samples100hist, fig.show = "hide", fig.width = 6, fig.height = 6}
-hist(samplesOfSize100,
-     main = "Sampling distribution of p-hat, n = 100",
-     xlab = "p-hat values",
-     col = "darkturquoise",
-     xlim = c(0, 1),
-     cex.lab = 1.5,
-     cex.main = 1.5,
-     cex.axis = 1.5)
-abline(v = proportions(table(penguins$species))["Gentoo"],
-       lwd = 5, lty = "dashed", col = "darkblue")
-```
-]
-.pull-right[
-![](`r knitr::fig_chunk("samples100hist", "png")`)
-]
-
----
-class:center
-
-# Comparing Results
-https://pollev.com/nickseewald611
-```{r histogramStack, fig.height = 6.5, fig.width = 12, echo = F}
-# Don't worry about this code! Just for illustration
-oldpar <- par()
-par(mfrow = c(3, 1), xpd = NA, mar = c(1, 4, 1, 1) + .1)
-x <- c(20, 40, 100)
-for (n in x) {
-  if (n == x[length(x)])
-    par(mar = c(4, 4, 1, 1) + .1)
-  hist(get(paste0("samplesOfSize", n)),
-     main = paste("1000 samples, n =", n),
-     xlab = ifelse(n == x[length(x)], "p-hat values", ""),
-     col = "darkturquoise",
-     breaks = seq(0, 1, .05),
-     xlim = c(0, 1),
-     ylim = c(0, 400), xaxt = "n",
-     cex.lab = 1.5, cex.main = 1.5)
-}
-axis(side = 1, at = seq(0, 1, .1), labels = paste0(seq(0, 1, .1)),
-     cex = 1.5)
-segments(proportions(table(penguins$species))["Gentoo"], 0, 
-         proportions(table(penguins$species))["Gentoo"], 2000, 
-         lwd = 5, lty = "dashed", col = "darkblue")
-```
+Copy/paste numbers from Try It 4 into code:
 
 
----
-# More Detail
-
-.pull-left[
-<div style="text-align:center;"><img src="histgif/clt-proportions.gif" /></div>
-]
-.pull-right[
-As the size of our samples increases, the sampling distribution of $\hat{p}$ becomes...
-
-
-1. more obviously centered around $p$
-1. narrower
-1. more bell-shaped
-]
-
----
-# Central Limit Theorem
-
-> If we look at a proportion (or difference in proportions) and the scenario satisfies certain conditions, then the sample proportion (or difference in proportions) will appear to follow a bell-shaped curve called the *normal distribution*.
-
---
-
-##Conditions:
-
-1. **Observations in the sample are independent.** Guaranteed by random sampling or random allocation to treatment/control.
-1. **The sample is large enough.** "Large enough" means $n\times p \geq 10$ *and* $n\times (1-p) \geq 10$ ($p$ the *population* proportion).
 
 ---
 class: inverse
