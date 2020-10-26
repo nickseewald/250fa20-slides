@@ -9,6 +9,8 @@ plotNorm <- function(mean = 0, sd = 1, shadeValues = NULL,
   checkmate::assert_number(sd, na.ok = FALSE, finite = TRUE, add = checks)
   checkmate::reportAssertions(checks)
   
+  direction <- match.arg(direction)
+  
   dots <- list(...)
   if (any(names(dots) == "xlim")) {
     xlim <- dots$xlim
@@ -28,10 +30,12 @@ plotNorm <- function(mean = 0, sd = 1, shadeValues = NULL,
   xRange <- seq(mean - 3 * sd, mean + 3 * sd, length = 300)
   height <- dnorm(xRange, mean = mean, sd = sd)
   
-  do.call(plot, list(height ~ xRange, type = "l", axes = F, ylab = "",
-                     xlab = xlab, main = main, xlim = xlim, frame.plot = F, 
+  do.call(plot, c(list(formula = height ~ xRange, type = "l", axes = F, ylab = "",
+                     xlab = xlab, main = main, xlim = xlim, frame.plot = F), 
                      dots))
-  axis(1, at = seq(mean - 3 * sd, mean + 3 * sd, sd), pos = 0)
+  axis(1, at = c(seq(mean - 3 * sd, mean + 3 * sd, sd), shadeValues),
+       labels = prettyNum(c(seq(mean - 3 * sd, mean + 3 * sd, sd), shadeValues)),
+       pos = 0, cex.axis = 1.5)
   
   if (length(shadeValues) == 2) {
     shadeValues <- sort(shadeValues)
@@ -54,6 +58,14 @@ plotNorm <- function(mean = 0, sd = 1, shadeValues = NULL,
       polygon(c(shadeValues[2], xShade[101:200], xShade[200]), 
               c(0, shadeHeight[101:200], 0), col = col.shade)
     }
+    
+    text(x = shadeValues[1], y = 0, xpd = TRUE, 
+         labels = prettyNum(formatC(shadeValues[1], digits = 3)), 
+         pos = 1, font = 2, offset = 0.6, col = col.shade)
+    text(x = shadeValues[2], y = 0, xpd = TRUE, 
+         labels = prettyNum(formatC(shadeValues[2], digits = 3)), 
+         pos = 1, font = 2, offset = 0.6, col = col.shade)
+    
   } else if (length(shadeValues == 1)) {
     if (!any(c("less", "greater") == direction))
       stop(paste("When you provide one shadeValue for shading the plot,",
@@ -70,6 +82,9 @@ plotNorm <- function(mean = 0, sd = 1, shadeValues = NULL,
       polygon(c(xShade[1], xShade, xShade[100]), c(0, shadeHeight, 0),
               col = col.shade)
     }
+    text(x = shadeValues, y = 0, xpd = TRUE,
+         labels = prettyNum(formatC(shadeValues, digits = 3)), pos = 1,
+         font = 2, offset = 0.6, col = col.shade)
   }
   
 }

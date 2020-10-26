@@ -7,6 +7,10 @@
   color: #00274c;
 }
 
+.inverse code {
+  color: #00274c;
+}
+
 .title-slide h1 {
   font-size: 100pt;
   margin-bottom: 0;

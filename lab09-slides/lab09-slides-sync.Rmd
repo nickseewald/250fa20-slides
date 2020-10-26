@@ -1,8 +1,8 @@
 ---
-title: "STATS 250 Lab 08"
+title: "STATS 250 Lab 09"
 subtitle: "Normal Distribution"
 author: "Nick Seewald<br />nseewald&#64;umich.edu"
-date: "Week of 10/19/2020"
+date: "Week of 10/26/2020"
 output:
   xaringan::moon_reader:
     lib_dir: libs
@@ -65,193 +65,326 @@ Midterm regrade requests through Gradescope due **Tuesday 10/27 8am ET**
 M-Write Prompt 2 opens Wednesday 10/28 at 5pm ET
 
 ---
-class: inverse, center, middle
+# Weekly Advice
 
-# Let's Go Over Lab 8.
+PLEASE PLEASE PLEASE WATCH YOUR PARENTHESES
 
----
-
-# Try It 1
-
-Before the survey, the instructional team members thought that a majority of Stats 250 students would prefer to suddenly become a CEO (over suddenly becoming a Senator). Recall that in the survey, students only had two choices: CEO or Senator. Write the appropriate hypotheses below to test for whether a majority of Stats 250 students would prefer to suddenly become a CEO.
+- Every open parenthesis or bracket must be closed
+- Arguments to functions go *inside* parentheses and are separated by commas: `abline(v = 1, col = "blue")`
 
 --
+
+.center[![](https://media1.tenor.com/images/aa18fb02b1b83ac111c63e1f30beeebd/tenor.gif?itemid=4920119)]
+
+---
+# Probability Distributions
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+A .b[distribution] refers to the possible values a random variable can take as well as the probability that it takes those values.
+]
+
+Here's an example distribution of a random variable $X$:
+
+.center[
+|$x_i$ | 0 | 1 | 2 | 3 |
+|:----:|:--|:--|:--|:--|
+|$P(X = x_i)$ | 0.5 | 0.1 | 0.3 | 0.1 |
+]
+
+---
+# The Normal Distribution
+
+- An *extremely* common distribution in statistics
+- Used to describe all sorts of stuff
+  - "All models are wrong; some are useful." -George Box
+  
+```{r normal1, echo = F, fig.align = "center"}
+plotNorm(mean = 0, sd = 1, main = "Standard Normal Distribution, N(0, 1)", cex = 2)
+```
+
+???
+Type in chat: describe distribution
+
+---
+# The Normal Distribution
+
+- There are an **infinity** of normal distributions. 
+
+- To describe which one we're working with, you need to specify the **mean** and the **standard deviation** of the distribution.
+  - Those two numbers *completely describe* the distribution.
+  
+- We write $\mathrm{Normal}(\mu, \sigma)$ or $N(\mu, \sigma)$
+  - $\mu$ (mu) is the population mean
+  - $\sigma$ (sigma) is the population standard deviation
+
+---
+# A Selection of Normal Distributions
+
+.center[
+```{r normalPlots, echo = F, fig.width = 13, fig.height = 7}
+oldmar <- par("mar")
+par(mfrow = c(1, 3), mar = c(5, 1, 4, 1) + .1)
+plotNorm(mean = 10, sd = 1, main = "N(10, 1)", cex.main = 4)
+plotNorm(mean = 10, sd = 5, main = "N(10, 5)", cex.main = 4)
+plotNorm(mean = 30, sd = 15, main = "N(30, 15)", cex.main = 4)
+par(mfrow = c(1, 1), mar = oldmar)
+```
+]
+
+???
+TYPE IN CHAT: describe differences in these three
+
+---
+# Z Scores
+
+- We can **standardize** a random variable $X$ by subtracting its mean and dividing by the standard deviation.
+
+- If $X$ follows a $N(\mu, \sigma)$ distribution, the standardized version is called a **Z score**.
+
+$$Z = \frac{x - \mu}{\sigma}$$
+---
+# Z Scores
+
+- It's easy to compare things on the same scale, so we standardize. 
+- Often easier to work with *one* normal distribution: the *standard* normal, $N(0,1)$. 
+
+.center[
+![](standardization.png)
+]
+
+---
+class: inverse center middle
+# GIF BREAK!
+## What questions do you have so far?
+
+![](https://media1.tenor.com/images/762e4884d11361c860cfb1209289af8f/tenor.gif?itemid=4554923)
+
+---
+# Probability with Normal Distributions
+
+- Given a normally-distributed random variable $X$, the probability of taking on a certain range of values is the area under the normal curve over those values.
+- If $X$ follows a $N(45, 6)$ distribution, $P(X < 35)$ is
+
 .pull-left[
-### What do we want to learn?
-- Do more 250 students prefer suddenly becoming a CEO over suddenly becoming a Senator?
+```{r plot1, fig.show='hide'}
+plotNorm(mean = 45, 
+         sd = 6,
+         shadeValues = 35,
+         direction = "less",
+         cex.main = 2)
+```
+
+```{r pNorm1}
+pnorm(q = 35, mean = 45, sd = 6)
+```
+]
+.pull-right[
+![](`r knitr::fig_chunk("plot1", "png")`)
+]
+
+---
+# Standardization Works
+
+- Let $X$ have a $N(45, 6)$ distribution. Find $P(X < 35)$.
+
+$$ z = \frac{35-45}{6} = -1.667 $$
+
+```{r pnormZ}
+pnorm(q = -1.667, mean = 0, sd = 1)
+```
+
+---
+# Probability with Normal Distributions
+
+We can also find probabilities of "greater than" events. Again, let $X$ be $N(45, 6)$ and find $P(X > 50)$. 
+
+`pnorm()` by default finds *less than* probabilities (area to the *left*)
+
+.pull-left[
+```{r pnorm50}
+pnorm(50, mean = 45, sd = 6)
+```
+]
+.pull-right[
+```{r pnorm50graph, echo = F}
+plotNorm(mean = 45, sd = 6, shadeValues = 50, direction = "less", cex.main = 2)
+```
+]
+
+---
+# Probability with Normal Distributions
+
+How do we deal with `pnorm()` shading to the left?
+
+```{r pnorm50}
+```
+
+.pull-left[
+
+### Strategy 1
+Use the fact that the total area under the normal curve is 1:
+
+```{r pnorm50up1}
+1 - pnorm(50, mean = 45, sd = 6)
+```
 ]
 
 .pull-right[
-### What kind of events are these?
-- Recall that in the survey, students only had two choices: CEO or Senator. These are **complementary**.
+
+### Strategy 2
+Set the `lower.tail` argument to `FALSE`:
+```{r pnorm50up2}
+pnorm(50, mean = 45, sd = 6, lower.tail = FALSE)
+```
 ]
 
 ---
-# Try It 1
+# Probability with Normal Distributions
+How could we find P(35 < X < 50), again if $X$ has a N(45, 6) distribution?
 
-> ...test for whether a *majority* of Stats 250 students would prefer to suddenly become a CEO.
+.pull-left[
+```{r plot3-50, fig.show = "hide"}
+plotNorm(mean = 45, sd = 6,
+         shadeValues = 50,
+         direction = "less", #<<
+         col.shade = "tomato", #<<
+         cex.main = 2)
+```
 
-- Is the proportion of 250 students who prefer to suddenly become a CEO greater than 0.5?
+```{r pnormMiddleExample1}
+pnorm(50, mean = 45, sd = 6)
+```
+]
+.pull-right[
+![](`r knitr::fig_chunk("plot3-50", "png")`)
+]
+---
+# Probability with Normal Distributions
+How could we find P(35 < X < 50), again if $X$ has a N(45, 6) distribution?
 
-### Hypotheses
-Let $p$ be the proportion of all 250 students who would prefer to become a CEO.
-- $H_0$:  $p = 0.5$
-- $H_a$:  $p > 0.5$
+.pull-left[
+```{r plot3-35, fig.show = "hide"}
+plotNorm(mean = 45, sd = 6,
+         shadeValues = 35,
+         direction = "less", #<<
+         col.shade = "darkblue", #<<
+         cex.main = 2)
+```
+
+```{r pnormMiddleExample2}
+pnorm(35, mean = 45, sd = 6)
+```
+]
+.pull-right[
+![](`r knitr::fig_chunk("plot3-35", "png")`)
+]
 
 ---
-# Try It 2
+# Probability with Normal Distributions
+How could we find P(35 < X < 50), again if $X$ has a N(45, 6) distribution?
 
-> The data can be found in `student_survey.csv`. Read in the data and call it `student_survey`.
+.pull-left[
+```{r plot3final, fig.show = "hide"}
+plotNorm(mean = 45, sd = 6,
+         shadeValues = c(35, 50),
+         direction = "inside", #<<
+         col.shade = "tomato", #<<
+         cex.main = 2)
+```
 
-```{r readInData}
-student_survey <- read.csv("student_survey.csv", stringsAsFactors = TRUE)
-head(student_survey)
+```{r pnormMiddleExampleFinal}
+pnorm(50, mean = 45, sd = 6) -
+  pnorm(35, mean = 45, sd = 6)
+```
+]
+.pull-right[
+![](`r knitr::fig_chunk("plot3final", "png")`)
+]
+
+---
+class: inverse, center, middle
+# GIF BREAK
+
+## What questions do you have?
+![](https://media1.tenor.com/images/1296a75b4b5fbde10c3d95c44c9f5e97/tenor.gif?itemid=4621441)
+
+---
+# Percentiles of the Normal Distribution
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+The $x$th .b[percentile] of a distribution is the value of a random variable such that $x$% of the distribution is less than that value. 
+]
+
+- Scoring in the 80th percentile on an exam means you got a higher score than 80% of test takers (equivalently, 80% of test takers scored less than you).
+- Use `qnorm()` to find percentiles of the normal distribution.
+
+Let's find the 4.8th percentile of the $N(45, 6)$ distribution.
+```{r qnorm}
+qnorm(p = .048, mean = 45, sd = 6)
 ```
 
 ---
-# Try It 3
+# Percentiles of the Normal Distribution
 
-> This data set contains every student who took the survey in Stats 250. This is quite a large number, so we will instead grab a random sample of students from the data. Take a sample of the size of your choice using code. Make sure you give it a name! Why did you pick that size for your sample?
+Let's find the 30th percentile of the standard normal distribution, N(0, 1).
 
-```{r sampleData, results = 'hold'}
-survSample <- student_survey[sample(1:1449, size = 150, replace = F), ] #<<
-table(survSample$ceoSenator)
-proportions(table(survSample$ceoSenator))
+```{r qnorm2}
+qnorm(p = 0.3) # notice no mean or sd arguments! The defaults are 0 and 1.
+qnorm(p = 0.3, mean = 0, sd = 1)
 ```
 
+**Type in the chat:** Why is this number negative?
 ---
-# Try It 4
+# Percentiles of the Normal Distribution
 
-> We will use a total of 100 poker chips to simulate the null hypothesis model. Fill in the blanks: In order to conduct the simulation, a researcher decided that a blue poker chip represents ______(a)______ and a yellow poker chip represents ______(b)______. There will be _____(c)_____ blue poker chips and _____(d)_____ yellow poker chips. To perform the simulation, we will mix the blue and yellow poker chips, select one from the bag, and record the color before replacing the chip in the bag. The researcher will pick ______(e)______ times to complete this single simulation. Then he will count how many ______(f)______ poker chips he has and divided by ______(g)______ to find the simulated proportion.
+`qnorm(p = 0.3, mean = 0, sd = 1)` gives us a Z score!
+Use this to find the 30th percentile of the $N(45, 6)$ distribution.
 
----
-# Try It 4
+$$Z = \frac{x - \mu}{\sigma}$$
+Take a minute to fill in the chunks on line 163 and 171.
 
-What do I assume to be true when I run my simulations?
-
+???
+Give students time to fill in chunk on line 163. 
+Then, give them time to check their answer on 172.
 --
+```{r findXfromZ}
+qnorm(0.3) * 6 + 45
+```
 
-.center[
-THE NULL HYPOTHESIS $H_0$!!!
-]
-
-What does that mean for us?
-
-Assume $p = 0.5$.
-
----
-# Try It 4
-
-## Simulation Setup
-  - (a) Blue chip: student prefers to suddenly become CEO
-  - (b) Yellow chip: student prefers to suddenly become Senator
-
-Assume $H_0$ is true! With 100 poker chips, that means
-  - (c) 50 blue
-  - (d) 50 yellow
+```{r checkZ}
+qnorm(0.3, mean = 45, sd = 6)
+```
 
 ---
 class: inverse
-
-# Excursion: Simulation
-
-- Let $p$ be the proportion of all 250 students who would prefer to become a CEO.
-
-- If $p=0.5$, then every 250 student should have a 50% probability of preferring CEO.
-
-- Each draw of our simulation represents selecting a student and asking them if they'd rather suddenly become a CEO or a Senator.
-
-- For each draw, $P(\mathrm{blue chip}) = 0.5$.
-
-- To ensure this probability, we sample *with replacement*.
-
-- If we sample with replacement, we can draw as many times as we need to
+# Code Cheat Sheet `r emo::ji("computer")`
+### `pnorm(q, mean = 0, sd = 1, lower.tail = TRUE)`
+- **`q`** refers to the value you want to find the area above or below
+  - `pnorm(q, 0, 1)` gives $P(Z < q)$ where $Z$ is $N(0,1)$
+- **`mean`** refers to $\mu$, defaults to 0
+- **`sd`** refers to $\sigma$, defaults to 1
+- **`lower.tail`** controls which direction to "shade": `lower.tail = TRUE` goes less than `q`, `lower.tail = FALSE` goes greater than `q`; defaults to `TRUE`
 
 ---
-
-# Try It 4
-
-100 poker chips; 50 blue, 50 yellow.
-
-- We will draw (e) **150** times to complete a single simulation.
-
-- When we're done, we'll count the number of (f) **blue** chips and divide by (g) **150**.
-
-.can-edit[
-LIVE DEMO:
-
-- Blue Chips:
-- Yellow Chips:
-
-Sample proportion: 
-]
-
---
-
-To find a *sample proportion* we divide by the *sample* size!
+class: inverse
+# Code Cheat Sheet `r emo::ji("computer")`
+### `qnorm(p, mean = 0, sd = 1, lower.tail = TRUE)`
+- **`p`** refers to the area under the curve
+  - `qnorm(p, 0, 1)` is the number such that the area to the left of it is `p`
+- **`mean`** refers to $\mu$, defaults to 0
+- **`sd`** refers to $\sigma$, defaults to 1
+- **`lower.tail`** controls which direction to "shade": `lower.tail = TRUE` goes less than `q`, `lower.tail = FALSE` goes greater than `q`; defaults to `TRUE`
 
 ---
-# Try It 5
-
-.panelset[
-.panel[.panel-name[Provided Code]
-```{r TryIt5Given, eval = F}
-# the chip vector represents your bag of poker chips
-bagOfChips <- c(rep("blue", ___(c)___), rep("yellow", ___(d)___))
-
-# now repeat the procedure from Try It 4 1000 times.
-pHatSims <- replicate(1000, {
-  # Draw (e) chips from the bag of chips (with replacement)
-  x <- sample(bagOfChips, size = ___(e)___, replace = TRUE)
-  
-  # Compute the proportion of sampled chips that are the color you chose in (f).
-  # You should either choose "blue" or "yellow", and your answer needs to be
-  # inside those quotes! So the code should either be sum(x == "blue") or 
-  # sum(x == "yellow").
-  sum(x == "___(f)___") / ___(g)___
-})
-```
-]
-
-.panel[.panel-name[Filled-In Code]
-```{r TryIt5Filled}
-# the chip vector represents your bag of poker chips
-bagOfChips <- c(rep("blue", 50), rep("yellow",50)) #<<
-
-# now repeat the procedure from Try It 4 1000 times.
-pHatSims <- replicate(1000, {
-  # Draw (e) chips from the bag of chips (with replacement)
-  x <- sample(bagOfChips, size = 150, replace = TRUE) #<<
-  
-  # Compute the proportion of sampled chips that are the color you chose in (f).
-  # You should either choose "blue" or "yellow", and your answer needs to be
-  # inside those quotes! So the code should either be sum(x == "blue") or 
-  # sum(x == "yellow").
-  sum(x == "blue") / 150 #<<
-})
-```
-]
-]
-
----
-# Try It 5
-
-That code ran the simulation. Now we've got to find a p-value. **What's a p-value?**
-
---
-
-.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
-A .b[p-value] is the proportion of simulated results that are as extreme or more extreme than the observed result.
-]
-
---
-
-.center[
-![](https://media1.tenor.com/images/fe5b68b427036ab850b9d3074aa2a5d4/tenor.gif?itemid=12917792)
-]
----
-# Try It 
-
+class: inverse
+# Code Cheat Sheet `r emo::ji("computer")`
+### `plotNorm(mean = 0, sd = 1, shadeValues, direction, col.shade, ...)`
+- **`mean`** refers to $\mu$, defaults to 0
+- **`sd`** refers to $\sigma$, defaults to 1
+- **`shadeValues`** is a vector of up to 2 numbers that define the region you want to shade
+- **`direction`** can be one of `less`, `greater`, `outside`, or `inside`, and controls the direction of shading between `shadeValues`. Must be `less` or `greater` if `shadeValues` has only one element; `outside` or `inside` if two
+- **`col.shade`** controls the color of the shaded region, defaults to `"cornflowerblue"`
+- **`...`** lets you specify other graphical parameters to control the appearance of the normal curve (e.g., `lwd`, `lty`, `col`, etc.)
 ---
 class: inverse
 # Lab Project `r emo::ji("keyboard")`
@@ -275,15 +408,15 @@ class: center middle
 
 # Reminders `r emo::ji("bulb")`
 
-### http://bit.ly/250ticket8
+### http://bit.ly/250ticket9
 
-Your tasks for the week running Friday 10/19 - Friday 10/23:
+Your tasks for the week running Friday 10/23 - Friday 10/30:
 
 | Task | Due Date | Submission |
 |:-----|:---------|:-----------|
-| Lab 8 | Friday 10/23 8:00AM ET | Canvas |
-| *No homework this week* | -- | course.work |
+| Lab 9 | Friday 10/30 8:00AM ET | Canvas |
+| Homework 6 | Friday 10/30 8:00AM ET | course.work |
 
-Office hours are back to normal this week (with a few small tweaks)
+Midterm regrade requests through Gradescope due **Tuesday 10/27 8am ET**
 
-Midterm regrade requests through Gradescope due **Tuesday 10/27 8a
+M-Write Prompt 2 opens Wednesday 10/28 at 5pm ET

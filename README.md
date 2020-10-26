@@ -16,6 +16,7 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[*Lab 6:* Simulation Basics]](#lab6)
 [[*Lab 7:* Simulation-Based Hypothesis Testing]](#lab7)
 [[*Lab 8:* Sampling Distributions of Proportions]](#lab8)
+[[*Lab 9:* Normal Distribution]](#lab9)
 
 **Lab videos are available on Youtube!** [[Video Playlist]](https://www.youtube.com/playlist?list=PLMmBaYqloeD3ltusC-RXmslcpo1pTUWe_)
 
@@ -138,7 +139,7 @@ Lab materials for the week running Friday 10/9 - Friday 10/16
 
 <hr />
 
-## <a name="lab7"></a>Lab 8: Simulation-Based Hypothesis Testing
+## <a name="lab8"></a>Lab 8: Simulation-Based Hypothesis Testing
 Lab materials for the week running Friday 10/16 - Friday 10/23
 
 ### Statistical Learning Objectives
@@ -146,3 +147,20 @@ Lab materials for the week running Friday 10/16 - Friday 10/23
 
 ### Slides
 - **Synchronous Labs** [[html]](lab08-slides/lab08-slides-sync.html) [[pdf]](lab08-slides/lab08-slides-sync.pdf)
+- **Asynchronous Labs** [[html]](lab08-slides/lab08-slides-async.html) [[pdf]](lab08-slides/lab08-slides-async.pdf)
+
+<hr />
+
+## <a name="lab9"></a>Lab 9: Normal Distribution
+Lab materials for the week running Friday 10/23 - Friday 10/30
+
+### Statistical Learning Objectives
+1. Understand Z scores and percentiles
+1. Get experience with the normal distribution
+
+### R Learning Objectives
+1. Learn how to use R to work with the normal distribution
+
+### Slides
+- **Synchronous Labs** [[html]](lab09-slides/lab09-slides-sync.html) [[pdf]](lab09-slides/lab09-slides-sync.pdf)
+

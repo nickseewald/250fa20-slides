@@ -83,9 +83,8 @@ The central limit theorem is sort of magical. We'll talk about it in more detail
 ---
 # Sampling Distributions
 
-A **sampling distribution** refers to the possible values for a *statistic* (e.g., 
-$\hat{p}$
-) and how often those values occur.
+A **sampling distribution** refers to the possible values for a *statistic* 
+(e.g., $\hat{p}$) and how often those values occur.
 
 We've sort of seen sampling distributions already. Can you think of how?
 
