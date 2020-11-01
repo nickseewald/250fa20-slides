@@ -1,0 +1,46 @@
+.inverse a {
+  color: #00274c;
+  text-decoration: underline;
+}
+
+.inverse strong {
+  color: #00274c;
+}
+
+.inverse code {
+  color: #00274c;
+}
+
+.title-slide h1 {
+  font-size: 100pt;
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.title-slide h2 {
+  font-size: 60pt;
+  margin-top: 0;
+  margin-bottom: .7em;
+}
+
+.title-slide h3 {
+  margin: .25em;
+  color: #fff;
+  font-family: PT Sans;
+}
+
+th {
+  color: #00274c;
+}
+
+tr:nth-child(even) > td {
+  color: #00274c;
+}
+
+#who-are-you- {
+  margin-bottom: .1em;
+}
+
+h4 {
+  margin-bottom: .1em;
+}
