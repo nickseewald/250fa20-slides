@@ -17,6 +17,7 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[*Lab 7:* Simulation-Based Hypothesis Testing]](#lab7)
 [[*Lab 8:* Sampling Distributions of Proportions]](#lab8)
 [[*Lab 9:* Normal Distribution]](#lab9)
+[[*Lab 10:* Confidence Intervals and Hypothesis Tests for Proportions]](#lab10)
 
 **Lab videos are available on Youtube!** [[Video Playlist]](https://www.youtube.com/playlist?list=PLMmBaYqloeD3ltusC-RXmslcpo1pTUWe_)
 
@@ -164,3 +165,21 @@ Lab materials for the week running Friday 10/23 - Friday 10/30
 ### Slides
 - **Synchronous Labs** [[html]](lab09-slides/lab09-slides-sync.html) [[pdf]](lab09-slides/lab09-slides-sync.pdf)
 
+<hr />
+
+## <a name="lab10"></a>Lab 10: Confidence Intervals and Hypothesis Tests for Proportions
+Lab materials for the week running Friday 10/30 - Friday 11/6.
+
+**All labs are asynchronous this week due to the election.**
+
+### Statistical Learning Objectives
+1. Understand how confidence intervals are constructed
+1. Understand what a confidence level means
+1. Consider the relationship between confidence intervals and hypothesis testing
+
+### R Learning Objectives
+1. Interpret R output providing confidence intervals and hypothesis tests for inference on population proportions.
+1. Use R as a calculator to compute a confidence interval
+
+### Slides
+- **Asynchronous Labs** [[html]](lab10-slides/lab10-slides.html) [[pdf]](lab10-slides/lab10-slides.pdf)
