@@ -18,6 +18,8 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[*Lab 8:* Sampling Distributions of Proportions]](#lab8)
 [[*Lab 9:* Normal Distribution]](#lab9)
 [[*Lab 10:* Confidence Intervals and Hypothesis Tests for Proportions]](#lab10)
+[[*Lab 11:* Confidence Intervals and Hypothesis Tests for One Mean]](#lab11)
+
 
 **Lab videos are available on Youtube!** [[Video Playlist]](https://www.youtube.com/playlist?list=PLMmBaYqloeD3ltusC-RXmslcpo1pTUWe_)
 
@@ -183,3 +185,18 @@ Lab materials for the week running Friday 10/30 - Friday 11/6.
 
 ### Slides
 - **Asynchronous Labs** [[html]](lab10-slides/lab10-slides.html) [[pdf]](lab10-slides/lab10-slides.pdf)
+
+<hr />
+
+## <a name="lab11"></a>Lab 11: Confidence Intervals and Hypothesis Tests for One Mean
+Lab materials for the week running Friday 11/6 - Friday 11/13.
+
+### Statistical Learning Objectives
+1. Get experience making confidence intervals for population means
+1. Understand hypothesis tests for population means
+
+### R Learning Objectives
+1. Interpret R output providing confidence intervals and hypothesis tests for inference on population means.
+
+### Slides
+- **Synchronous Labs** [[html]](lab11-slides/lab11-slides-sync.html) [[pdf]](lab11-slides/lab11-slides-sync.pdf)
