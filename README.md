@@ -19,6 +19,8 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[*Lab 9:* Normal Distribution]](#lab9)
 [[*Lab 10:* Confidence Intervals and Hypothesis Tests for Proportions]](#lab10)
 [[*Lab 11:* Confidence Intervals and Hypothesis Tests for One Mean]](#lab11)
+[[*Lab 12:* Paired Data and Difference of Two Means]](#lab12)
+
 
 
 **Lab videos are available on Youtube!** [[Video Playlist]](https://www.youtube.com/playlist?list=PLMmBaYqloeD3ltusC-RXmslcpo1pTUWe_)
@@ -200,3 +202,19 @@ Lab materials for the week running Friday 11/6 - Friday 11/13.
 
 ### Slides
 - **Synchronous Labs** [[html]](lab11-slides/lab11-slides-sync.html) [[pdf]](lab11-slides/lab11-slides-sync.pdf)
+
+<hr />
+
+## <a name="lab12"></a>Lab 12: Paired Data and Difference of Two Means
+Lab materials for the week running Friday 11/16 - Friday 11/20.
+
+### Statistical Learning Objectives
+1. Continue discussing quantitative data, this week in regards to a paired mean and a difference in two means scenario.
+1. Understand whether data is considered paired or from two independent samples.
+
+### R Learning Objectives
+1. Create a "difference" variable in a data.frame
+1. Learn how to use R to perform paired t-tests and t-tests for two independent samples.
+
+### Slides
+- **Synchronous Labs** [[html]](lab12-slides/lab12-slides-sync.html) [[pdf]](lab12-slides/lab12-slides-sync.pdf)

@@ -1,0 +1,472 @@
+---
+title: "STATS 250 Lab 11"
+subtitle: "Paired Data and Difference of Two Means"
+author: "Nick Seewald<br />nseewald&#64;umich.edu"
+date: "Week of 11/16/2020"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+    css: ["xaringan-themer.css", "extras.css"]
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(echo = TRUE, include = TRUE, eval = TRUE, comment = NA, fig.height = 5, fig.width = 9)
+library(viridisLite)
+source("plotT.R")
+par(mar = c(5, 6, 4, 1) + 0.1)
+set.seed(1875)
+```
+
+```{r xaringan-themer, include = FALSE, warning = FALSE}
+library(xaringanthemer)
+# style_mono_light(base_color = "#00274c",
+#                  header_font_google = google_font("DM Serif Display"),
+#                  text_font_google = google_font("PT Sans", "400", "400i")
+# )
+style_duo(primary_color = "#00274c",
+          secondary_color = "#ffcb05",
+          header_font_google = google_font("DM Serif Display"),
+          text_font_google = google_font("PT Sans", "400", "400i", "600"),
+          code_font_google = google_font("Roboto Mono", "400"),
+          text_font_size = "22pt"
+)
+```
+
+```{r xaringanExtra, echo=FALSE}
+xaringanExtra::use_webcam()
+xaringanExtra::use_fit_screen()
+xaringanExtra::use_editable()
+xaringanExtra::use_panelset()
+xaringanExtra::use_tachyons()
+```
+
+class: center middle
+
+# Reminders `r emo::ji("bulb")`
+
+Your tasks for the week running Friday 11/13 - Friday 11/20
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| M-Write 2 Revision | Thursday 11/19 4:59PM ET| Canvas |
+| Lab 12 | Friday 11/20 8:00AM ET | Canvas |
+| Homework 9 | Friday 11/20 8:00AM ET | course.work |
+
+*M-Write Office Hours on Canvas!*
+
+---
+
+# Homework 8 Comments
+
+### Question 3b:
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+The EPA claims that a 2012 Prius gets 50 MPG (city and highway mileage combined). Do these data provide strong evidence against this estimate for drivers who participate on fueleconomy.gov?
+
+Make sure to state your hypotheses, check the conditions, calculate the test statistic, determine the p-value, evaluate the p-value and the compatibility of the null model, and make a conclusion in the context of the problem (and, if necessary, make a recommendation).
+]
+
+---
+# Homework 8 Comments
+
+### Question 3b:
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+The EPA claims that a 2012 Prius gets 50 MPG (city and highway mileage combined). Do these data provide strong evidence against this estimate for drivers who participate on fueleconomy.gov?
+]
+
+- This is a question about a **mean**, not a proportion: inference is on $\mu$, not $p$. 
+- $t = \frac{\bar{x}-\mu_0}{s/\sqrt{n}}$;  order matters here.
+- Two-sided p-value: double `pt()` output!
+- SHOW WORK; conclusion IN CONTEXT; check ALL conditions
+
+---
+# Homework 8 Comments
+
+### Question 3c: 
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+Calculate a 95% confidence interval for the average gas mileage of a 2012 Prius by drivers who participate on fueleconomy.gov.
+]
+
+- Make sure to use the correct $t^*$ value:
+  - $n = 14$, so $\mathrm{df} = 14-1 = 13$
+  - $t^* =$ `qt(p = 0.975, df = 13)` $= 2.16$
+
+---
+# Homework 8 Comments
+
+### Question 6d: 
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+.b[Drive-thru window.] Calculate the effect size for this hypothesis test.
+]
+
+$$d = \frac{\mu - \mu_0}{\sigma}$$
+We don't know $\mu$ or $\sigma$! So we **estimate** $d$ using $\hat{d}$:
+
+$$\hat{d} = \frac{\bar{x} - \mu_0}{s}$$
+Again, **order matters**.
+---
+# Homework 8 Comments
+
+### Question 8: Type 1 and Type 2 errors
+
+| | Decide in favor of $H_0$ | Decide in favor of $H_A$ |
+|------------|:-------------:|:------------------------:|
+| $H_0$ true | `r emo::ji("check")` | `r emo::ji("x")` Type 1 error |
+| $H_A$ true | `r emo::ji("x")` Type 2 Error | `r emo::ji("check")` |
+
+
+$H_0$: The RC airplane’s landing gear is down; the plane is cleared to land
+
+$H_A$: The RC airplane’s landing gear is not down; the plane is not cleared to land and will require troubleshooting
+
+---
+class: inverse
+
+# Let's play a game!
+
+[Link to Name That Scenario on Canvas Homepage]
+
+---
+# Paired Data (line ~115)
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+Are textbooks actually cheaper online? Let's compare prices of textbooks at the UCLA bookstore and Amazon for a random sample of 73 courses in the spring (winter) semester of 2010.
+]
+
+```{r textbookData}
+textbooks <- read.csv("textbooks.csv")
+head(textbooks)
+```
+
+---
+# Paired Data
+
+- Natural correspondence between UCLA price and Amazon price: they're for the same book!
+- Same "machinery" as a one-population mean $t$-test
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+.b[Key Idea:] When working with paired data, we'll work with *differences* between the paired observations. Our questions are about $\mu_{\text{diff}}, the average difference in the population.
+]
+
+$$t = \frac{\bar{x}_{\text{diff}} - \mu_{0}}{s_{\text{diff}} / \sqrt{n}}$$
+
+---
+# Paired $t$-Test (line ~131)
+
+- Same "machinery" as a one-population mean $t$-test, just using *differences*
+- We need to make a variable that represents the differences!
+
+```{r textbookNames}
+names(textbooks)
+```
+
+```{r priceDiffs, error = T, eval = F}
+textbooks$diff <- ___________ - ___________
+```
+
+--
+```{r priceDiffsFilled}
+textbooks$diff <- textbooks$ucla_new - textbooks$amaz_new #<<
+head(textbooks)
+```
+
+---
+# Paired $t$-Test: Check Conditions! (line ~145)
+
+- Same "machinery" as a one-population mean $t$-test, just using *differences*
+
+.pull-left[
+```{r histDiffs, eval = F}
+hist(textbooks$diff, main = "Histogram of Price Differences",
+     xlab = "Price Difference (bookstore minus Amazon)")
+```
+```{r histDiffs_real, echo = F}
+hist(textbooks$diff, main = "Histogram of Price Differences",
+     xlab = "Price Difference (bookstore minus Amazon)",
+     cex = 2, cex.main = 2, cex.lab = 1.7)
+```
+]
+
+.pull-right[
+```{r histQQ, error = T, eval = F}
+qqnorm(textbooks$diff)
+qqline(textbooks$diff)
+```
+```{r histQQ_real, echo = F}
+qqnorm(textbooks$diff, cex = 2, cex.main = 2, cex.lab = 1.7)
+qqline(textbooks$diff)
+```
+]
+
+---
+# Paired $t$-Test: Check Conditions! (line ~145)
+
+.pull-left[
+```{r histDiffs_real, echo = F}
+```
+]
+
+.pull-right[
+```{r histQQ_real, echo = F}
+```
+]
+
+Do the differences seem to come from a normally-distributed population?
+
+--
+
+**NOPE.** But, there are 73 of them, so we can use the central limit theorem to say $\bar{x}_{\text{diff}}$ is nearly normal, which is good enough.
+
+---
+# Paired $t$-Test (line ~157)
+
+We want to know if there's a *difference* between the prices, on average.
+$$H_0: \ \mu_{\text{diff}} = 0 \quad \text{vs.} \quad H_{a}: \ \mu_{\text{diff}} \neq 0,$$
+
+Same "machinery" as a one-population mean $t$-test, just using *differences*.
+
+```{r pairedTTest, error = T}
+t.test(textbooks$diff, mu = 0, alternative = "two.sided") #<<
+```
+
+---
+# Difference of Two Means: $\mu_1 - \mu_2$
+
+- Read in the penguin data on line ~165
+- Remember this bimodal histogram from last week? (line ~171)
+
+```{r penguins, echo = F}
+penguins <- read.csv("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv")
+```
+```{r penguinsHist, echo = F, fig.align='center'}
+hist(penguins$flipper_length_mm,
+     main = "Histogram of Flipper Length",
+     xlab = "Flipper length (mm)",
+     col = "peachpuff", 
+     cex.lab = 1.5,
+     cex.main = 1.5)
+```
+
+---
+# Difference of Two Means: $\mu_1 - \mu_2$
+
+.pull-left[
+```{r penguinsHistCode, echo = T, eval = F}
+hist(penguins$flipper_length_mm,
+     main = "Histogram of Flipper Length",
+     xlab = "Flipper length (mm)",
+     col = "peachpuff")
+```
+```{r penguinsHist, echo = F}
+```
+]
+.pull-right[
+- Bimodal distributions suggest a **subgroup effect**
+- There are *three different species* in this data
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+.b[TASK:] Take 2 minutes to write code in the `investigateSpecies` chunk (line 182) to investigate the relationship between species and flipper length.
+]
+]
+
+---
+# Difference of Two Means: $\mu_1 - \mu_2$
+
+.pull-left[
+```{r speciesBoxplot}
+boxplot(flipper_length_mm ~ species,
+        data = penguins,
+        xlab = "Penguin Species",
+        ylab = "Flipper Length (mm)",
+        main = "Boxplots of Flipper Length by Species")
+```
+]
+
+.pull-right[
+```{r overlappingHistograms, echo = F}
+hist(penguins$flipper_length_mm[penguins$species == "Adelie"],
+     col = rgb(1, 0, 0, alpha = .5), 
+     xlim = summary(penguins$flipper_length_mm)[c("Min.", "Max.")] + c(-1, 1),
+     main = "Histograms of Penguin Flipper Length by Species",
+     xlab = "Flipper Length", 
+     cex.main = 1.5, cex.lab = 1.5, cex.axis = 1.5)
+hist(penguins$flipper_length_mm[penguins$species == "Gentoo"],
+     col = rgb(0, 0, 1, alpha = .5), add = T)
+hist(penguins$flipper_length_mm[penguins$species == "Chinstrap"],
+     col = rgb(0, 1, 0, alpha = .5), add = T)
+legend("topright", legend = c("Adelie", "Chinstrap", "Gentoo"),
+       fill = c(rgb(1, 0, 0, .5), rgb(0, 1, 0, .5), rgb(0, 0, 1, 0.5)))
+```
+
+(code for this histogram is available on request; it's a little too ugly to show)
+
+]
+
+---
+# Difference of Two Means: $\mu_1 - \mu_2$
+
+Let's just compare mean flipper lengths of Adelie and Chinstrap penguins -- the Gentoos are obviously different, so why bother. **Hypotheses?** (line ~188)
+
+--
+
+$$H_0: \mu_{\text{Adelie}} - \mu_{\text{Chinstrap}} = 0 \quad \text{vs.} \quad H_{a}: \mu_{\text{Adelie}} - \mu_{\text{Chinstrap}} \neq 0$$
+
+--
+
+Subset the data to contain just Adelies and Chinstraps (line ~197)
+
+```{r penguinsSubset}
+penguinsSubset <- subset(penguins, species %in% c("Adelie", "Chinstrap"))
+table(penguinsSubset$species)
+```
+
+---
+# Difference of Two Means: $\mu_1 - \mu_2$
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+The most important question in statistics is not whether you .b[can] do something, it's whether you .b[should] do it.
+]
+
+## Check Conditions!
+
+--
+1. **Independence**: 
+  1. Penguins *within* each species are selected independently
+  1. The samples from each species (*between* samples) are independent
+1. **Nearly Normal**:
+  1. Adelie flipper lengths are nearly normal
+  1. Chinstrap flipper lengths are nearly normal
+
+---
+# Difference of Two Means: Check Normality
+
+```{r twoSampleNormal, eval = F}
+qqnorm(penguinsSubset$flipper_length_mm[penguinsSubset$species == "Adelie"], #<<
+       main = "Normal Q-Q Plot for Adelie Penguins")
+qqline(penguinsSubset$flipper_length_mm[penguinsSubset$species == "Adelie"])
+
+qqnorm(penguinsSubset$flipper_length_mm[penguinsSubset$species == "Chinstrap"], #<<
+       main = "Normal Q-Q Plot for Chinstrap Penguins")
+qqline(penguinsSubset$flipper_length_mm[penguinsSubset$species == "Chinstrap"])
+```
+```{r twoSampleNormalReal, echo = F, fig.align='center', fig.width=10}
+par(mfrow = c(1, 2))
+qqnorm(penguinsSubset$flipper_length_mm[penguinsSubset$species == "Adelie"],
+       main = "Normal Q-Q Plot for Adelie Penguins")
+qqline(penguinsSubset$flipper_length_mm[penguinsSubset$species == "Adelie"])
+
+qqnorm(penguinsSubset$flipper_length_mm[penguinsSubset$species == "Chinstrap"],
+       main = "Normal Q-Q Plot for Chinstrap Penguins")
+qqline(penguinsSubset$flipper_length_mm[penguinsSubset$species == "Chinstrap"])
+par(mfrow = c(1, 1))
+```
+
+---
+# Two-Sample $t$-Test
+
+Remember formula notation:
+
+> (response variable) **~** (grouping/explanatory variable)
+
+```{r twoSampleT}
+t.test(flipper_length_mm ~ species, #<<
+       data = penguinsSubset,
+       mu = 0,
+       alternative = "two.sided")
+```
+
+What's our conclusion?
+
+---
+class: inverse
+# Code Cheat Sheet `r emo::ji("computer")`
+### **`pt(q, df, lower.tail = TRUE)`**
+  - `q` is the x-axis value you want to find an area related to
+  - `df` is the degrees of freedom of the $t$ distribution
+  - `lower.tail` determines whether `pt()` finds the area to the left or right of `q`. If `lower.tail = TRUE` (the default), it shades to the left. If `lower.tail = FALSE`, it shades to the right.
+
+---
+class: inverse
+# Code Cheat Sheet `r emo::ji("computer")`
+### **`qt(q, df, lower.tail = TRUE)`**
+  - `p` is the probability or area under the curve you want to find an x-axis value for
+  - `df` is the degrees of freedom of the $t$ distribution
+  - `lower.tail` determines whether `pt()` finds the area to the left or right of `q`. If `lower.tail = TRUE` (the default), it shades to the left. If `lower.tail = FALSE`, it shades to the right.
+  
+---
+class: inverse
+# Code Cheat Sheet `r emo::ji("computer")`
+### **`plotT()`**
+  - `df` refers to the degrees of freedom of the distribution to plot. You must provide this value.
+  - `shadeValues` is a vector of up to 2 numbers that define the region you want to shade
+  - `direction` can be one of `less`, `greater`, `outside`, or `inside`, and controls the direction of shading between `shadeValues`. Must be `less` or `greater` if `shadeValues` has only one element; `outside` or `inside` if two
+  - `col.shade` controls the color of the shaded region, defaults to `"cornflowerblue"`
+  - `...` lets you specify other graphical parameters to control the appearance of the normal curve (e.g., `lwd`, `lty`, `col`, etc.)
+
+---
+class: inverse
+# Code Cheat Sheet `r emo::ji("computer")`
+###  **`qqnorm(y, ...)`**
+  - `y` refers to the variable for which you want to create a Q-Q plot
+  - `...` lets you control graphical elements of the plot like `pch`, `col`, etc.
+
+### **`qqline(y, ...)`**
+  - `y` refers to the variable for which you created a Q-Q plot
+  - `...` lets you control graphical elements of the plot like `pch`, `col`, etc.
+  - Function can only be used *after* using `qqnorm()`
+  
+---
+class: inverse
+# Code Cheat Sheet `r emo::ji("computer")`
+###  **`t.test(x, alternative = c("two.sided", "less", "greater"), mu = 0, conf.level = 0.95)`**
+  - `x` is a vector of data values OR a formula of the form *response ~ group* for two-sample t-tests.
+  - `alternative` specifies the direction of the alternative hypothesis; must be one of "two.sided", "less", or "greater"
+  - `mu` indicates the true value of the mean (under the null hypothesis); defaults to 0
+  - `conf.level` is the confidence level to be used in constructing a confidence interval; must be between 0 and 1, defaults to 0.95
+
+---
+class: inverse
+# Lab Project `r emo::ji("keyboard")`
+
+.pull-left[
+### Your tasks
+- Complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+- Introduce yourself to your collaborators
+- **Do not leave people behind.**
+]
+
+.pull-right[
+### How to get help
+- Ask your collaborators -- share your screen!
+- Use the "Ask for Help" button to flag me down.
+]
+
+---
+class: center, middle
+
+# How'd it go? Questions?
+
+### http://bit.ly/250ticket12
+
+---
+class: center middle
+
+# Reminders `r emo::ji("bulb")`
+
+Your tasks for the week running Friday 11/13 - Friday 11/20
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| M-Write 2 Revision | Thursday 11/19 4:59PM ET| Canvas |
+| Lab 12 | Friday 11/20 8:00AM ET | Canvas |
+| Homework 9 | Friday 11/20 8:00AM ET | course.work |
+
+*M-Write Office Hours on Canvas!*
