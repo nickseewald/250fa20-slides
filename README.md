@@ -218,3 +218,4 @@ Lab materials for the week running Friday 11/16 - Friday 11/20.
 
 ### Slides
 - **Synchronous Labs** [[html]](lab12-slides/lab12-slides-sync.html) [[pdf]](lab12-slides/lab12-slides-sync.pdf)
+- **Asynchronous Labs** [[html]](lab12-slides/lab12-slides-async.html) [[pdf]](lab12-slides/lab12-slides-async.pdf)

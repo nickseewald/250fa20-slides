@@ -1,5 +1,5 @@
 ---
-title: "STATS 250 Lab 11"
+title: "STATS 250 Lab 12"
 subtitle: "Paired Data and Difference of Two Means"
 author: "Nick Seewald<br />nseewald&#64;umich.edu"
 date: "Week of 11/16/2020"
@@ -112,6 +112,7 @@ We don't know $\mu$ or $\sigma$! So we **estimate** $d$ using $\hat{d}$:
 
 $$\hat{d} = \frac{\bar{x} - \mu_0}{s}$$
 Again, **order matters**.
+
 ---
 # Homework 8 Comments
 
@@ -130,9 +131,233 @@ $H_A$: The RC airplane’s landing gear is not down; the plane is not cleared to
 ---
 class: inverse
 
-# Let's play a game!
+# Name That Scenario 1
 
-[Link to Name That Scenario on Canvas Homepage]
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4[
+Do you get cookies with your dinner? A UM student decided to stop by MoJo one day at dinner, and asks each student to report the number of cookies they ate while at MoJo. From this data, an appropriate random sample will be selected. The UM student wishes to see if on average, the UM students ate more than one cookie at MoJo during their dinner.
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+c. One-sample t-test for a population mean
+
+d. Paired t-test for a population mean of the difference
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 1
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4[
+Do you get cookies with your dinner? A UM student decided to stop by MoJo one day at dinner, and asks each student to report the number of cookies they ate while at MoJo. From this data, an appropriate random sample will be selected. The UM student wishes to see if on average, the UM students ate more than one cookie at MoJo during their dinner.
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+.bg-navy.white.b[c. One-sample t-test for a population mean]
+
+d. Paired t-test for a population mean of the difference
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 2
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4.f4[
+Does MoJo cure homesickness? A UM student is interested in seeing if perhaps cookies are just a fond memory for freshman students embarking on their first semester away from home. She gathers a large random sample of UM freshmen students, to ask whether or not they enjoy the cookies at MoJo. Next, she gathers a large random sample of UM students who are not freshmen, to ask whether or not they enjoy the cookies at MoJo. She hopes to compare the differences in these two rates.
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+c. One-sample t-test for a population mean
+
+d. Paired t-test for a population mean of the difference
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 2
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4.f4[
+Does MoJo cure homesickness? A UM student is interested in seeing if perhaps cookies are just a fond memory for freshman students embarking on their first semester away from home. She gathers a large random sample of UM freshmen students, to ask whether or not they enjoy the cookies at MoJo. Next, she gathers a large random sample of UM students who are not freshmen, to ask whether or not they enjoy the cookies at MoJo. She hopes to compare the differences in these two rates.
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+.bg-navy.white.b[b. Two-sample Z-test for the comparison of two population proportions]
+
+c. One-sample t-test for a population mean
+
+d. Paired t-test for a population mean of the difference
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 3
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4[
+Are more cookies made at MoJo than at East Quad, on average? A UM student decides to select a random smaple of 30 days from the Winter 2019 semester. For each of those 30 days, they ask each dining hall to report the number of cookies baked. These results will be used to assess whether more cookies are made at MoJo than at East Quad, on average.
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+c. One-sample t-test for a population mean
+
+d. Paired t-test for a population mean of the difference
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 3
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4[
+Are more cookies made at MoJo than at East Quad, on average? A UM student decides to select a random sample of 30 days from the Winter 2019 semester. For each of those 30 days, they ask each dining hall to report the number of cookies baked. These results will be used to assess whether more cookies are made at MoJo than at East Quad, on average.
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+c. One-sample t-test for a population mean
+
+.bg-navy.white.b[d. Paired t-test for a population mean of the difference]
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 4
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4.f4[
+Who has the tastiest cookies? A UM student decides to stop by MoJo to get 40 freshly baked cookies, then stops at East Quad for another 40 freshly baked cookies. She then gets a random sample of 40 UM freshmen, and has them each take a blind taste test. They will taste each cookie, one at a time, without knowing its origin, and select the cookie they like the most. The UM student would like to see if a majority pick MoJo cookies as the tastiest. 
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+c. One-sample t-test for a population mean
+
+d. Paired t-test for a population mean of the difference
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 4
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4.f4[
+Who has the tastiest cookies? A UM student decides to stop by MoJo to get 40 freshly baked cookies, then stops at East Quad for another 40 freshly baked cookies. She then gets a random sample of 40 UM freshmen, and has them each take a blind taste test. They will taste each cookie, one at a time, without knowing its origin, and select the cookie they like the most. The UM student would like to see if a majority pick MoJo cookies as the tastiest. 
+]
+]
+
+.pull-right[
+.bg-navy.white.b[a. One-sample Z-test for a population proportion]
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+c. One-sample t-test for a population mean
+
+d. Paired t-test for a population mean of the difference
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 5
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4.f4[
+Do athletes love cookies? As a follow up to a previous observation, a UM student decides that it might be best to gather data about whether the student is an athlete or not, as the number of cookies they eat in a week might differ, on average. The UM student gathers a large random sample of UM athletes to ask them to self-report the number of cookies they ate at MoJo the week before. Then the UM student gathers a large random sample of UM non-athletes to ask them to self-report the number of cookies they ate at MoJo the week before. 
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+c. One-sample t-test for a population mean
+
+d. Paired t-test for a population mean of the difference
+
+e. Two-sample t-test for the comparison of two population means
+]
+
+---
+class: inverse
+
+# Name That Scenario 5
+
+.pull-left[
+.bg-navy.b--dark-blue.white.ba.bw2.ph4.f4[
+Do athletes love cookies? As a follow up to a previous observation, a UM student decides that it might be best to gather data about whether the student is an athlete or not, as the number of cookies they eat in a week might differ, on average. The UM student gathers a large random sample of UM athletes to ask them to self-report the number of cookies they ate at MoJo the week before. Then the UM student gathers a large random sample of UM non-athletes to ask them to self-report the number of cookies they ate at MoJo the week before. 
+]
+]
+
+.pull-right[
+a. One-sample Z-test for a population proportion
+
+b. Two-sample Z-test for the comparison of two population proportions
+
+c. One-sample t-test for a population mean
+
+d. Paired t-test for a population mean of the difference
+
+.bg-navy.white.b[e. Two-sample t-test for the comparison of two population means]
+]
+
 
 ---
 # Paired Data (line ~115)
@@ -153,7 +378,7 @@ head(textbooks)
 - Same "machinery" as a one-population mean $t$-test
 
 .bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
-.b[Key Idea:] When working with paired data, we'll work with *differences* between the paired observations. Our questions are about $\mu_{\text{diff}}, the average difference in the population.
+.b[Key Idea:] When working with paired data, we'll work with *differences* between the paired observations. Our questions are about $\mu_{\text{diff}}$, the average difference in the population.
 ]
 
 $$t = \frac{\bar{x}_{\text{diff}} - \mu_{0}}{s_{\text{diff}} / \sqrt{n}}$$
@@ -439,29 +664,24 @@ class: inverse
 .pull-left[
 ### Your tasks
 - Complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
-- Introduce yourself to your collaborators
-- **Do not leave people behind.**
 ]
 
 .pull-right[
 ### How to get help
-- Ask your collaborators -- share your screen!
-- Use the "Ask for Help" button to flag me down.
+- Piazza!
+- Email your lab instructor (not stats250-miller@umich.edu)
 ]
 
 ---
-class: center, middle
+# Recap and Reminders `r emo::ji("bulb")`
 
-# How'd it go? Questions?
+We just learned:
 
-### http://bit.ly/250ticket11
+- Name that Scenario is a useful study tool
+- How to create a "differences" variable
+- How to perform a paired t-test in R
+- How to perform a two-sample t-test in R
 
----
-class: center middle
-
-# Reminders `r emo::ji("bulb")`
-
-Your tasks for the week running Friday 11/13 - Friday 11/20
 
 | Task | Due Date | Submission |
 |:-----|:---------|:-----------|
