@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>STATS 250 Lab 13</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Nick Seewald nseewald@umich.edu" />
+    <script src="libs/xaringanExtra-webcam/webcam.js"></script>
+    <script id="xaringanExtra-webcam-options" type="application/json">{"width":"200","height":"200","margin":"1em"}</script>
+    <script src="libs/xaringanExtra_fit-screen/fit-screen.js"></script>
+    <script type="application/json" id="xaringanExtra-editable-docid">{"id":"x1890b74121a42c5be338b116748d6ea","expires":14}</script>
+    <script src="libs/himalaya/himalaya.js"></script>
+    <script src="libs/js-cookie/js.cookie.js"></script>
+    <link href="libs/editable/editable.css" rel="stylesheet" />
+    <script src="libs/editable/editable.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+    <link rel="stylesheet" href="extras.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# STATS 250 Lab 13
+## Linear Regression Inference
+### Nick Seewald<br />nseewald@umich.edu
+### Week of 11/30/2020
+
+---
+
+
+
+
+
+
+
+
+class: center middle
+
+# Reminders 💡
+
+Your tasks for the week running Friday 11/30 - Friday 12/4
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Lab 13 | Friday 12/4 8:00AM ET | Canvas |
+| Homework 10 | **Monday 12/7 8:00AM ET** | course.work |
+
+### WE'RE IN THE HOME STRETCH! YOU CAN DO IT!
+
+---
+
+# Homework 9 Comments
+
+### Question 1f:
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+The National Center of Education Statistics conducted a survey of high school seniors, collecting test data on reading, writing, and several other subjects. Here we examine a simple random sample of 200 students from this survey.
+
+Based on the results of this hypothesis test, would you expect a confidence interval for the average difference between the reading and writing scores to include 0? Explain your reasoning.
+]
+
+---
+# Homework 9 Comments
+
+### Question 1f:
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+Based on the results of this hypothesis test, would you expect a confidence interval for the average difference between the reading and writing scores to include 0? Explain your reasoning.
+]
+
+- p-value was ~0.387: not a lot of evidence against the null!
+- Confidence intervals should support the conclusion of the hypothesis test
+  - Null value is *reasonable*: it should be in the CI.
+- You need to use statistical reasoning (e.g., p-values, hypothesis test results, etc.)
+
+---
+# Homework 9 Comments
+
+### Question 2: 
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+The automotive engineer asks you, the statistics expert, to help him produce a 98% confidence interval for the population mean difference in decibel level when the car is being powered off (original part minus new part). You'll want to check any conditions, show your computations, and interpret the 98% confidence interval in context.
+]
+
+Checking the independence condition:
+- &lt;10% of the population is a **workaround** - we really need a random sample
+- In a paired test, we don't have *between*-measurement independence, but we still need *within*-unit independence!
+
+---
+# Homework 9 Comments
+
+### Question 7 💍: 
+
+.bg-washed-yellow.b--yellow.navy.ba.bw2.ph4[
+.b[Diamonds.] Conduct a hypothesis test to evaluate if there is a difference between the average standardized prices of 0.99 and 1 carat diamonds. Make sure to state your hypotheses clearly, show your computations, and interpret your results in context of the data.
+]
+
+- This is a **two-sided test**! "if there is a difference" does not imply a direction!
+  - You need to **double** the output of `pt()` for a two-sided test.
+- If you have questions, ask the instructional team, **not** Google.
+  - See page 16 of your 4.1-4.3 notes for degrees of freedom.
+
+---
+# Today's Goals
+
+.pull-left[
+### Statistics 📉
+- Learn about how to make inference for linear regression parameters
+- Learn about conditions needed for valid inference in regression
+]
+.pull-right[
+### R 💻
+- Learn how to interpret output from `lm()` to make inference in regression
+- Learn how to use R to check conditions for valid inference in regression
+]
+
+---
+# Scatterplots
+
+.pull-left[
+
+```r
+# Line ~44
+penguins &lt;- read.csv("https://raw.githubusercontent.com/STATS250SBI/palmerpenguins/master/inst/extdata/penguins_NArm.csv", stringsAsFactors = TRUE)
+```
+
+```r
+*plot(body_mass_g ~ flipper_length_mm,
+     data = penguins,
+     pch = 20,
+     ylab = "Body Mass (g)", 
+     xlab = "Flipper Length (mm)",
+     main = "Penguin Body Mass vs. Flipper Length")
+```
+]
+.pull-right[
+&lt;img src="lab13-slides-async_files/figure-html/unnamed-chunk-2-1.png" width="648" /&gt;
+]
+
+Formula notation! 
+
+`response variable ~ explanatory variable`
+
+---
+# Recall: Linear Regression
+
+
+```r
+# Line 59
+mod1 &lt;- lm(body_mass_g ~ flipper_length_mm, data = penguins)
+summary(mod1)
+```
+
+```
+
+Call:
+lm(formula = body_mass_g ~ flipper_length_mm, data = penguins)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1057.33  -259.79   -12.24   242.97  1293.89 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5872.09     310.29  -18.93   &lt;2e-16 ***
+flipper_length_mm    50.15       1.54   32.56   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 393.3 on 331 degrees of freedom
+Multiple R-squared:  0.7621,	Adjusted R-squared:  0.7614 
+F-statistic:  1060 on 1 and 331 DF,  p-value: &lt; 2.2e-16
+```
+
+???
+Have students identify slope and R^2
+
+---
+# Regression Output (Lines 63-65)
+
+.pull-left[
+.small-code[
+
+```
+
+Call:
+lm(formula = body_mass_g ~ flipper_length_mm, data = penguins)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1057.33  -259.79   -12.24   242.97  1293.89 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5872.09     310.29  -18.93   &lt;2e-16 ***
+flipper_length_mm    50.15       1.54   32.56   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 393.3 on 331 degrees of freedom
+Multiple R-squared:  0.7621,	Adjusted R-squared:  0.7614 
+F-statistic:  1060 on 1 and 331 DF,  p-value: &lt; 2.2e-16
+```
+]
+]
+.pull-right[
+Equation of the regression line?
+
+{{content}}
+
+]
+
+--
+&gt; `\(\hat{y} = -5827.09 + 50.15x\)`
+
+Interpretation of `\(b_1\)`?
+
+{{content}}
+
+--
+
+&gt; We estimate that a one-millimeter longer flipper is associated with a **50.15**-gram **higher** body mass, on average, in the population of penguins represented by this sample.
+
+---
+# Regression Diagnostics
+
+### Checking Conditions
+- **Linearity:** The relationship between the explanatory and response variables should be linear.
+- **Independence:** The observations must be independent of one another. This does not mean that the response and explanatory variables are independent; rather, that the "individuals" from whom we collect information must be independent of each other.
+- **Nearly Normal Residuals:** The residuals should come from a nearly-normal population of residuals.
+- **Equal (constant) variability:** The variability of the residuals should not depend on where they are along the regression line.
+
+Use the mnemonic "LINE"
+
+---
+# Regression Diagnostics
+
+
+```r
+plot(mod1, which = c(1, 2), add.smooth = FALSE, id.n = 0)
+```
+
+.pull-left[
+&lt;img src="lab13-slides-async_files/figure-html/residPlot-1.png" width="648" /&gt;
+- Linearity
+- Equal variance
+]
+.pull-right[
+&lt;img src="lab13-slides-async_files/figure-html/residQQ-1.png" width="648" /&gt;
+- Nearly Normal
+]
+
+---
+# Regression Diagnostics
+
+
+```r
+plot(mod1, which = c(1, 2), add.smooth = FALSE, id.n = 0)
+```
+
+.pull-left[
+&lt;img src="lab13-slides-async_files/figure-html/residPlot-1.png" width="648" /&gt;
+]
+.pull-right[
+&lt;img src="lab13-slides-async_files/figure-html/residQQ-1.png" width="648" /&gt;
+]
+
+Take a minute to describe your thoughts about the conditions on line 90 of your lab document.
+
+---
+# Regression Inference
+
+Conditions seem okay! Let's make some inference.
+
+.pull-left[
+.small-code[
+
+```
+
+Call:
+lm(formula = body_mass_g ~ flipper_length_mm, data = penguins)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1057.33  -259.79   -12.24   242.97  1293.89 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5872.09     310.29  -18.93   &lt;2e-16 ***
+flipper_length_mm    50.15       1.54   32.56   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 393.3 on 331 degrees of freedom
+Multiple R-squared:  0.7621,	Adjusted R-squared:  0.7614 
+F-statistic:  1060 on 1 and 331 DF,  p-value: &lt; 2.2e-16
+```
+]
+]
+
+.pull-right[
+**Q:** At the population level, is there a relationship between penguin flipper length and body mass?
+
+If not, then the slope of the "true" line should be zero. 
+
+`\(H_0: \beta_1 = 0\)` vs. `\(H_a: \beta_1 \neq 0\)`
+]
+
+---
+# Regression Inference
+
+Conditions seem okay! Let's make some inference.
+
+.pull-left[
+.small-code[
+
+```
+
+Call:
+lm(formula = body_mass_g ~ flipper_length_mm, data = penguins)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1057.33  -259.79   -12.24   242.97  1293.89 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5872.09     310.29  -18.93   &lt;2e-16 ***
+flipper_length_mm    50.15       1.54   32.56   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 393.3 on 331 degrees of freedom
+Multiple R-squared:  0.7621,	Adjusted R-squared:  0.7614 
+F-statistic:  1060 on 1 and 331 DF,  p-value: &lt; 2.2e-16
+```
+]
+]
+
+.pull-right[
+`\(H_0: \beta_1 = 0\)` vs. `\(H_a: \beta_1 \neq 0\)`
+
+`$$t = \frac{b_1 - b_{1, \text{null}}}{SE_{b_1}} = \frac{50.15 - 0}{1.54} = 32.56$$`
+]
+
+---
+# Regression Inference
+
+.pull-left[
+.small-code[
+
+```
+
+Call:
+lm(formula = body_mass_g ~ flipper_length_mm, data = penguins)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1057.33  -259.79   -12.24   242.97  1293.89 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5872.09     310.29  -18.93   &lt;2e-16 ***
+flipper_length_mm    50.15       1.54   32.56   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 393.3 on 331 degrees of freedom
+Multiple R-squared:  0.7621,	Adjusted R-squared:  0.7614 
+F-statistic:  1060 on 1 and 331 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+.b--yellow.ba.bw2.ph4[
+Compute the p-value on line 116.
+]
+]
+
+.pull-right[
+
+```r
+plotT(333 - 2, shadeValues = c(-32.56, 32.56),
+      direction = "outside",
+      xlim = c(-34, 34))
+```
+
+&lt;img src="lab13-slides-async_files/figure-html/unnamed-chunk-4-1.png" width="648" /&gt;
+]
+
+---
+# Regression Inference
+
+.pull-left[
+.small-code[
+
+```
+
+Call:
+lm(formula = body_mass_g ~ flipper_length_mm, data = penguins)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1057.33  -259.79   -12.24   242.97  1293.89 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5872.09     310.29  -18.93   &lt;2e-16 ***
+flipper_length_mm    50.15       1.54   32.56   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 393.3 on 331 degrees of freedom
+Multiple R-squared:  0.7621,	Adjusted R-squared:  0.7614 
+F-statistic:  1060 on 1 and 331 DF,  p-value: &lt; 2.2e-16
+```
+]
+
+.b--yellow.ba.bw2.ph4[
+
+```r
+2 * pt(-32.6, df = 331)
+```
+
+```
+[1] 2.336624e-105
+```
+]
+]
+
+.pull-right[
+&lt;img src="lab13-slides-async_files/figure-html/unnamed-chunk-6-1.png" width="648" /&gt;
+
+{{content}}
+]
+
+--
+This is **nonsense precision**. Do not, under any circumstances, report this p-value as-is. It is zero.
+
+---
+# Regression Inference
+
+.pull-left[
+.small-code[
+
+```
+
+Call:
+lm(formula = body_mass_g ~ flipper_length_mm, data = penguins)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1057.33  -259.79   -12.24   242.97  1293.89 
+
+Coefficients:
+                  Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -5872.09     310.29  -18.93   &lt;2e-16 ***
+flipper_length_mm    50.15       1.54   32.56   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 393.3 on 331 degrees of freedom
+Multiple R-squared:  0.7621,	Adjusted R-squared:  0.7614 
+F-statistic:  1060 on 1 and 331 DF,  p-value: &lt; 2.2e-16
+```
+]
+]
+
+.pull-right[
+### Important Note
+Notice that the p-value column in the output is labeled `Pr(&gt;|t|)`?
+  - This is a **two-sided p-value** for the test that the coefficient is equal to zero.
+]
+
+---
+# Confidence Intervals for Regression Parameters
+
+Let's make a 95% confidence interval for each of `\(\beta_0\)` and `\(\beta_1\)`. 
+
+`$$b_1 \pm t^* \times \mathrm{SE}_{b_1}$$`
+
+
+```r
+confint(mod1, level = .95)
+```
+
+```
+                        2.5 %      97.5 %
+(Intercept)       -6482.47224 -5261.71313
+flipper_length_mm    47.12339    53.18314
+```
+
+**Exercise:** Verify these CI's are correct using the regression output.
+
+---
+# Plotting a Regression Line
+
+.pull-left[
+Our estimated regression line is
+`$$y_i = -5827.09 + 50.15x$$`
+
+```r
+plot(body_mass_g ~ flipper_length_mm,
+     data = penguins,
+     ylab = "Body Mass (g)",
+     xlab = "Flipper Length (mm)",
+     main = "Penguin Body Mass vs. Flipper Length")
+*abline(mod1, col = "tomato", lwd = 2)
+```
+
+&lt;img src="lab13-slides-async_files/figure-html/unnamed-chunk-7-1.png" width="648" /&gt;
+
+]
+---
+class: inverse
+# Code Cheat Sheet 💻
+### **`lm(formula, data)`**
+  - `formula` is a symbolic description of the model you want to fit: recall the syntax is `response ~ explanatory`.
+  - `data` is a data frame which contains the variables used in `formula`.
+
+---
+class: inverse
+# Code Cheat Sheet 💻
+### **`pt(q, df, lower.tail = TRUE)`**
+  - `q` is the x-axis value you want to find an area related to
+  - `df` is the degrees of freedom of the `\(t\)` distribution
+  - `lower.tail` determines whether `pt()` finds the area to the left or right of `q`. If `lower.tail = TRUE` (the default), it shades to the left. If `lower.tail = FALSE`, it shades to the right.
+
+---
+class: inverse
+# Code Cheat Sheet 💻
+### **`qt(q, df, lower.tail = TRUE)`**
+  - `p` is the probability or area under the curve you want to find an x-axis value for
+  - `df` is the degrees of freedom of the `\(t\)` distribution
+  - `lower.tail` determines whether `pt()` finds the area to the left or right of `q`. If `lower.tail = TRUE` (the default), it shades to the left. If `lower.tail = FALSE`, it shades to the right.
+  
+---
+class: inverse
+# Code Cheat Sheet 💻
+### **`plotT()`**
+  - `df` refers to the degrees of freedom of the distribution to plot. You must provide this value.
+  - `shadeValues` is a vector of up to 2 numbers that define the region you want to shade
+  - `direction` can be one of `less`, `greater`, `outside`, or `inside`, and controls the direction of shading between `shadeValues`. Must be `less` or `greater` if `shadeValues` has only one element; `outside` or `inside` if two
+  - `col.shade` controls the color of the shaded region, defaults to `"cornflowerblue"`
+  - `...` lets you specify other graphical parameters to control the appearance of the normal curve (e.g., `lwd`, `lty`, `col`, etc.)
+
+---
+class: inverse
+# Code Cheat Sheet 💻
+### **`plot(model, which, add.smooth, id.n)` for `lm()` output**
+  - `model` is the regression model (an `lm` object)
+  - `which` controls which diagnostic plots you want to see. We're typically interested in just the first 2, so we'll set this to `c(1, 2)`. 
+  - `add.smooth` controls whether or not to add a "smoother" to the residual plot. *SET THIS TO `FALSE`*.
+  - `id.n` controls the number of the most unusual points to identify in the plots. This is generally not helpful and confusing: *SET THIS TO `0`*.
+  
+---
+class: inverse
+# Code Cheat Sheet 💻
+### **`confint(object, level)`**
+  - `object` is a fitted regression model (an `lm` object)
+  - `level` is the required confidence level, must be between 0 and 1.
+
+---
+class: inverse
+# Lab Project ⌨️
+
+.pull-left[
+### Your tasks
+- Complete the "Try It!" and "Dive Deeper" portions of the lab assignment by copy/pasting and modifying appropriate code from earlier in the document.
+]
+
+.pull-right[
+### How to get help
+- Piazza!
+- Email your lab instructor (not stats250-miller@umich.edu)
+]
+---
+class: center middle
+
+# Recap and Reminders 💡
+
+What we learned:
+
+- Checking conditions for valid linear regression inference
+- Using R to quickly perform hypothesis tests for regression parameters
+- Using R to create confidence intervals for regression parameters
+
+| Task | Due Date | Submission |
+|:-----|:---------|:-----------|
+| Lab 13 | Friday 12/4 8:00AM ET | Canvas |
+| Homework 10 | **Monday 12/7 8:00AM ET** | course.work |
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

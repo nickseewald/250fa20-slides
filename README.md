@@ -20,6 +20,7 @@ Jump to a specific lab by clicking the appropriate link: <br />
 [[*Lab 10:* Confidence Intervals and Hypothesis Tests for Proportions]](#lab10)
 [[*Lab 11:* Confidence Intervals and Hypothesis Tests for One Mean]](#lab11)
 [[*Lab 12:* Paired Data and Difference of Two Means]](#lab12)
+[[*Lab 13:* Linear Regression Inference]](#lab13)
 
 
 
@@ -219,3 +220,20 @@ Lab materials for the week running Friday 11/16 - Friday 11/20.
 ### Slides
 - **Synchronous Labs** [[html]](lab12-slides/lab12-slides-sync.html) [[pdf]](lab12-slides/lab12-slides-sync.pdf)
 - **Asynchronous Labs** [[html]](lab12-slides/lab12-slides-async.html) [[pdf]](lab12-slides/lab12-slides-async.pdf)
+
+<hr />
+
+## <a name="lab13"></a>Lab 13: Linear Regression Inference
+Lab materials for the week running Monday 11/30 - Friday 12/4.
+
+### Statistical Learning Objectives
+1. Learn about how to make inference for linear regression parameters
+1. Learn about conditions needed for valid inference in regression
+
+### R Learning Objectives
+1. Learn how to interpret output from `lm()` to make inference in regression
+1. Learn how to use R to check conditions for valid inference in regression
+
+### Slides
+- **Synchronous Labs** [[html]](lab13-slides/lab13-slides-sync.html) [[pdf]](lab13-slides/lab13-slides-sync.pdf)
+- **Asynchronous Labs** [[html]](lab13-slides/lab13-slides-async.html) [[pdf]](lab13-slides/lab13-slides-async.pdf)
